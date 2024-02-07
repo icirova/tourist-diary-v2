@@ -1,0 +1,11 @@
+.card--open {
+    height: 80vh;
+    max-width: 1200px;
+    margin: 20px auto;
+    /* display: none; */
+}
+
+.image {
+    display: block;
+    margin-bottom: 20px;
+}

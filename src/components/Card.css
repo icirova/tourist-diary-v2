@@ -1,0 +1,62 @@
+.card {
+    background-color: rgba(255, 255, 255, 0.75);
+    padding: 20px;
+    border-radius: 20px;
+    flex-basis: 300px;
+}
+
+.title {
+    margin-bottom: 20px;
+    font-family: 'Quicksand', sans-serif;
+    text-transform: uppercase;
+    color: #033035;
+}
+
+.tags {
+    margin-bottom: 20px;
+    font-size: 150%;
+
+}
+
+.perex {
+    margin-bottom: 20px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+
+}
+
+.description {
+    margin-bottom: 20px;
+}
+
+.cards {
+   
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    /* display: none; */
+   
+}
+
+.display-none {
+    display: none;
+}
+
+.btn {
+    background-color:#e88f24 ;
+    cursor: pointer;
+    padding: 10px 5px;
+    width: 100px;
+    border: none;
+    color: white;
+    border-radius: 20px;
+    font-family: 'Quicksand', sans-serif;
+    text-transform: uppercase;
+    
+}
+
+.btn:hover {
+    background-color: #be6f28;
+    
+}
