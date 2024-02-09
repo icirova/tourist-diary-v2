@@ -1,0 +1,33 @@
+.navbar {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    padding: 20px;
+}
+
+.link {
+    background-color: #003d47;
+    padding: 10px 5px;
+    width: 100px;
+    border-radius: 20px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+    text-transform: uppercase;
+}
+
+.link:hover {
+    background-color: #be6f28;
+}
+
+
+   
+    
+    
+    
+   
+   
+  

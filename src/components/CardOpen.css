@@ -1,11 +1,14 @@
-.card--open {
-    height: 80vh;
-    max-width: 1200px;
-    margin: 20px auto;
-    /* display: none; */
+.opened-card {
+    margin: 20px;
+    background-color: rgba(255, 255, 255, 0.75);
+    padding: 20px;
+    border-radius: 20px;
 }
 
-.image {
+
+.opened-card__image {
     display: block;
-    margin-bottom: 20px;
+    width: 100%;
+    margin: 20px 0;
+    border-radius: 0 0 20px 20px;
 }

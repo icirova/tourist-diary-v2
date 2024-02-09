@@ -1,11 +1,12 @@
 import "./Header.css";
+import Navbar from "./Navbar";
 
 const Header = () => {
-    return (
-<div className="header">
-        <p className="logo">Turistický deník</p>
-     </div>
-    )
+    return <header className="header">
+        <h1 className="logo">Turistický deník</h1>
+        <Navbar />
+    </header>
+    
 }
 
 export default Header

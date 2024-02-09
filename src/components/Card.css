@@ -6,6 +6,7 @@
 }
 
 .title {
+    text-align: center;
     margin-bottom: 20px;
     font-family: 'Quicksand', sans-serif;
     text-transform: uppercase;
@@ -14,7 +15,8 @@
 
 .tags {
     margin-bottom: 20px;
-    font-size: 150%;
+    text-align: center;
+    font-size: 200%;
 
 }
 
@@ -29,34 +31,29 @@
     margin-bottom: 20px;
 }
 
-.cards {
-   
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    /* display: none; */
-   
-}
-
-.display-none {
-    display: none;
-}
 
 .btn {
+    display: block;
     background-color:#e88f24 ;
-    cursor: pointer;
-    padding: 10px 5px;
     width: 100px;
-    border: none;
-    color: white;
+    padding: 10px 5px;
     border-radius: 20px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    color: white;
     font-family: 'Quicksand', sans-serif;
     text-transform: uppercase;
+    margin: 0 auto;
     
 }
 
 .btn:hover {
     background-color: #be6f28;
-    
 }
+
+
+   
+   
+   
+   

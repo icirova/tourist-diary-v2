@@ -1,12 +1,18 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import SharedLayout from "./pages/SharedLayout";
+import Home from "./pages/Home";
+import CardOpen from "./components/CardOpen";
+
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<h1>Výlety</h1>} />
-        <Route path="/detail" element={<h1>Detail</h1>} />
-        <Route path="/new" element={<h1>Nový</h1>} />
-       
+
+        <Route path="/" element={<SharedLayout />}>
+          <Route path="/" index element={<Home />} />
+          <Route path="/detail/:tripId" element={<CardOpen />} />
+        </Route>
+
       </Routes>
     </BrowserRouter>
   );

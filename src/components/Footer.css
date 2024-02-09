@@ -1,15 +1,11 @@
 .footer {
-    
+    padding: 10px 0;
     color: #b6e0ea;
     text-align: center;
    
 }
 
-.copywriting {
-   
-}
-
-.source {
+/* .source {
     font-size: 70%;
     color: #6ba0a5;
-}
+} */

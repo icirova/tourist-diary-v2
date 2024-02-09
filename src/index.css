@@ -1,0 +1,22 @@
+html { box-sizing: border-box; }
+*, ::before, ::after { box-sizing: inherit; margin: 0; padding: 0; }
+
+
+
+
+body {
+    background-image: url(./images/camp-4363073_1920.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh; 
+    background-position: center;
+    font-family: 'Lora', serif;   
+}
+
+.wrapper {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+}

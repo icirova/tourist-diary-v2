@@ -1,21 +1,9 @@
 import "./Card.css";
-import data from "../data"
-import { useState } from "react"
+import { Link } from "react-router-dom";
 
-const Card = (props) => {
+const Card = ({id, title, tags, perex}) => {
 
-const [cardList, setCardList] = useState(data)
 
-const openOneCard = (idecko) => {
-  const filteredCards = cardList.filter( (oneCard) => {
-    return oneCard.id === idecko
-})
-
-setCardList(filteredCards)
-  console.log(filteredCards)
-}
-
-const {id, title, tags, perex} = props
 
    return (
     <div className="card">
@@ -23,7 +11,7 @@ const {id, title, tags, perex} = props
       <p className="tags">{tags}</p>
       <p className="perex">{perex}</p>
 
-      <button className="btn" onClick={() => openOneCard(id)}>Detail</button>
+      <Link to={`/detail/${id}`} className="btn">Více</Link>
       
     </div>
   );

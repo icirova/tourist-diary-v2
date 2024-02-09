@@ -1,21 +1,28 @@
 import "./CardOpen.css";
+import { Link, useParams } from "react-router-dom";
+import data from "../data";
 
+const CardOpen = () => {
+  const { tripId } = useParams();
 
-const CardOpen = ({id, title, tags, perex, description, photo, alt}) => {
+  const filteredCard = data.find((oneCard) => {
+    return oneCard.id === parseInt(tripId);
+  });
 
-  
+  const { title, tags, perex, description, photo, alt } = filteredCard;
 
   return (
-    <div className="card card--open">
+    <div className="opened-card">
 
-        <h1 className="title">{title }</h1>
-        <p className="tags">{tags}</p>
-        <p className="perex"> {perex}</p>
-        <p className="description"> {description}</p>
-        <img className="image" src= {photo} alt= {alt} />
+      <h1 className="title ">{title}</h1>
+      <p className="tags">{tags}</p>
+      <p className="perex">{perex}</p>
+      <p className="description">{description}</p>
+      <img className="opened-card__image" src={photo} alt={alt} />
 
-        <button className="btn">Zavřít</button>
-        
+      <Link to="/" className="btn btn--opened-card">
+        Zpět
+      </Link>
     </div>
   );
 };
