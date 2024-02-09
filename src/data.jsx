@@ -1,4 +1,4 @@
-import photo1 from "./images/mumlava.webp"
+import photo1 from "/mumlava.webp"
 
 const data = [
     {

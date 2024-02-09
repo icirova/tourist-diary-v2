@@ -5,7 +5,7 @@ html { box-sizing: border-box; }
 
 
 body {
-    background-image: url(./images/camp-4363073_1920.png);
+    background-image: url(/camp-4363073_1920.png);
     background-repeat: no-repeat;
     background-size: cover;
     min-height: 100vh; 
