@@ -17,7 +17,9 @@ const CardOpen = () => {
       <h1 className="title ">{title}</h1>
       <p className="tags">{tags}</p>
       <p className="perex">{perex}</p>
-      <p className="description">{description}</p>
+      {description.map((oneParagraph, index) => 
+      <p key={index} className="description">{oneParagraph}</p>)}
+    
       <img className="opened-card__image" src={photo} alt={alt} />
 
       <Link to="/" className="btn btn--opened-card">

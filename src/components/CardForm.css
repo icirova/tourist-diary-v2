@@ -1,0 +1,91 @@
+.form {
+    background-color: rgba(255, 255, 255, 0.75);
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+.field-input,
+.notes {
+    justify-self: left;
+    margin-bottom: 1rem;
+    margin-top: 0.3rem;
+  }
+  
+  .field-label {
+    justify-self: right;
+  }
+
+
+  
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  input[type="tel"],
+  select,
+  textarea {
+    font-size: 1rem;
+    background-color: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    width: 100%;
+    outline: none;
+  }
+
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  input[type="date"]:focus,
+  input[type="tel"]:focus,
+  select:focus,
+  textarea:focus {
+    outline: 2px solid gray;
+  }
+  
+  input[type="checkbox"] {
+    transform: scale(1.5);
+  }
+
+  .check-item {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+    gap: 1rem;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 0.8rem;
+  }
+
+  .tags {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+   
+  }
+
+  .check-item {
+    flex-basis: calc((100% / 3) - 10px);
+    justify-content: center;
+  }
+
+  .btn--insert {
+    background-color: #003d47;
+    padding: 10px 15px;
+    min-width: 100px;
+    border-radius: 20px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.btn--insert:hover {
+    background-color: #be6f28;
+}
+
+

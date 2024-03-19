@@ -3,7 +3,10 @@
     padding: 20px;
     border-radius: 20px;
     flex-basis: 300px;
+    flex-grow: 1;
+    justify-content: left;
 }
+
 
 .title {
     text-align: center;
@@ -28,7 +31,7 @@
 }
 
 .description {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 
@@ -45,6 +48,7 @@
     font-family: 'Quicksand', sans-serif;
     text-transform: uppercase;
     margin: 0 auto;
+    border: none
     
 }
 
