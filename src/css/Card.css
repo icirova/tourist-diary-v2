@@ -1,0 +1,52 @@
+.card {
+  background-color: rgba(255, 255, 255, 0.75);
+  padding: 20px;
+  border-radius: 20px;
+  flex-basis: 300px;
+  flex-grow: 1;
+  justify-content: left;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: "Quicksand", sans-serif;
+  text-transform: uppercase;
+  color: #033035;
+}
+
+.tags {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 200%;
+}
+
+.perex {
+  margin-bottom: 20px;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 600;
+}
+
+.description {
+  margin-bottom: 10px;
+}
+
+.btn {
+  display: block;
+  background-color: #e88f24;
+  width: 100px;
+  padding: 10px 5px;
+  border-radius: 20px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  color: white;
+  font-family: "Quicksand", sans-serif;
+  text-transform: uppercase;
+  margin: 0 auto;
+  border: none;
+}
+
+.btn:hover {
+  background-color: #be6f28;
+}/*# sourceMappingURL=Card.css.map */

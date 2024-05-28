@@ -1,16 +1,18 @@
 import { useState } from "react";
-import "./CardForm.css";
-import Card from "./Card";
+import "./CardForm.scss";
 
-const CardForm = () => {
+
+
+const CardForm = ({addCard}) => {
 
     const initialFormData = {
-        name:"",
+        title:"",
         bicycle:"",
         bag:"",
         photo:"",
         snack:"",
         climber:"",
+        description:"",
         notes:""
 
     }
@@ -18,7 +20,7 @@ const CardForm = () => {
     const [isVisible, setIsVisible] = useState(false)
     const [btnText, setBtnText] = useState("+ vložit kartu")
     const [formData, setFormData] = useState(initialFormData)
-    const [errors, setErrors] = useState({ name: '', notes: '' });
+    const [errors, setErrors] = useState({ title: '', description: '' })
 
    
 
@@ -28,14 +30,14 @@ const CardForm = () => {
     }
 
     const handleChange = (event) => {
-        const { id, name, value, checked } = event.target;
+        const { id, name, value, checked } = event.target
     
         let newValue = value;
         if (id === 'check1' || id === 'check2' || id === 'check3' || id === 'check4' || id === 'check5') {
-          newValue = checked ? event.target.value : '';
+          newValue = checked ? event.target.value : ''
         }
     
-        setFormData({ ...formData, [name]: newValue });
+        setFormData({ ...formData, [name]: newValue })
       };
 
     const handleClick = (event) => {
@@ -43,19 +45,27 @@ const CardForm = () => {
 
         let newErrors = {}
 
-        if (formData.name.trim() === '') {
-            newErrors.name = 'Povinné pole.'
+        if (formData.title.trim() === '') {
+            newErrors.title = 'Povinné pole.'
           }
+
+          if (formData.description.trim() === '') {
+            newErrors.description = 'Povinné pole.'
+          } 
       
           if (formData.notes.trim() === '') {
-            newErrors.notes = 'Povinné pole.';
+            newErrors.notes = 'Povinné pole.'
           } 
       
           setErrors(newErrors);
 
           if (Object.keys(newErrors).length === 0) {
-            console.log(formData)
-            toggleVisibility()
+            const newCard = { ...formData };
+            console.log(newCard)
+            addCard(newCard);
+            toggleVisibility();
+            setFormData(initialFormData); // Resetuje formulář
+            
           }
 
        
@@ -68,17 +78,17 @@ const CardForm = () => {
   <form className="form" >
      
         
-        <label htmlFor="name" className="field-label">
+        <label htmlFor="title" className="field-label">
           Název: 
-          {errors.name && (
-            <span className="error-message">{errors.name}</span>
+          {errors.title && (
+            <span className="error-message">{errors.title}</span>
             )}
         </label>
         <input
-          id="name"
+          id="title"
           className="field-input"
           type="text"
-          name="name"
+          name="title"
           onChange={handleChange}
         />
 
@@ -152,8 +162,22 @@ const CardForm = () => {
         </div>
 
         <div>
-            <label htmlFor="notes" className="field-label">Poznámky: {errors.name && (
-                  <span className="error-message">{errors.name}</span>
+            <label htmlFor="description" className="field-label">Popis: {errors.description && (
+                  <span className="error-message">{errors.description}</span>
+                )}</label>
+            <textarea 
+            id="description" 
+            name="description" 
+            rows="10" 
+            cols="50" 
+            className="notes"  
+            onChange={handleChange}
+            ></textarea>
+        </div>
+
+        <div>
+            <label htmlFor="notes" className="field-label">Poznámky: {errors.notes && (
+                  <span className="error-message">{errors.notes}</span>
                 )}</label>
             <textarea 
             id="notes" 
