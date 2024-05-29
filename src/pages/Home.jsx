@@ -2,7 +2,6 @@ import "./Home.scss"
 import Card from "../components/Card"
 import data from "../data"
 import CardForm from "../components/CardForm"
-import MapComponent from "../components/MapComponent"
 import { useState } from "react"
 import MapWithForm from "../components/MapWithForm"
 

@@ -55,6 +55,7 @@
   .error-message {
     color: red;
     font-size: 0.8rem;
+    padding: 5px;
   }
 
   .tags {
@@ -63,6 +64,18 @@
     flex-wrap: wrap;
    
   }
+
+  .pins {
+      display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    
+  }
+
+  .pin {
+    width: 100%;
+  }
+
 
   .check-item {
     flex-basis: calc((100% / 3) - 10px);

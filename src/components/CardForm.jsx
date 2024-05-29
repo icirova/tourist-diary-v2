@@ -7,6 +7,8 @@ const CardForm = ({addCard}) => {
 
     const initialFormData = {
         title:"",
+        lat:"",
+        lng:"",
         bicycle:"",
         bag:"",
         photo:"",
@@ -48,6 +50,12 @@ const CardForm = ({addCard}) => {
         if (formData.title.trim() === '') {
             newErrors.title = 'Povinné pole.'
           }
+          if (formData.lat.trim() === '') {
+            newErrors.lat = 'Povinné pole.'
+          } 
+          if (formData.lng.trim() === '') {
+            newErrors.lng = 'Povinné pole.'
+          } 
 
           if (formData.description.trim() === '') {
             newErrors.description = 'Povinné pole.'
@@ -61,6 +69,7 @@ const CardForm = ({addCard}) => {
 
           if (Object.keys(newErrors).length === 0) {
             const newCard = { ...formData };
+            
             console.log(newCard)
             addCard(newCard);
             toggleVisibility();
@@ -91,6 +100,41 @@ const CardForm = ({addCard}) => {
           name="title"
           onChange={handleChange}
         />
+
+        <div className="pins">
+
+          <div className="pin">
+            <label htmlFor="lat" className="field-label">
+              Zeměpisná šířka: 
+              {errors.lat && (
+                <span className="error-message">{errors.lat}</span>
+                )}
+            </label>
+            <input
+              id="lat"
+              className="field-input"
+              type="text"
+              name="lat"
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="pin">
+            <label htmlFor="lng" className="field-label">
+              Zeměpisná délka: 
+              {errors.lng && (
+                <span className="error-message">{errors.lng}</span>
+                )}
+            </label>
+            <input
+              id="lng"
+              className="field-input"
+              type="text"
+              name="lng"
+              onChange={handleChange}
+            />
+          </div>
+        </div>
 
         <div className="tags">
 

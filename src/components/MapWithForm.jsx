@@ -1,6 +1,7 @@
 import "./MapWithForm.scss"
 import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 import data from "../data"
 
 const MapWithForm= () => {
@@ -58,7 +59,7 @@ const MapWithForm= () => {
         ))}
       </MapContainer>
 
-      <button className="btn--insert" onClick={toggleForm}>+ Přidat nové místo</button>
+      {/* <button className="btn--insert" onClick={toggleForm}>+ Přidat nové místo</button>
 
       {showForm && (
         <form className="form" onSubmit={handleSubmit}>
@@ -89,7 +90,7 @@ const MapWithForm= () => {
             <p>{location.description}</p>
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };
