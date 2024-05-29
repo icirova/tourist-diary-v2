@@ -1,21 +1,19 @@
 import "./MapWithForm.scss"
 import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import data from "../data"
 
-const MapWithForm = () => {
-  const [locations, setLocations] = useState([
-    { id: 1, name: 'Praha', lat: 50.087, lng: 14.421 },
-    { id: 2, name: 'Karlův most', lat: 50.0755, lng: 14.4378 },
-    // další lokace
-  ]);
+const MapWithForm= () => {
+  const [locations, setLocations] = useState(data);
 
-  const [showForm, setShowForm] = useState(false);
-  const [btnText, setBtnText] = useState("+ přidat pin")
   const [formData, setFormData] = useState({
-    name: '',
+    title: '',
     lat: '',
     lng: '',
+    description: '',
   });
+
+  const [showForm, setShowForm] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,59 +21,75 @@ const MapWithForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { name, lat, lng } = formData;
-    if (name && lat && lng) {
+    const { title, lat, lng, description } = formData;
+    if (title && lat && lng && description) {
       const newLocation = {
         id: locations.length + 1,
-        name: name,
+        title: title,
         lat: parseFloat(lat),
         lng: parseFloat(lng),
+        description: description,
       };
       setLocations([...locations, newLocation]);
-      setFormData({ name: '', lat: '', lng: '' });
-      setShowForm(false); // Skrytí formuláře po odeslání
+      setFormData({ title: '', lat: '', lng: '', description: '' });
+      setShowForm(false);
     } else {
       alert('Prosím, vyplňte všechny informace.');
     }
   };
 
   const toggleForm = () => {
-    setShowForm(!showForm); // Přepínání viditelnosti formuláře
-    setBtnText(showForm ? "+ přidat pin" : "zpět")
+    setShowForm(!showForm);
   };
 
   return (
-    <div >
-      <button className='btn--insert' onClick={toggleForm}>{btnText}</button>
+    <div>
+     
+      
+      <MapContainer center={[50.0755, 14.4378]} zoom={13} style={{ height: '400px', width: '100%' }}>
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        {locations.map((location) => (
+          <Marker key={location.id} position={[location.lat, location.lng]}>
+            <Popup>
+              <strong>{location.title}</strong>
+              <p>{location.description}</p>
+            </Popup>
+          </Marker>
+        ))}
+      </MapContainer>
+
+      <button className="btn--insert" onClick={toggleForm}>+ Přidat nové místo</button>
+
       {showForm && (
         <form className="form" onSubmit={handleSubmit}>
-          <label  className="field-label">
+          <label>
             Název místa:
-            <input className="field-input" type="text" name="name" value={formData.name} onChange={handleChange} />
+            <input type="text" name="name" value={formData.title} onChange={handleChange} />
           </label>
-          <label  className="field-label">
+          <label>
             Zeměpisná šířka:
-            <input  className="field-input" type="text" name="lat" value={formData.lat} onChange={handleChange} />
+            <input type="text" name="lat" value={formData.lat} onChange={handleChange} />
           </label>
-          <label  className="field-label">
+          <label>
             Zeměpisná délka:
-            <input  className="field-input" type="text" name="lng" value={formData.lng} onChange={handleChange} />
+            <input type="text" name="lng" value={formData.lng} onChange={handleChange} />
           </label>
-          <button className='btn' type="submit">Přidat Pin</button>
+          <label>
+            Popis:
+            <textarea name="description" value={formData.description} onChange={handleChange} />
+          </label>
+          <button className="btn" type="submit">Přidat</button>
         </form>
       )}
-
-      <div className="map-container">
-        <MapContainer center={[50.0755, 14.4378]} zoom={13} style={{ height: '400px', width: '100%' }}>
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          {locations.map((location) => (
-            <Marker key={location.id} position={[location.lat, location.lng]}>
-              <Popup>{location.name}</Popup>
-            </Marker>
-          ))}
-        </MapContainer>
+      
+      <div className="cards">
+        {locations.map((location) => (
+          <div className="card" key={location.id}>
+            <h3>{location.title}</h3>
+            <p>{location.description}</p>
+          </div>
+        ))}
       </div>
-
     </div>
   );
 };

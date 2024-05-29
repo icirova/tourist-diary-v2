@@ -40,13 +40,14 @@ const Home = () => {
         {
             cardsData.map ( (oneCard) => {
                 const {id, title, tags, description} = oneCard
-                    
+    
                 return(    
-                    <Card key={id} title={title} tags={tags} description={description}></Card>     
+                    <Card key={id} id={id} title={title} tags={tags} description={description}></Card>     
                 )
             })
         }
         </div>
+        
         </div>
   }
   
