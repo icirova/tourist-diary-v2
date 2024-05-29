@@ -11,25 +11,24 @@ const Home = () => {
     const [cardsData, setCardsData] = useState(data);
 
     const addCard = (newCard) => {
+      const newLocation = {
+        id: locations.length + 1,
+        title: newCard.title,
+        lat: parseFloat(newCard.lat),
+        lng: parseFloat(newCard.lng),
+        description: newCard.description,
+      };
       setCardsData([newCard, ...cardsData]);
+      setLocations([...locations, newLocation]);
     };
 
-    const [locations, setLocations] = useState([
-        { lat: 50.087, lng: 14.421, name: 'Praha' },
-        { lat: 50.0755, lng: 14.4378, name: 'Karlův most' },
-        // přidat další lokace zde
-      ]);
-    
-      const handleAddLocation = () => {
-        const newLocation = { lat: 50.088, lng: 14.420, name: 'Nová Lokace' };
-        setLocations([...locations, newLocation]);
-      };
+    const [locations, setLocations] = useState(data);
 
 
     return <div className="container">
 
         <div>
-          <MapWithForm />
+          <MapWithForm locations={locations}/>
            
         </div>
 

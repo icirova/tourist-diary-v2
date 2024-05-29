@@ -69,8 +69,9 @@ const CardForm = ({addCard}) => {
 
           if (Object.keys(newErrors).length === 0) {
             const newCard = { ...formData };
-            
+           
             console.log(newCard)
+            
             addCard(newCard);
             toggleVisibility();
             setFormData(initialFormData); // Resetuje formulář
