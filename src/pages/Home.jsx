@@ -16,9 +16,23 @@ const Home = () => {
         title: newCard.title,
         lat: parseFloat(newCard.lat),
         lng: parseFloat(newCard.lng),
+        tags: newCard.tags,
+        description: newCard.description,
+
+        
+      };
+
+
+      // Zahrnutí tagů do nové karty
+      const updatedCardData = {
+        id: cardsData.length + 1,
+        title: newCard.title,
+        tags: newCard.tags,
         description: newCard.description,
       };
-      setCardsData([newCard, ...cardsData]);
+
+      
+      setCardsData([updatedCardData, ...cardsData]);
       setLocations([...locations, newLocation]);
     };
 

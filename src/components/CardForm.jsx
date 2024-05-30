@@ -1,5 +1,12 @@
 import { useState } from "react";
 import "./CardForm.scss";
+import bag from "../icons/bag.svg";
+import bikini from "../icons/bikini.svg" ;
+import bonfire from "../icons/bonfire.svg";
+import cafe from "../icons/cafe.svg";
+import family from "../icons/family.svg";
+import stroller from "../icons/stroller.svg";
+import tent from "../icons/tent.svg";
 
 
 
@@ -9,11 +16,13 @@ const CardForm = ({addCard}) => {
         title:"",
         lat:"",
         lng:"",
-        bicycle:"",
         bag:"",
-        photo:"",
-        snack:"",
-        climber:"",
+        bikini:"",
+        bonfire:"",
+        cafe:"",
+        family:"",
+        stroller:"",
+        tent:"",
         description:"",
         notes:""
 
@@ -35,7 +44,7 @@ const CardForm = ({addCard}) => {
         const { id, name, value, checked } = event.target
     
         let newValue = value;
-        if (id === 'check1' || id === 'check2' || id === 'check3' || id === 'check4' || id === 'check5') {
+        if (id === 'check1' || id === 'check2' || id === 'check3' || id === 'check4' || id === 'check5' || id === 'check6' || id === 'check7') {
           newValue = checked ? event.target.value : ''
         }
     
@@ -141,23 +150,10 @@ const CardForm = ({addCard}) => {
 
           <div className="check-item">
             <label htmlFor="check1" className="field-label">
-              🚲
+              <img className="tag-img" src={bag} alt="bag" />
             </label>
             <input
               id="check1"
-              className="field-input"
-              type="checkbox"
-              name="bicycle"
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="check-item">
-            <label htmlFor="check2" className="field-label">
-             🎒
-            </label>
-            <input
-              id="check2"
               className="field-input"
               type="checkbox"
               name="bag"
@@ -166,8 +162,21 @@ const CardForm = ({addCard}) => {
           </div>
 
           <div className="check-item">
+            <label htmlFor="check2" className="field-label">
+              <img className="tag-img" src={bikini} alt="bikini" />
+            </label>
+            <input
+              id="check2"
+              className="field-input"
+              type="checkbox"
+              name="bikini"
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="check-item">
             <label htmlFor="check3" className="field-label">
-             📷
+              <img className="tag-img" src={bonfire} alt="bonfire" /> 
             </label>
             <input
               id="check3"
@@ -180,7 +189,7 @@ const CardForm = ({addCard}) => {
 
           <div className="check-item">
             <label htmlFor="check4" className="field-label">
-             🥪
+              <img className="tag-img" src={cafe} alt="cafe" />
             </label>
             <input
               id="check4"
@@ -193,7 +202,33 @@ const CardForm = ({addCard}) => {
 
           <div className="check-item">
             <label htmlFor="check5" className="field-label">
-             🧗
+              <img className="tag-img" src={family} alt="family" />
+            </label>
+            <input
+              id="check5"
+              className="field-input"
+              type="checkbox"
+              name="climber"
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="check-item">
+            <label htmlFor="check5" className="field-label">
+              <img className="tag-img" src={stroller} alt="stroller" />
+            </label>
+            <input
+              id="check5"
+              className="field-input"
+              type="checkbox"
+              name="climber"
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="check-item">
+            <label htmlFor="check5" className="field-label">
+              <img className="tag-img" src={tent} alt="tent" />
             </label>
             <input
               id="check5"

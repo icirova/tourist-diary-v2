@@ -6,6 +6,10 @@
   flex-grow: 1;
   justify-content: left;
 }
+.card__id {
+  text-align: center;
+  padding: 10px;
+}
 
 .title {
   text-align: center;

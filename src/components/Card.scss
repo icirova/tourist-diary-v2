@@ -5,6 +5,11 @@
     flex-basis: 300px;
     flex-grow: 1;
     justify-content: left;
+
+    &__id{
+        text-align: center;
+        padding: 10px;
+    }
 }
 
 

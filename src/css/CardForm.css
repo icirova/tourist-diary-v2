@@ -54,12 +54,27 @@ input[type=checkbox] {
 .error-message {
   color: red;
   font-size: 0.8rem;
+  padding: 5px;
 }
 
 .tags {
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
+}
+
+.tag-img {
+  width: 30px;
+}
+
+.pins {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.pin {
+  width: 100%;
 }
 
 .check-item {
