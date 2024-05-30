@@ -3,7 +3,8 @@ import Card from "../components/Card"
 import data from "../data"
 import CardForm from "../components/CardForm"
 import { useState } from "react"
-import MapWithForm from "../components/MapWithForm"
+import Map from "../components/Map"
+import SideBar from "../components/SideBar"
 
 
 const Home = () => {
@@ -41,14 +42,13 @@ const Home = () => {
 
     return <div className="container">
 
-        <div>
-          <MapWithForm locations={locations}/>
-           
-        </div>
+      <Map locations={locations}/>
 
-        <CardForm addCard={addCard} />
+      <SideBar />
+
+      <CardForm addCard={addCard} />
         
-        <div className="cards">
+      <div className="cards">
         {
             cardsData.map ( (oneCard) => {
                 const {id, title, tags, description} = oneCard
@@ -60,7 +60,7 @@ const Home = () => {
         }
         </div>
         
-        </div>
+    </div>
   }
   
   export default Home

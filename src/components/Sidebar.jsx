@@ -9,43 +9,45 @@ import tent from "../icons/tent.svg";
 
 
 const SideBar = () => {
-  return <div>
-    <h2>Vysvětlovky:</h2>
-    <div className="explanations">
+  return <div className="explanations">
+    
+    <h2 className="title">Vysvětlivky:</h2>
+    
+    <div className="explanations__content">
 
         <div className="explanations__item">
-            <p className="explanations__text"></p>
-            <img src={"bag"} alt="bag" className="explanations__img" />
+            <p className="explanations__text">Svačinu sebou</p>
+            <img className="explanations__img" src={bag} alt="bag"  />
         </div>
 
         <div className="explanations__item">
-            <p className="explanations__text"></p>
-            <img src="" alt="" className="explanations__img" />
+            <p className="explanations__text">Koupání</p>
+            <img src={bikini} alt="bikini" className="explanations__img" />
         </div>
 
         <div className="explanations__item">
-            <p className="explanations__text"></p>
-            <img src="" alt="" className="explanations__img" />
+            <p className="explanations__text">Ohniště</p>
+            <img src={bonfire} alt="bonfire" className="explanations__img" />
         </div>
 
         <div className="explanations__item">
-            <p className="explanations__text"></p>
-            <img src="" alt="" className="explanations__img" />
+            <p className="explanations__text">Občerstvení</p>
+            <img src={cafe} alt="cafe" className="explanations__img" />
         </div>
 
         <div className="explanations__item">
-            <p className="explanations__text"></p>
-            <img src="" alt="" className="explanations__img" />
+            <p className="explanations__text">Pro rodiny</p>
+            <img src={family} alt="family" className="explanations__img" />
         </div>
 
         <div className="explanations__item">
-            <p className="explanations__text"></p>
-            <img src="" alt="" className="explanations__img" />
+            <p className="explanations__text">S kočárkem</p>
+            <img src={stroller} alt="stroller" className="explanations__img" />
         </div>
 
         <div className="explanations__item">
-            <p className="explanations__text"></p>
-            <img src="" alt="" className="explanations__img" />
+            <p className="explanations__text">Přespání</p>
+            <img src={tent} alt="tent" className="explanations__img" />
         </div>
 
     </div>
