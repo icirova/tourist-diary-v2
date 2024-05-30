@@ -13,7 +13,14 @@
 }
 
 .field-label {
-  justify-self: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.label-icon {
+  width: 35px;
 }
 
 input[type=text],
@@ -61,6 +68,7 @@ input[type=checkbox] {
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
+  margin-top: 20px;
 }
 
 .tag-img {
@@ -75,6 +83,15 @@ input[type=checkbox] {
 
 .pin {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pin-title {
+  margin: 20px 0;
+  text-align: center;
 }
 
 .check-item {

@@ -7,6 +7,10 @@ import cafe from "../icons/cafe.svg";
 import family from "../icons/family.svg";
 import stroller from "../icons/stroller.svg";
 import tent from "../icons/tent.svg";
+import globe from "../icons/globe.svg";
+import pencil from "../icons/pencil.svg";
+import notes from "../icons/notes.svg";
+import pin from "../icons/pin.svg";
 
 
 
@@ -98,6 +102,7 @@ const CardForm = ({addCard}) => {
      
         
         <label htmlFor="title" className="field-label">
+          <img className="label-icon" src={pencil} alt="pencil" />
           Název: 
           {errors.title && (
             <span className="error-message">{errors.title}</span>
@@ -111,6 +116,7 @@ const CardForm = ({addCard}) => {
           onChange={handleChange}
         />
 
+        <p className="pin-title"> <img className="label-icon" src={pin} alt="pin" /> Pin na mapě</p>
         <div className="pins">
 
           <div className="pin">
@@ -182,7 +188,7 @@ const CardForm = ({addCard}) => {
               id="check3"
               className="field-input"
               type="checkbox"
-              name="photo"
+              name="bonfire"
               onChange={handleChange}
             />
           </div>
@@ -195,7 +201,7 @@ const CardForm = ({addCard}) => {
               id="check4"
               className="field-input"
               type="checkbox"
-              name="snack"
+              name="cafe"
               onChange={handleChange}
             />
           </div>
@@ -208,7 +214,7 @@ const CardForm = ({addCard}) => {
               id="check5"
               className="field-input"
               type="checkbox"
-              name="climber"
+              name="family"
               onChange={handleChange}
             />
           </div>
@@ -221,7 +227,7 @@ const CardForm = ({addCard}) => {
               id="check5"
               className="field-input"
               type="checkbox"
-              name="climber"
+              name="stroller"
               onChange={handleChange}
             />
           </div>
@@ -234,7 +240,7 @@ const CardForm = ({addCard}) => {
               id="check5"
               className="field-input"
               type="checkbox"
-              name="climber"
+              name="tent"
               onChange={handleChange}
             />
           </div>
@@ -242,7 +248,7 @@ const CardForm = ({addCard}) => {
         </div>
 
         <div>
-            <label htmlFor="description" className="field-label">Popis: {errors.description && (
+            <label htmlFor="description" className="field-label"> <img src={notes} alt="notes" className="label-icon" />Popis: {errors.description && (
                   <span className="error-message">{errors.description}</span>
                 )}</label>
             <textarea 
@@ -255,7 +261,7 @@ const CardForm = ({addCard}) => {
             ></textarea>
         </div>
 
-        <div>
+        {/* <div>
             <label htmlFor="notes" className="field-label">Poznámky: {errors.notes && (
                   <span className="error-message">{errors.notes}</span>
                 )}</label>
@@ -267,7 +273,7 @@ const CardForm = ({addCard}) => {
             className="notes"  
             onChange={handleChange}
             ></textarea>
-        </div>
+        </div> */}
         
 
         
