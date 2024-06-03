@@ -28,7 +28,7 @@ const CardForm = ({addCard}) => {
     const [isVisible, setIsVisible] = useState(false)
     const [btnText, setBtnText] = useState("+ vložit kartu")
     const [formData, setFormData] = useState(initialFormData)
-    const [errors, setErrors] = useState({ title: "",lat:"", lng:"", description: "", notes:"" })
+    const [errors, setErrors] = useState({ title: "",lat:"", lng:""})
 
    
 
@@ -68,14 +68,6 @@ const CardForm = ({addCard}) => {
           } 
           if (formData.lng.trim() === '') {
             newErrors.lng = 'Povinné pole.'
-          } 
-
-          if (formData.description.trim() === '') {
-            newErrors.description = 'Povinné pole.'
-          } 
-      
-          if (formData.notes.trim() === '') {
-            newErrors.notes = 'Povinné pole.'
           } 
       
           setErrors(newErrors);
