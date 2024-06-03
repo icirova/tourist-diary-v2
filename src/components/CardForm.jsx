@@ -20,21 +20,15 @@ const CardForm = ({addCard}) => {
         title:"",
         lat:"",
         lng:"",
-        bag:"",
-        bikini:"",
-        bonfire:"",
-        cafe:"",
-        family:"",
-        stroller:"",
-        tent:"",
-        description:"",
-        notes:""
+        tags:[],
+        description:[],
+        notes:[]
     }
 
     const [isVisible, setIsVisible] = useState(false)
     const [btnText, setBtnText] = useState("+ vložit kartu")
     const [formData, setFormData] = useState(initialFormData)
-    const [errors, setErrors] = useState({ title: '', description: '', notes:'' })
+    const [errors, setErrors] = useState({ title: "",lat:"", lng:"", description: "", notes:"" })
 
    
 
@@ -44,19 +38,21 @@ const CardForm = ({addCard}) => {
     }
 
     const handleChange = (event) => {
-        const { id, name, value, checked } = event.target
+        const { name, value, checked } = event.target
     
-        // let newValue = value;
-        // if (id === 'check1' || id === 'check2' || id === 'check3' || id === 'check4' || id === 'check5' || id === 'check6' || id === 'check7') {
-        //   newValue = checked ? event.target.value : ''
-        // }
+        if (event.target.type === 'checkbox') {
+          let newTags = [...formData.tags];
+          if (checked) {
+            newTags.push(name);
+          } else {
+            newTags = newTags.filter(tag => tag !== name);
+          }
 
-        let newValue = value;
-        if (id.startsWith('check')) {
-          newValue = checked ? event.target.value : '';
+      
+          setFormData({ ...formData, tags: newTags});
+        } else {
+          setFormData({ ...formData, [name]: value });
         }
-    
-        setFormData({ ...formData, [name]: newValue })
       };
 
     const handleClick = (event) => {
@@ -86,8 +82,7 @@ const CardForm = ({addCard}) => {
 
           if (Object.keys(newErrors).length === 0) {
             const newCard = { ...formData };
-            console.log(newCard)
-            
+
             addCard(newCard);
             toggleVisibility();
             setFormData(initialFormData); // Resetuje formulář
@@ -176,6 +171,7 @@ const CardForm = ({addCard}) => {
                   className="field-input"
                   type="checkbox"
                   name={tag.name}
+                  checked={formData.tags.includes(tag.name)}
                   value={tag.name}
                   onChange={handleChange}
                 />
@@ -213,7 +209,8 @@ const CardForm = ({addCard}) => {
             name="notes" 
             rows="10" 
             cols="50" 
-            className="notes"  
+            className="notes" 
+            value={formData.notes} 
             onChange={handleChange}
             ></textarea>
         </div>
@@ -226,6 +223,9 @@ const CardForm = ({addCard}) => {
       </button>
     </form>
 }
+
+
+
     </div>
 };
 

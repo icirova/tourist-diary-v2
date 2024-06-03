@@ -3,9 +3,8 @@ import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const MapWithForm= ({locations}) => {
+const Map= ({locations}) => {
  
-{console.log(locations)}
   return (
     <div>
      
@@ -27,4 +26,4 @@ const MapWithForm= ({locations}) => {
   );
 };
 
-export default MapWithForm;
+export default Map;

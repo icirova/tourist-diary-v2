@@ -2,7 +2,9 @@ import "./Card.scss";
 import { Link } from "react-router-dom";
 
 
-const Card = ({id, title, tags, description, notes}) => {
+const Card = ({id, title, tags=[], description, notes}) => {
+
+  
 
    return (
     <div className="card">
@@ -14,11 +16,16 @@ const Card = ({id, title, tags, description, notes}) => {
           <img className="tag" key={index} src={tag} alt="tag" />
         ))}</div>
 
-      <p className="perex">{description}</p>
+      <div className="perex">
+        {description.map((paragraph, index) => (
+          <p className="paragraph" key={index}>{paragraph}</p>
+        ) )}
+      </div>
+      
 
       <div className="notes">
-      {notes.map((paragraf, index) => (
-        <p className="notes__paragraf" key={index}>{paragraf}</p>
+      {notes.map((paragraph, index) => (
+        <p className="paragraph" key={index}>{paragraph}</p>
       ))}
 
       </div>

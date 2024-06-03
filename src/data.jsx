@@ -13,8 +13,8 @@ const data = [
     {
         id: 1,
         title: "Chatová osada Ostaš",
-        lat: 49.8022514,
-        lng: 15.6252330,
+        lat: 50.5581496,
+        lng: 16.2145403,
         tags: [
             family,
             tent,
@@ -23,7 +23,10 @@ const data = [
             bag,
            
         ],
-        description: "Vrcholová plošina stolové hory Ostaš je ohraničená pískovcovými skalními stěnami a věžemi vysokými až 40 metrů. ",
+        description: [
+            "Vrcholová plošina stolové hory Ostaš je ohraničená pískovcovými skalními stěnami a věžemi vysokými až 40 metrů. ",
+        ],
+
         notes: [
             "Příště chatku 2 (u silnice) nebo 3.",
             "V kiosku lze zapůjčit sportovní náčiní (míče, petanque, ...)",
@@ -37,15 +40,14 @@ const data = [
         lat: 50.7819779,
         lng: 15.41894,
         tags: [
-            cafe,
-            family,
+            cafe,family,
         ],
-        description: " Muzeum skla je součástí sklárny v Harrachově. Obsahuje historicky a technologicky ucelenou sbírku historického skla z produkce harrachovské sklárny.",
+        description: [
+            " Muzeum skla je součástí sklárny v Harrachově. Obsahuje historicky a technologicky ucelenou sbírku historického skla z produkce harrachovské sklárny.",
+        ],
+
         notes: [
             "Lorem ipsum  dolor sit amet purus malesuada congue.",
-            "Aliquam ornaterdum. Aliquam erat volutpat.",
-            "Nemo enim ipsanatoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris dictum facilisis augue.",
-            "Integer rutrum, orci vestibulum ullamcursus purus, vel sagittis velit mauris vel metus. Nullam at arcu a est sollicitudin euismod. Nunc tincidunt ante vitae massa. Nulla est.",
         ] ,        
     },
     {
@@ -56,7 +58,10 @@ const data = [
         tags: [
             cafe, family, stroller
         ],
-        description: "iQLANDIA je vhodná pro děti od 8 let a všechny dospělé. Exponáty jsou techničtější, popisy odbornější, doprovodné programy (workshopy, science show) vysvětlují jevy, o kterých už děti někdy slyšely ve škole.",
+        description: [
+            "iQLANDIA je vhodná pro děti od 8 let a všechny dospělé.",
+            " Exponáty jsou techničtější, popisy odbornější, doprovodné programy (workshopy, science show) vysvětlují jevy, o kterých už děti někdy slyšely ve škole.",
+        ],
         notes: [
             "Lorem ipsum  dolor sit amet purus malesuada congue.",
             "Aliquam ornaterdum. Aliquam erat volutpat.",
@@ -71,9 +76,11 @@ const data = [
         lat: 50.4673551,
         lng: 15.2932227,
         tags: [
-            cafe, family,glutenfree,
+            cafe, family, glutenfree,
         ],
-        description: "Prachovské skály tvoří pískovcové skalní město. Díky otevřeným náhorním plošinám je zde nespočet vyhlídek, z nichž budete mít celý Český ráj jako na dlani.",
+        description: [
+            "Prachovské skály tvoří pískovcové skalní město. Díky otevřeným náhorním plošinám je zde nespočet vyhlídek, z nichž budete mít celý Český ráj jako na dlani.",
+        ],
         notes: [
             "Lorem ipsum  dolor sit amet purus malesuada congue.",
             "Aliquam ornaterdum. Aliquam erat volutpat.",
@@ -87,7 +94,12 @@ const data = [
         lat: 50.5910880,
         lng: 16.1253494,
         tags: [cafe, family, bonfire,],
-        description: "Teplické skalní město odděluje od toho Adršpašského 4 kilometry dlouhá Vlčí rokle. Teplické skály jsou rozsáhlejší částí Národní přírodní rezervace Adršpašsko-teplické skály. Jsou známé divokým skalním labyrintem, svými vysokými skalními útvary, rozsáhlými masivy a pohádkovou přírodou.",
+        description: [
+            "Teplické skalní město odděluje od toho Adršpašského 4 kilometry dlouhá Vlčí rokle.",
+            "Teplické skály jsou rozsáhlejší částí Národní přírodní rezervace Adršpašsko-teplické skály.",
+            " Jsou známé divokým skalním labyrintem, svými vysokými skalními útvary, rozsáhlými masivy a pohádkovou přírodou.",
+
+        ],
         notes: [
             "Lorem ipsum  dolor sit amet purus malesuada congue.",
             "Aliquam ornaterdum. Aliquam erat volutpat.",
@@ -101,7 +113,9 @@ const data = [
         lat: 50.4264966,
         lng: 16.0458507,
         tags: [cafe, family, bonfire,stroller],
-        description: "Babiččino údolí je turisticky navštěvováno zejména kvůli spisovatelce Boženě Němcové, která zde zasadila děj díla Babička Ale díky značně členitému terénu, který vytváří prostor pro pestrost květeny i výskyt mnoha zajímavých i vzácných živočichů, je i cennou přírodní lokalitou.",
+        description: [
+            "Babiččino údolí je turisticky navštěvováno zejména kvůli spisovatelce Boženě Němcové, která zde zasadila děj díla Babička Ale díky značně členitému terénu, který vytváří prostor pro pestrost květeny i výskyt mnoha zajímavých i vzácných živočichů, je i cennou přírodní lokalitou.",
+        ],
         notes: [
             "Lorem ipsum  dolor sit amet purus malesuada congue.",
             "Aliquam ornaterdum. Aliquam erat volutpat.",

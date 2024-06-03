@@ -12,7 +12,11 @@ const Home = () => {
     const [cardsData, setCardsData] = useState(data);
 
     const addCard = (newCard) => {
+
+      console.log(newCard)
+
       const newLocation = {
+        
         id: locations.length + 1,
         title: newCard.title,
         lat: parseFloat(newCard.lat),
@@ -22,6 +26,8 @@ const Home = () => {
 
         
       };
+
+      
 
 
       // Zahrnutí tagů do nové karty
@@ -42,12 +48,16 @@ const Home = () => {
 
     return <div className="container">
 
+      {/* mapa s piny */}
       <Map locations={locations}/>
 
+      {/* Vysvětlivky */}
       <SideBar />
 
+      {/* formulář pro zadávání nových karet */}
       <CardForm addCard={addCard} />
         
+      {/* Vypisování karet z dat z data.jsx */}
       <div className="cards">
         {
             cardsData.map ( (oneCard) => {
