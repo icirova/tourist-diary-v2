@@ -29,7 +29,6 @@ const CardForm = ({addCard}) => {
         tent:"",
         description:"",
         notes:""
-
     }
 
     const [isVisible, setIsVisible] = useState(false)
@@ -87,7 +86,6 @@ const CardForm = ({addCard}) => {
 
           if (Object.keys(newErrors).length === 0) {
             const newCard = { ...formData };
-           
             console.log(newCard)
             
             addCard(newCard);

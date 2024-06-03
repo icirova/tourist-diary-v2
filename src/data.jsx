@@ -5,12 +5,14 @@ import bikini from "/icons/bikini.svg" ;
 import cafe from "/icons/cafe.svg";
 import family from "/icons/family.svg";
 import stroller from "/icons/stroller.svg";
+import glutenfree from "/icons/gluten-free.svg";
+// import photo1 from "/photos/photo.jpg" příprava na fotky
 
 
 const data = [
     {
         id: 1,
-        title: "Ostaš",
+        title: "Chatová osada Ostaš",
         lat: 49.8022514,
         lng: 15.6252330,
         tags: [
@@ -27,6 +29,7 @@ const data = [
             "V kiosku lze zapůjčit sportovní náčiní (míče, petanque, ...)",
             "Nemají nic bezlepkového.",
         ] ,
+        // photo: [photo1, photo2] příprava na fotky
     },
     {
         id: 2,
@@ -68,7 +71,7 @@ const data = [
         lat: 50.4673551,
         lng: 15.2932227,
         tags: [
-            cafe, family, bonfire,
+            cafe, family,glutenfree,
         ],
         description: "Prachovské skály tvoří pískovcové skalní město. Díky otevřeným náhorním plošinám je zde nespočet vyhlídek, z nichž budete mít celý Český ráj jako na dlani.",
         notes: [

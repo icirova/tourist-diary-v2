@@ -6,6 +6,8 @@ import cafe from "/icons/cafe.svg";
 import family from "/icons/family.svg";
 import stroller from "/icons/stroller.svg";
 import tent from "/icons/tent.svg";
+import glutenfree from "/icons/gluten-free.svg";
+
 
 
 const SideBar = () => {
@@ -48,6 +50,11 @@ const SideBar = () => {
         <div className="explanations__item">
             <p className="explanations__text">Přespání</p>
             <img src={tent} alt="tent" className="explanations__img" />
+        </div>
+
+        <div className="explanations__item">
+            <p className="explanations__text">Bezlepková strava</p>
+            <img src={glutenfree} alt="glutenfree" className="explanations__img" />
         </div>
 
     </div>
