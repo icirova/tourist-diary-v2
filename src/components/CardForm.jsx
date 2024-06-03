@@ -10,6 +10,7 @@ import tent from "../icons/tent.svg";
 import globe from "../icons/globe.svg";
 import pencil from "../icons/pencil.svg";
 import notes from "../icons/notes.svg";
+import description from "../icons/description.svg";
 import pin from "../icons/pin.svg";
 
 
@@ -116,7 +117,7 @@ const CardForm = ({addCard}) => {
           onChange={handleChange}
         />
 
-        <p className="pin-title"> <img className="label-icon" src={pin} alt="pin" /> Pin na mapě</p>
+        <p className="pin-title"> <img className="label-icon" src={pin} alt="pin" /> Pin na mapě:</p>
         <div className="pins">
 
           <div className="pin">
@@ -248,7 +249,7 @@ const CardForm = ({addCard}) => {
         </div>
 
         <div>
-            <label htmlFor="description" className="field-label"> <img src={notes} alt="notes" className="label-icon" />Popis: {errors.description && (
+            <label htmlFor="description" className="field-label"> <img src={description} alt="description" className="label-icon" /> Popis: {errors.description && (
                   <span className="error-message">{errors.description}</span>
                 )}</label>
             <textarea 
@@ -261,8 +262,8 @@ const CardForm = ({addCard}) => {
             ></textarea>
         </div>
 
-        {/* <div>
-            <label htmlFor="notes" className="field-label">Poznámky: {errors.notes && (
+        <div>
+            <label htmlFor="notes" className="field-label"><img src={notes} alt="notes" className="label-icon" /> Poznámky: {errors.notes && (
                   <span className="error-message">{errors.notes}</span>
                 )}</label>
             <textarea 
@@ -273,7 +274,7 @@ const CardForm = ({addCard}) => {
             className="notes"  
             onChange={handleChange}
             ></textarea>
-        </div> */}
+        </div>
         
 
         
