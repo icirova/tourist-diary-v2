@@ -22,12 +22,18 @@ const CardOpen = () => {
     <div className="opened-card">
 
       <h1 className="title ">{title}</h1>
-      <p className="tags">{tags}</p>
+
+      <div className="tags">
+        {tags.map((tag, index) => (
+          <img className="tag" key={index} src={tag} alt="tag" />
+        ))}</div>
+
+
+
       <p className="perex">{description}</p>
       {notes.map((oneParagraph, index) => 
       <p key={index} className="description">{oneParagraph}</p>)}
     
-      <img className="opened-card__image" src={photo} alt={alt} />
 
       <Link to="/" className="btn btn--opened-card">
         Zpět

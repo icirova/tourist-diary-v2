@@ -1,11 +1,10 @@
-import photo1 from "/mumlava.webp"
-import tent from "./icons/tent.svg";
-import bonfire from "./icons/bonfire.svg";
-import bag from "./icons/bag.svg";
-import bikini from "./icons/bikini.svg" ;
-import cafe from "./icons/cafe.svg";
-import family from "./icons/family.svg";
-import stroller from "./icons/stroller.svg";
+import tent from "/icons/tent.svg";
+import bonfire from "/icons/bonfire.svg";
+import bag from "/icons/bag.svg";
+import bikini from "/icons/bikini.svg" ;
+import cafe from "/icons/cafe.svg";
+import family from "/icons/family.svg";
+import stroller from "/icons/stroller.svg";
 
 
 const data = [
@@ -19,6 +18,7 @@ const data = [
             tent,
             bonfire,
             cafe,
+            bag,
            
         ],
         description: "Vrcholová plošina stolové hory Ostaš je ohraničená pískovcovými skalními stěnami a věžemi vysokými až 40 metrů. ",
@@ -27,9 +27,6 @@ const data = [
             "V kiosku lze zapůjčit sportovní náčiní (míče, petanque, ...)",
             "Nemají nic bezlepkového.",
         ] ,
-        photo: photo1,
-        alt: "mumlava",
-       
     },
     {
         id: 2,

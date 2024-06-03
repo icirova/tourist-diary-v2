@@ -1,11 +1,11 @@
 import "./Sidebar.scss";
-import bag from "../icons/bag.svg";
-import bikini from "../icons/bikini.svg" ;
-import bonfire from "../icons/bonfire.svg";
-import cafe from "../icons/cafe.svg";
-import family from "../icons/family.svg";
-import stroller from "../icons/stroller.svg";
-import tent from "../icons/tent.svg";
+import bag from "/icons/bag.svg";
+import bikini from "/icons/bikini.svg" ;
+import bonfire from "/icons/bonfire.svg";
+import cafe from "/icons/cafe.svg";
+import family from "/icons/family.svg";
+import stroller from "/icons/stroller.svg";
+import tent from "/icons/tent.svg";
 
 
 const SideBar = () => {
