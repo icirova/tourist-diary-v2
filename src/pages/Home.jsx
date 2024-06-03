@@ -51,10 +51,12 @@ const Home = () => {
       <div className="cards">
         {
             cardsData.map ( (oneCard) => {
-                const {id, title, tags, description} = oneCard
+                const {id, title, tags, description, notes} = oneCard
+
     
                 return(    
-                    <Card key={id} id={id} title={title} tags={tags} description={description}></Card>     
+                    <Card key={id} id={id} title={title} tags={tags} description={description} notes={notes}></Card> 
+                        
                 )
             })
         }
