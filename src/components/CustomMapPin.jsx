@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import customIconUrl from "/icons/pin.svg";  // Ujisti se, že cesta je správná
+import customIconUrl from "/icons/pin-map.svg";  // Ujisti se, že cesta je správná
 
 const CustomMapPin = new L.Icon({
   iconUrl: customIconUrl,

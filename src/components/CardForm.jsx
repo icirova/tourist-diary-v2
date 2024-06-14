@@ -10,7 +10,7 @@ import tent from "/icons/tent.svg";
 import pencil from "/icons/pencil.svg";
 import notes from "/icons/notes.svg";
 import description from "/icons/description.svg";
-import pin from "/icons/pin.svg";
+import pinForm from "/icons/pin-form.svg";
 
 
 
@@ -104,7 +104,7 @@ const CardForm = () => {
           onChange={handleChange}
         />
 
-        <p className="pin-title"> <img className="label-icon" src={pin} alt="pin" /> Pin na mapě:</p>
+        <p className="pin-title"> <img className="label-icon" src={pinForm} alt="pin" /> Pin na mapě:</p>
         <div className="pins">
 
           <div className="pin">
