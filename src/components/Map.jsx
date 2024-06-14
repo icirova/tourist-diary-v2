@@ -9,7 +9,7 @@ const Map= ({locations}) => {
     <div>
      
       
-      <MapContainer center={[50.0755, 14.4378]} zoom={13} style={{ height: '400px', width: '100%' }}>
+      <MapContainer center={[50.0375760, 15.7583830]} zoom={7} style={{ height: '400px', width: '100%' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {locations.map((location) => (
           <Marker key={location.id} position={[location.lat, location.lng]}>
