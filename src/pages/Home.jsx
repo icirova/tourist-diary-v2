@@ -4,7 +4,7 @@ import data from "../data"
 import CardForm from "../components/CardForm"
 import { useState } from "react"
 import Map from "../components/Map"
-import Sidebar from "../components/SideBar"
+import Sidebar from "../components/Sidebar"
 
 
 const Home = () => {
