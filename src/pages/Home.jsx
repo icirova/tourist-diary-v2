@@ -4,7 +4,7 @@ import data from "../data"
 import CardForm from "../components/CardForm"
 import { useState } from "react"
 import Map from "../components/Map"
-import SideBar from "../components/SideBar"
+import Sidebar from "../components/SideBar"
 
 
 const Home = () => {
@@ -52,7 +52,7 @@ const Home = () => {
       <Map locations={locations}/>
 
       {/* Vysvětlivky */}
-      <SideBar />
+      <Sidebar />
 
       {/* formulář pro zadávání nových karet */}
       <CardForm />

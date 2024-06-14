@@ -10,7 +10,7 @@ import glutenfree from "/icons/gluten-free.svg";
 
 
 
-const SideBar = () => {
+const Sidebar = () => {
   return <div className="explanations">
     
     <h2 className="title">Vysvětlivky:</h2>
@@ -65,4 +65,4 @@ const SideBar = () => {
  
 }
 
-export default SideBar
+export default Sidebar
