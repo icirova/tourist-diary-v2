@@ -117,7 +117,7 @@ const CardForm = () => {
             <input
               id="lat"
               className="field-input"
-              type="text"
+              type="number"
               name="lat"
               onChange={handleChange}
             />
@@ -133,7 +133,7 @@ const CardForm = () => {
             <input
               id="lng"
               className="field-input"
-              type="text"
+              type="number"
               name="lng"
               onChange={handleChange}
             />
