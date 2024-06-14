@@ -14,15 +14,15 @@ import pin from "/icons/pin.svg";
 
 
 
-const CardForm = ({addCard}) => {
+const CardForm = () => {
 
     const initialFormData = {
         title:"",
         lat:"",
         lng:"",
         tags:[],
-        description:[],
-        notes:[]
+        description:"",
+        notes:"",
     }
 
     const [isVisible, setIsVisible] = useState(false)
@@ -47,8 +47,6 @@ const CardForm = ({addCard}) => {
           } else {
             newTags = newTags.filter(tag => tag !== name);
           }
-
-      
           setFormData({ ...formData, tags: newTags});
         } else {
           setFormData({ ...formData, [name]: value });
@@ -73,9 +71,9 @@ const CardForm = ({addCard}) => {
           setErrors(newErrors);
 
           if (Object.keys(newErrors).length === 0) {
-            const newCard = { ...formData };
+            console.log(formData); // Vypsání dat do konzole
 
-            addCard(newCard);
+          
             toggleVisibility();
             setFormData(initialFormData); // Resetuje formulář
             

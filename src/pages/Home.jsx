@@ -9,39 +9,39 @@ import SideBar from "../components/SideBar"
 
 const Home = () => {
 
-    const [cardsData, setCardsData] = useState(data);
+    // const [cardsData, setCardsData] = useState(data);
 
-    const addCard = (newCard) => {
+    // const addCard = (newCard) => {
 
-      console.log(newCard)
+     
 
-      const newLocation = {
+    //   const newLocation = {
         
-        id: locations.length + 1,
-        title: newCard.title,
-        lat: parseFloat(newCard.lat),
-        lng: parseFloat(newCard.lng),
-        tags: newCard.tags,
-        description: newCard.description,
+    //     id: locations.length + 1,
+    //     title: newCard.title,
+    //     lat: parseFloat(newCard.lat),
+    //     lng: parseFloat(newCard.lng),
+    //     tags: newCard.tags,
+    //     description: newCard.description,
 
         
-      };
+    //   };
 
       
 
 
-      // Zahrnutí tagů do nové karty
-      const updatedCardData = {
-        id: cardsData.length + 1,
-        title: newCard.title,
-        tags: newCard.tags,
-        description: newCard.description,
-      };
+    //   // Zahrnutí tagů do nové karty
+    //   const updatedCardData = {
+    //     id: cardsData.length + 1,
+    //     title: newCard.title,
+    //     tags: newCard.tags,
+    //     description: newCard.description,
+    //   };
 
       
-      setCardsData([updatedCardData, ...cardsData]);
-      setLocations([...locations, newLocation]);
-    };
+    //   setCardsData([updatedCardData, ...cardsData]);
+    //   setLocations([...locations, newLocation]);
+    // };
 
     const [locations, setLocations] = useState(data);
 
@@ -55,12 +55,12 @@ const Home = () => {
       <SideBar />
 
       {/* formulář pro zadávání nových karet */}
-      <CardForm addCard={addCard} />
+      <CardForm />
         
       {/* Vypisování karet z dat z data.jsx */}
       <div className="cards">
         {
-            cardsData.map ( (oneCard) => {
+            data.map ( (oneCard) => {
                 const {id, title, tags, description, notes} = oneCard
 
     

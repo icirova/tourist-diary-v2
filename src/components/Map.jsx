@@ -1,5 +1,4 @@
 import "./Map.scss"
-import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -9,7 +8,7 @@ const Map= ({locations}) => {
     <div>
      
       
-      <MapContainer center={[50.0375760, 15.7583830]} zoom={7} style={{ height: '400px', width: '100%' }}>
+      <MapContainer center={[49.9066213, 15.8054397]} zoom={7} style={{ height: '400px', width: '100%' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {locations.map((location) => (
           <Marker key={location.id} position={[location.lat, location.lng]}>
