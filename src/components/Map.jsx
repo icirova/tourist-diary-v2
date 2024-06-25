@@ -2,7 +2,7 @@ import "./Map.scss"
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import CustomMapPin from "./CustomMapPin";
-import { useEffect, useRef } from "react";
+
 
 
 const Map= ({locations}) => {
@@ -11,7 +11,7 @@ const Map= ({locations}) => {
   return (
     <div>
       <MapContainer 
-        center={[49.9066213, 15.8054397]} 
+        center={[49.7514919, 15.3264420]} 
         zoom={7}
         style={{ height: '400px', width: '100%' }}
         scrollWheelZoom={false}
@@ -20,7 +20,7 @@ const Map= ({locations}) => {
         
         {locations.map((location) => (
           <Marker key={location.id} position={[location.lat, location.lng]} icon={CustomMapPin}>
-            <Popup>
+            <Popup >
               <strong>{location.title}</strong>
               <p>{location.description}</p>
             </Popup>

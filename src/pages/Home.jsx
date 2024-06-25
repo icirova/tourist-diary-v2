@@ -51,9 +51,6 @@ const Home = () => {
       {/* mapa s piny */}
       <Map locations={locations}/>
 
-      {/* Vysvětlivky */}
-      <Sidebar />
-
       {/* formulář pro zadávání nových karet */}
       <CardForm />
         
@@ -71,6 +68,9 @@ const Home = () => {
             })
         }
         </div>
+
+        {/* Vysvětlivky */}
+      <Sidebar />
         
     </div>
   }
