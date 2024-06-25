@@ -2,6 +2,7 @@ import "./Map.scss"
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import CustomMapPin from "./CustomMapPin";
+import { Link } from "react-router-dom";
 
 
 
@@ -20,9 +21,10 @@ const Map= ({locations}) => {
         
         {locations.map((location) => (
           <Marker key={location.id} position={[location.lat, location.lng]} icon={CustomMapPin}>
-            <Popup >
+            <Popup className="popup">
               <strong>{location.title}</strong>
               <p>{location.description}</p>
+              <Link to={`/detail/${location.id}`} className=" btn btn__popup">Více</Link>
             </Popup>
           </Marker>
         ))}

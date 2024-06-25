@@ -8,7 +8,7 @@ const Card = ({id, title, tags=[], description, notes}) => {
 
    return (
     <div className="card">
-      <p className="card__id">{id}</p>
+      {/* <p className="card__id">{id}</p> */}
       <h1 className="title">{title}</h1>
 
       <div className="tags">
