@@ -28,7 +28,7 @@ const data = [
         ],
 
         notes: [
-            "Příště chatku 2 (u silnice) nebo 3.",
+            " Chatka 2 (u silnice) nebo 3.",
             "V kiosku lze zapůjčit sportovní náčiní (míče, petanque, ...)",
             "Nemají nic bezlepkového.",
         ] ,
