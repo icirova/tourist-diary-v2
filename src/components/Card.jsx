@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import "./Card.scss";
 import { Link } from "react-router-dom";
+import TagBadge from './TagBadge';
+import { KEY_BY_ICON } from '../tags';
 
 
 const Card = ({id, title, tags=[], description, notes}) => {
@@ -13,9 +15,14 @@ const Card = ({id, title, tags=[], description, notes}) => {
       <h1 className="title">{title}</h1>
 
       <div className="tags">
-        {tags.map((tag, index) => (
-          <img className="tag" key={index} src={tag} alt="tag" />
-        ))}</div>
+        {tags.map((icon, index) => {
+          const keyName = KEY_BY_ICON[icon];
+          if (keyName) {
+            return <TagBadge key={`${keyName}-${index}`} keyName={keyName} compact />;
+          }
+          return <img className="tag" key={`${icon}-${index}`} src={icon} alt="tag" title="Tag"/>;
+        })}
+      </div>
 
       <div className="perex">
         {description.map((paragraph, index) => (

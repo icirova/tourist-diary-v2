@@ -2,14 +2,8 @@ import "./CardOpen.scss";
 import { Link, useParams } from "react-router-dom";
 import { useMemo, useState } from "react";
 import data from "../data";
-// tag icons for editing
-import bag from "/icons/bag.svg";
-import bikini from "/icons/bikini.svg";
-import bonfire from "/icons/bonfire.svg";
-import cafe from "/icons/cafe.svg";
-import family from "/icons/family.svg";
-import stroller from "/icons/stroller.svg";
-import tent from "/icons/tent.svg";
+import TagBadge from './TagBadge';
+import { TAGS, KEY_BY_ICON, TAG_BY_KEY } from '../tags';
 
 const CardOpen = () => {
   const { tripId } = useParams();
@@ -20,24 +14,7 @@ const CardOpen = () => {
     return <div>Sorry, the requested card was not found.</div>;
   }
 
-  const tagOptions = useMemo(
-    () => [
-      { id: "check1", img: bag, name: "bag" },
-      { id: "check2", img: bikini, name: "bikini" },
-      { id: "check3", img: bonfire, name: "bonfire" },
-      { id: "check4", img: cafe, name: "cafe" },
-      { id: "check5", img: family, name: "family" },
-      { id: "check6", img: stroller, name: "stroller" },
-      { id: "check7", img: tent, name: "tent" },
-    ],
-    []
-  );
-
-  const iconToName = useMemo(() => {
-    const map = new Map();
-    tagOptions.forEach((t) => map.set(t.img, t.name));
-    return map;
-  }, [tagOptions]);
+  const tagOptions = useMemo(() => TAGS, []);
 
   const [isEditing, setIsEditing] = useState(false);
   const [localTitle, setLocalTitle] = useState(filteredCard.title);
@@ -53,7 +30,7 @@ const CardOpen = () => {
   );
   const [selectedTags, setSelectedTags] = useState(
     (filteredCard.tags || [])
-      .map((icon) => iconToName.get(icon))
+      .map((icon) => KEY_BY_ICON[icon])
       .filter(Boolean)
   );
 
@@ -73,8 +50,9 @@ const CardOpen = () => {
     filteredCard.description = toArray(localDescription);
     filteredCard.notes = toArray(localNotes);
     // map selected tag names back to icon paths
-    const nameToIcon = new Map(tagOptions.map((t) => [t.name, t.img]));
-    filteredCard.tags = selectedTags.map((n) => nameToIcon.get(n)).filter(Boolean);
+    filteredCard.tags = selectedTags
+      .map((key) => (TAG_BY_KEY[key] ? TAG_BY_KEY[key].icon : undefined))
+      .filter(Boolean);
     setIsEditing(false);
   };
 
@@ -90,11 +68,7 @@ const CardOpen = () => {
         ? filteredCard.notes.join("\n")
         : filteredCard.notes || ""
     );
-    setSelectedTags(
-      (filteredCard.tags || [])
-        .map((icon) => iconToName.get(icon))
-        .filter(Boolean)
-    );
+    setSelectedTags((filteredCard.tags || []).map((icon) => KEY_BY_ICON[icon]).filter(Boolean));
     setIsEditing(false);
   };
 
@@ -108,9 +82,10 @@ const CardOpen = () => {
           <h1 className="title ">{filteredCard.title}</h1>
 
           <div className="tags">
-            {(filteredCard.tags || []).map((tag, index) => (
-              <img className="tag" key={index} src={tag} alt="tag" />
-            ))}
+            {(filteredCard.tags || []).map((icon, index) => {
+              const keyName = KEY_BY_ICON[icon];
+              return <TagBadge key={`${keyName || icon}-${index}`} keyName={keyName || ''} />;
+            })}
           </div>
 
           <div className="perex">
@@ -156,17 +131,17 @@ const CardOpen = () => {
 
           <div className="tags">
             {tagOptions.map((tag) => (
-              <div key={tag.id} className="check-item">
-                <label htmlFor={tag.id} className="field-label">
-                  <img className="tag-img" src={tag.img} alt={tag.name} />
+              <div key={tag.key} className="check-item">
+                <label htmlFor={`tag-${tag.key}`} className="field-label">
+                  <TagBadge keyName={tag.key} />
                 </label>
                 <input
-                  id={tag.id}
+                  id={`tag-${tag.key}`}
                   className="field-input"
                   type="checkbox"
-                  name={tag.name}
-                  checked={selectedTags.includes(tag.name)}
-                  value={tag.name}
+                  name={tag.key}
+                  checked={selectedTags.includes(tag.key)}
+                  value={tag.key}
                   onChange={(e) => {
                     const { name, checked } = e.target;
                     setSelectedTags((prev) =>

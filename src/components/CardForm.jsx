@@ -1,12 +1,7 @@
 import { useState } from "react";
 import "./CardForm.scss";
-import bag from "/icons/bag.svg";
-import bikini from "/icons/bikini.svg" ;
-import bonfire from "/icons/bonfire.svg";
-import cafe from "/icons/cafe.svg";
-import family from "/icons/family.svg";
-import stroller from "/icons/stroller.svg";
-import tent from "/icons/tent.svg";
+import TagBadge from './TagBadge';
+import { TAGS } from '../tags';
 import pencil from "/icons/pencil.svg";
 import notes from "/icons/notes.svg";
 import description from "/icons/description.svg";
@@ -142,31 +137,23 @@ const CardForm = ({ onAddCard }) => {
        
 
         <div className="tags">
-            {[
-              { id: "check1", img: bag, name: "bag" },
-              { id: "check2", img: bikini, name: "bikini" },
-              { id: "check3", img: bonfire, name: "bonfire" },
-              { id: "check4", img: cafe, name: "cafe" },
-              { id: "check5", img: family, name: "family" },
-              { id: "check6", img: stroller, name: "stroller" },
-              { id: "check7", img: tent, name: "tent" }
-            ].map(tag => (
-              <div key={tag.id} className="check-item">
-                <label htmlFor={tag.id} className="field-label">
-                  <img className="tag-img" src={tag.img} alt={tag.name} />
-                </label>
-                <input
-                  id={tag.id}
-                  className="field-input"
-                  type="checkbox"
-                  name={tag.name}
-                  checked={formData.tags.includes(tag.name)}
-                  value={tag.name}
-                  onChange={handleChange}
-                />
-              </div>
-            ))}
-          </div>
+          {TAGS.map(tag => (
+            <div key={tag.key} className="check-item">
+              <label htmlFor={`tag-${tag.key}`} className="field-label">
+                <TagBadge keyName={tag.key} />
+              </label>
+              <input
+                id={`tag-${tag.key}`}
+                className="field-input"
+                type="checkbox"
+                name={tag.key}
+                checked={formData.tags.includes(tag.key)}
+                value={tag.key}
+                onChange={handleChange}
+              />
+            </div>
+          ))}
+        </div>
 
 
 

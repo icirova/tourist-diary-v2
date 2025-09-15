@@ -30,6 +30,11 @@
     margin: 0;
 }
 
+/* Spacing below tags block in detail */
+.opened-card .tags {
+    margin-bottom: 20px;
+}
+
 .card__actions {
     display: flex;
 }
