@@ -26,6 +26,10 @@
 }
 
 .card .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
     margin-bottom: 20px;
 }
 

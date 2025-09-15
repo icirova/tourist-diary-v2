@@ -1,12 +1,23 @@
 import "./Map.scss"
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import CustomMapPin from "./CustomMapPin";
 import { Link } from "react-router-dom";
 
 
 
-const Map= ({locations}) => {
+const Map= ({locations, onPickCoords}) => {
+
+  const MapClick = () => {
+    useMapEvents({
+      click(e) {
+        if (typeof onPickCoords === 'function' && e?.latlng) {
+          onPickCoords(e.latlng.lat, e.latlng.lng);
+        }
+      }
+    });
+    return null;
+  };
 
 
   return (
@@ -18,6 +29,7 @@ const Map= ({locations}) => {
         scrollWheelZoom={false}
         >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <MapClick />
         
         {locations.map((location) => (
           <Marker key={location.id} position={[location.lat, location.lng]} icon={CustomMapPin}>

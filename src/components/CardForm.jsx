@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./CardForm.scss";
 import TagBadge from './TagBadge';
 import { TAGS } from '../tags';
@@ -9,7 +9,7 @@ import pinFormIcon from "/icons/pin-form.svg";
 
 
 
-const CardForm = ({ onAddCard }) => {
+const CardForm = ({ onAddCard, pickedCoords }) => {
 
     const initialFormData = {
         title:"",
@@ -70,6 +70,18 @@ const CardForm = ({ onAddCard }) => {
         }
       };
 
+    // When user picks coordinates on map, auto-fill lat/lng and open form if closed
+    useEffect(() => {
+      if (!pickedCoords) return;
+      const latStr = String(pickedCoords.lat);
+      const lngStr = String(pickedCoords.lng);
+      const needsUpdate = formData.lat !== latStr || formData.lng !== lngStr;
+      if (needsUpdate) {
+        setFormData((prev) => ({ ...prev, lat: latStr, lng: lngStr }));
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pickedCoords]);
+
     const handleClick = (event) => {
         event.preventDefault()
 
@@ -117,7 +129,7 @@ const CardForm = ({ onAddCard }) => {
           <p className="help-text">Krátký, výstižný název místa (doporučeno 3–80 znaků).</p>
 
           <div className="field-label"><img className="label-icon" src={pinFormIcon} alt="pin" /> Pin na mapě</div>
-          <p className="help-text">Zadejte souřadnice v desetinném tvaru. Rozsah: šířka −90 až 90, délka −180 až 180.</p>
+          <p className="help-text">Kliknutím do mapy vyberete souřadnice. Případně zadejte ručně (rozsah: šířka −90 až 90, délka −180 až 180).</p>
           <div className="pins">
 
           <div className="pin">
@@ -137,6 +149,7 @@ const CardForm = ({ onAddCard }) => {
               required
               aria-required="true"
               aria-invalid={Boolean(errors.lat)}
+              value={formData.lat}
               onChange={handleChange}
             />
           </div>
@@ -158,6 +171,7 @@ const CardForm = ({ onAddCard }) => {
               required
               aria-required="true"
               aria-invalid={Boolean(errors.lng)}
+              value={formData.lng}
               onChange={handleChange}
             />
           </div>

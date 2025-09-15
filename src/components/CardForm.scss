@@ -71,7 +71,7 @@
 
   .tags {
     display: flex;
-    gap: 18px;
+    gap: 12px;
     flex-wrap: wrap;
     margin-top: 16px;
   }
@@ -104,7 +104,8 @@
 
 
   .check-item {
-    flex-basis: calc((100% / 3) - 10px);
+    /* size by content so more items fit per row */
+    flex-basis: auto;
     justify-content: flex-start;
   }
 
@@ -159,5 +160,21 @@
 
   /* spacing above primary submit */
   .form > .btn { margin-top: 8px; }
+
+  /* Mobile tweaks: larger tap targets for tag badges in the form only */
+  @media (max-width: 600px) {
+    .form .tag-badge {
+      font-size: 13px;
+      padding: 4px 8px;
+      gap: 6px;
+    }
+    .form .tag-badge__icon {
+      width: 20px;
+      height: 20px;
+    }
+    .form .check-item .field-label {
+      padding: 6px 0; /* increase vertical tap area */
+    }
+  }
 
 

@@ -28,6 +28,7 @@ const Home = () => {
 
   const [cardsData, setCardsData] = useState(data);
   const [locations, setLocations] = useState(data);
+  const [pickedCoords, setPickedCoords] = useState(null);
 
   const addCard = (newCard) => {
     const currentIds = cardsData.map((c) => c.id);
@@ -65,10 +66,10 @@ const Home = () => {
   return <div className="container">
 
       {/* mapa s piny */}
-      <Map locations={locations} />
+      <Map locations={locations} onPickCoords={(lat, lng) => setPickedCoords({ lat, lng })} />
 
       {/* formulář pro zadávání nových karet */}
-      <CardForm onAddCard={addCard} />
+      <CardForm onAddCard={addCard} pickedCoords={pickedCoords} />
         
       {/* Vypisování karet z dat z data.jsx */}
       <div className="cards">
