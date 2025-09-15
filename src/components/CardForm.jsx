@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
 import "./CardForm.scss";
 import TagBadge from './TagBadge';
 import { TAGS } from '../tags';
@@ -255,6 +256,14 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
 
 
     </div>
+};
+
+CardForm.propTypes = {
+  onAddCard: PropTypes.func,
+  pickedCoords: PropTypes.shape({
+    lat: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    lng: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  }),
 };
 
 export default CardForm;
