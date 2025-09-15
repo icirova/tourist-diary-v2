@@ -14,7 +14,7 @@ import pinForm from "/icons/pin-form.svg";
 
 
 
-const CardForm = () => {
+const CardForm = ({ onAddCard }) => {
 
     const initialFormData = {
         title:"",
@@ -71,12 +71,11 @@ const CardForm = () => {
           setErrors(newErrors);
 
           if (Object.keys(newErrors).length === 0) {
-            console.log(formData); // Vypsání dat do konzole
-
-          
+            if (typeof onAddCard === 'function') {
+              onAddCard(formData);
+            }
             toggleVisibility();
             setFormData(initialFormData); // Resetuje formulář
-            
           }
 
        

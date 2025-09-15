@@ -21,6 +21,7 @@ const data = [
             bonfire,
             cafe,
             bag,
+            bikini
            
         ],
         description: [
