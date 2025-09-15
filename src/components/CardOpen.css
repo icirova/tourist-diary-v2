@@ -1,0 +1,34 @@
+.opened-card {
+  margin: 20px;
+  background-color: rgba(255, 255, 255, 0.75);
+  /* extra top padding to leave room for the edit button */
+  padding: 56px 20px 20px 20px;
+  border-radius: 20px;
+  position: relative;
+}
+
+.opened-card__image {
+  display: block;
+  width: 100%;
+  margin: 20px 0;
+  border-radius: 0 0 20px 20px;
+}
+
+/* Edit button in the top-right corner */
+.opened-card__edit {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+}
+
+/* Tweak edit button sizing and remove auto-centering margins */
+.btn--edit {
+  width: auto;
+  padding: 6px 12px;
+  margin: 0;
+}
+
+.card__actions {
+  display: flex;
+}/*# sourceMappingURL=CardOpen.css.map */
