@@ -21,3 +21,47 @@ body {
     justify-content: space-between;
     min-height: 100vh;
 }
+
+/* Global button styles and variants */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  min-width: 120px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  font-family: 'Quicksand', sans-serif;
+  text-transform: uppercase;
+  margin: 0 auto;
+  border: none;
+  font-weight: 700;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+  font-size: 14px;
+}
+
+.btn--primary { background-color: #e88f24; }
+.btn--primary:hover { background-color: #be6f28; }
+
+.btn--secondary {
+  background-color: #003d47; /* tmavá petrol modrozelená */
+  color: #fff;
+}
+.btn--secondary:hover { background-color: #022f36; }
+
+.btn--small { min-width: auto; padding: 6px 10px; font-size: 12px; }
+.btn--large { min-width: 160px; padding: 12px 20px; font-size: 16px; }
+
+.btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(232, 143, 36, 0.35); }
+
+.card__actions { display: flex; gap: 12px; justify-content: center; margin-top: 10px; }
+
+/* Insert (toggle) button variant — zelené plné tlačítko */
+.btn--insert {
+  background-color: #003d46; /* zelená požadovaná */
+  color: #fff;
+}
+.btn--insert:hover { background-color: #002f3a; }

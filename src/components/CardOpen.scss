@@ -1,8 +1,7 @@
 .opened-card {
     margin: 20px;
     background-color: rgba(255, 255, 255, 0.75);
-    /* extra top padding to leave room for the edit button */
-    padding: 56px 20px 20px 20px;
+    padding: 20px;
     border-radius: 20px;
     position: relative;
 }
@@ -15,24 +14,30 @@
     border-radius: 0 0 20px 20px;
 }
 
-/* Edit button in the top-right corner */
-.opened-card__edit {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 1;
-}
-
-/* Tweak edit button sizing and remove auto-centering margins */
-.btn--edit {
-    width: auto;
-    padding: 6px 12px;
-    margin: 0;
-}
+/* removed top-right edit button styles */
 
 /* Spacing below tags block in detail */
 .opened-card .tags {
     margin-bottom: 20px;
+}
+
+/* Detail typography overrides */
+.opened-card .title {
+    font-size: 26px;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+.opened-card .perex {
+    font-size: 16px;
+    line-height: 1.6;
+    font-weight: 600;
+    margin-bottom: 18px;
+}
+
+.opened-card .paragraph {
+    font-size: 15px;
+    line-height: 1.7;
 }
 
 .card__actions {

@@ -19,6 +19,10 @@
     font-family: 'Quicksand', sans-serif;
     text-transform: uppercase;
     color: #033035;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: 0.02em;
 }
 
 .card .tags {
@@ -35,7 +39,9 @@
 .perex {
     font-family: 'Quicksand', sans-serif;
     font-weight: 600;
-    margin-bottom: 20px;
+    font-size: 15px;
+    line-height: 1.55;
+    margin-bottom: 16px;
 }
 
 .description {
@@ -44,29 +50,12 @@
 
 .paragraph {
     margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 
-.btn {
-    display: block;
-    background-color:#e88f24 ;
-    width: 100px;
-    padding: 10px 5px;
-    border-radius: 20px;
-    text-decoration: none;
-    text-align: center;
-    cursor: pointer;
-    color: white;
-    font-family: 'Quicksand', sans-serif;
-    text-transform: uppercase;
-    margin: 0 auto;
-    border: none
-    
-}
 
-.btn:hover {
-    background-color: #be6f28;
-}
 
 
    

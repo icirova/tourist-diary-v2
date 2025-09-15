@@ -78,7 +78,7 @@ const CardForm = ({ onAddCard }) => {
 
   return <div className="form--container">
 
-  <button className="btn--insert" onClick={toggleVisibility}>{btnText}</button>
+  <button className="btn btn--insert" onClick={toggleVisibility}>{btnText}</button>
   {isVisible && // Podmíněné zobrazení formuláře pouze pokud je isVisible true
   <form className="form" >
      
@@ -194,8 +194,8 @@ const CardForm = ({ onAddCard }) => {
 
         
 
-      <button className="btn" onClick={handleClick}>
-        Vložit
+      <button className="btn btn--primary btn--large" onClick={handleClick}>
+        Přidat kartu
       </button>
     </form>
 }

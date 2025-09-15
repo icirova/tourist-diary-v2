@@ -24,7 +24,7 @@ const Map= ({locations}) => {
             <Popup className="popup">
               <strong>{location.title}</strong>
               <p>{location.description}</p>
-              <Link to={`/detail/${location.id}`} className=" btn btn__popup">Více</Link>
+              <Link to={`/detail/${location.id}`} className="btn btn--primary btn--small btn__popup">Detail</Link>
             </Popup>
           </Marker>
         ))}

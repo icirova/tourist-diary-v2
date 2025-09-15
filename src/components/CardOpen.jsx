@@ -76,9 +76,6 @@ const CardOpen = () => {
     <div className="opened-card">
       {!isEditing ? (
         <>
-          <button className="btn btn--edit opened-card__edit" onClick={() => setIsEditing(true)}>
-            Upravit
-          </button>
           <h1 className="title ">{filteredCard.title}</h1>
 
           <div className="tags">
@@ -115,9 +112,8 @@ const CardOpen = () => {
           </div>
 
           <div className="card__actions">
-            <Link to="/" className="btn btn--opened-card">
-              Zpět
-            </Link>
+            <Link to="/" className="btn btn--primary btn--opened-card">Zpět</Link>
+            <button className="btn btn--secondary" onClick={() => setIsEditing(true)}>Upravit</button>
           </div>
         </>
       ) : (
@@ -170,8 +166,8 @@ const CardOpen = () => {
           />
 
           <div className="card__actions">
-            <button className="btn" onClick={save}>Uložit</button>
-            <button className="btn" onClick={cancel}>Zrušit</button>
+            <button className="btn btn--primary btn--large" onClick={save}>Uložit změny</button>
+            <button className="btn btn--secondary" onClick={cancel}>Zrušit</button>
           </div>
         </>
       )}

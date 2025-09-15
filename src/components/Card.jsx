@@ -39,7 +39,7 @@ const Card = ({id, title, tags=[], description, notes}) => {
       </div>
       
 
-      <Link to={`/detail/${id}`} className="btn">Více</Link>
+      <Link to={`/detail/${id}`} className="btn btn--primary">Detail</Link>
       
     </div>
   );

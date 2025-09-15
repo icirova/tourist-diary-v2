@@ -10,3 +10,9 @@
     text-transform: uppercase;
    
 }
+
+/* Ensure popup button has white text (overrides Leaflet link styles) */
+.popup .btn,
+.popup .btn:visited {
+    color: #fff !important;
+}
