@@ -2,10 +2,10 @@ import { useState } from "react";
 import "./CardForm.scss";
 import TagBadge from './TagBadge';
 import { TAGS } from '../tags';
-import pencil from "/icons/pencil.svg";
-import notes from "/icons/notes.svg";
-import description from "/icons/description.svg";
-import pinForm from "/icons/pin-form.svg";
+import pencilIcon from "/icons/pencil.svg";
+import notesIcon from "/icons/notes.svg";
+import descriptionIcon from "/icons/description.svg";
+import pinFormIcon from "/icons/pin-form.svg";
 
 
 
@@ -24,6 +24,28 @@ const CardForm = ({ onAddCard }) => {
     const [btnText, setBtnText] = useState("+ vložit kartu")
     const [formData, setFormData] = useState(initialFormData)
     const [errors, setErrors] = useState({ title: "",lat:"", lng:""})
+
+    const validate = (data) => {
+      const nextErrors = {};
+      if (!data.title || data.title.trim() === '') {
+        nextErrors.title = 'Povinné pole.';
+      }
+      const lat = parseFloat(data.lat);
+      if (data.lat === '' || Number.isNaN(lat)) {
+        nextErrors.lat = 'Povinné pole.';
+      } else if (lat < -90 || lat > 90) {
+        nextErrors.lat = 'Mimo rozsah (−90 až 90).';
+      }
+      const lng = parseFloat(data.lng);
+      if (data.lng === '' || Number.isNaN(lng)) {
+        nextErrors.lng = 'Povinné pole.';
+      } else if (lng < -180 || lng > 180) {
+        nextErrors.lng = 'Mimo rozsah (−180 až 180).';
+      }
+      return nextErrors;
+    };
+
+    const isValid = Object.keys(validate(formData)).length === 0;
 
    
 
@@ -51,21 +73,10 @@ const CardForm = ({ onAddCard }) => {
     const handleClick = (event) => {
         event.preventDefault()
 
-        let newErrors = {}
+        const newErrors = validate(formData);
+        setErrors(newErrors);
 
-        if (formData.title.trim() === '') {
-            newErrors.title = 'Povinné pole.'
-          }
-          if (formData.lat.trim() === '') {
-            newErrors.lat = 'Povinné pole.'
-          } 
-          if (formData.lng.trim() === '') {
-            newErrors.lng = 'Povinné pole.'
-          } 
-      
-          setErrors(newErrors);
-
-          if (Object.keys(newErrors).length === 0) {
+        if (Object.keys(newErrors).length === 0) {
             if (typeof onAddCard === 'function') {
               onAddCard(formData);
             }
@@ -78,32 +89,40 @@ const CardForm = ({ onAddCard }) => {
 
   return <div className="form--container">
 
-  <button className="btn btn--insert" onClick={toggleVisibility}>{btnText}</button>
+  <button type="button" className="btn btn--insert" onClick={toggleVisibility}>{btnText}</button>
   {isVisible && // Podmíněné zobrazení formuláře pouze pokud je isVisible true
   <form className="form" >
      
         
-        <label htmlFor="title" className="field-label">
-          <img className="label-icon" src={pencil} alt="pencil" />
-          Název: 
-          {errors.title && (
-            <span className="error-message">{errors.title}</span>
+        <div className="form__section">
+          <h3 className="form__section-title">Základní informace</h3>
+          <p className="help-text">Pole označená <span className="required-star">*</span> jsou povinná.</p>
+          <label htmlFor="title" className="field-label">
+            <img className="label-icon" src={pencilIcon} alt="pencil" />
+            Název <span className="required-star">*</span>
+            {errors.title && (
+              <span className="error-message">{errors.title}</span>
             )}
-        </label>
-        <input
-          id="title"
-          className="field-input"
-          type="text"
-          name="title"
-          onChange={handleChange}
-        />
+          </label>
+          <input
+            id="title"
+            className="field-input"
+            type="text"
+            name="title"
+            placeholder="Např. Prachovské skály"
+            required
+            aria-required="true"
+            onChange={handleChange}
+          />
+          <p className="help-text">Krátký, výstižný název místa (doporučeno 3–80 znaků).</p>
 
-        <p className="pin-title"> <img className="label-icon" src={pinForm} alt="pin" /> Pin na mapě:</p>
-        <div className="pins">
+          <div className="field-label"><img className="label-icon" src={pinFormIcon} alt="pin" /> Pin na mapě</div>
+          <p className="help-text">Zadejte souřadnice v desetinném tvaru. Rozsah: šířka −90 až 90, délka −180 až 180.</p>
+          <div className="pins">
 
           <div className="pin">
             <label htmlFor="lat" className="field-label">
-              Zeměpisná šířka: 
+              Zeměpisná šířka <span className="required-star">*</span>
               {errors.lat && (
                 <span className="error-message">{errors.lat}</span>
                 )}
@@ -113,13 +132,18 @@ const CardForm = ({ onAddCard }) => {
               className="field-input"
               type="number"
               name="lat"
+              step="any"
+              placeholder="50.4673551"
+              required
+              aria-required="true"
+              aria-invalid={Boolean(errors.lat)}
               onChange={handleChange}
             />
           </div>
 
           <div className="pin">
             <label htmlFor="lng" className="field-label">
-              Zeměpisná délka: 
+              Zeměpisná délka <span className="required-star">*</span>
               {errors.lng && (
                 <span className="error-message">{errors.lng}</span>
                 )}
@@ -129,30 +153,40 @@ const CardForm = ({ onAddCard }) => {
               className="field-input"
               type="number"
               name="lng"
+              step="any"
+              placeholder="15.2932227"
+              required
+              aria-required="true"
+              aria-invalid={Boolean(errors.lng)}
               onChange={handleChange}
             />
+          </div>
           </div>
         </div>
 
        
 
-        <div className="tags">
-          {TAGS.map(tag => (
-            <div key={tag.key} className="check-item">
-              <label htmlFor={`tag-${tag.key}`} className="field-label">
-                <TagBadge keyName={tag.key} />
-              </label>
-              <input
-                id={`tag-${tag.key}`}
-                className="field-input"
-                type="checkbox"
-                name={tag.key}
-                checked={formData.tags.includes(tag.key)}
-                value={tag.key}
-                onChange={handleChange}
-              />
-            </div>
-          ))}
+        <div className="form__section">
+          <h3 className="form__section-title">Tagy</h3>
+          <p className="help-text">Vyberte vše, co sedí. Ikona i text jsou informativní.</p>
+          <div className="tags">
+            {TAGS.map(tag => (
+              <div key={tag.key} className="check-item">
+                <label htmlFor={`tag-${tag.key}`} className="field-label">
+                  <TagBadge keyName={tag.key} />
+                </label>
+                <input
+                  id={`tag-${tag.key}`}
+                  className="field-input"
+                  type="checkbox"
+                  name={tag.key}
+                  checked={formData.tags.includes(tag.key)}
+                  value={tag.key}
+                  onChange={handleChange}
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
 
@@ -162,24 +196,27 @@ const CardForm = ({ onAddCard }) => {
 
 
 
-        <div>
-            <label htmlFor="description" className="field-label"> <img src={description} alt="description" className="label-icon" /> Popis: {errors.description && (
-                  <span className="error-message">{errors.description}</span>
-                )}</label>
+        <div className="form__section">
+            <h3 className="form__section-title">Popis a poznámky</h3>
+            <label htmlFor="description" className="field-label"> <img src={descriptionIcon} alt="description" className="label-icon" /> Popis {errors.description && (
+                   <span className="error-message">{errors.description}</span>
+                 )}</label>
             <textarea 
             id="description" 
             name="description" 
             rows="10" 
             cols="50" 
             className="notes"  
+            value={formData.description}
             onChange={handleChange}
             ></textarea>
+            <p className="help-text">Krátké představení místa. Odstavce oddělte Enterem.</p>
         </div>
 
-        <div>
-            <label htmlFor="notes" className="field-label"><img src={notes} alt="notes" className="label-icon" /> Poznámky: {errors.notes && (
-                  <span className="error-message">{errors.notes}</span>
-                )}</label>
+        <div className="form__section">
+            <label htmlFor="notes" className="field-label"><img src={notesIcon} alt="notes" className="label-icon" /> Poznámky {errors.notes && (
+                   <span className="error-message">{errors.notes}</span>
+                 )}</label>
             <textarea 
             id="notes" 
             name="notes" 
@@ -189,12 +226,13 @@ const CardForm = ({ onAddCard }) => {
             value={formData.notes} 
             onChange={handleChange}
             ></textarea>
+            <p className="help-text">Praktické tipy a zkušenosti (parkování, občerstvení, sezóna…).</p>
         </div>
         
 
         
 
-      <button className="btn btn--primary btn--large" onClick={handleClick}>
+      <button type="button" className="btn btn--primary btn--large" onClick={handleClick} disabled={!isValid}>
         Přidat kartu
       </button>
     </form>

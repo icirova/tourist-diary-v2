@@ -1,23 +1,27 @@
 .form {
-    background-color: rgba(255, 255, 255, 0.75);
-    padding: 20px;
-    border-radius: 20px;
-    margin-bottom: 20px;
+  background-color: rgba(255, 255, 255, 0.75);
+  padding: 24px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+@media (min-width: 768px) {
+  .form { padding: 28px 24px; }
 }
 .field-input,
 .notes {
-    justify-self: left;
-    margin-bottom: 1rem;
-    margin-top: 0.3rem;
-  }
+  justify-self: left;
+  margin-bottom: 1.2rem;
+  margin-top: 0.5rem;
+}
   
-  .field-label {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    font-weight: 700;
-  }
+.field-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
 
 .label-icon {
   width: 35px;
@@ -67,44 +71,93 @@
 
   .tags {
     display: flex;
-    gap: 15px;
+    gap: 18px;
     flex-wrap: wrap;
-    margin-top: 20px;
-   
+    margin-top: 16px;
   }
 
   .tag-img {
     width: 30px;
   }
 
+.pins {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
   .pins {
-      display: flex;
-    gap: 20px;
-    justify-content: space-between;
-    
+    grid-template-columns: 1fr 1fr;
   }
+}
 
   .pin {
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: stretch;
   }
 
-  .pin-title {
-    margin: 20px 0;
-    text-align: center;
-    font-weight: 700;
-  }
+  .pin-title { display: none; }
 
 
   .check-item {
     flex-basis: calc((100% / 3) - 10px);
-    justify-content: center;
+    justify-content: flex-start;
+  }
+
+  .form__section {
+    margin: 20px 0 28px;
+  }
+
+  .form__section-title {
+    font-family: 'Quicksand', sans-serif;
+    text-transform: uppercase;
+    color: #033035;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .form__subsection-title {
+    font-family: 'Quicksand', sans-serif;
+    text-transform: uppercase;
+    color: #033035;
+    font-weight: 700;
+    font-size: 14px;
+    margin: 12px 0 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .form__subsection-title--normalcase {
+    text-transform: none;
+  }
+
+  .help-text {
+    font-size: 12px;
+    color: #2d5960;
+    margin-top: 6px;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .required-star {
+    color: #c62828; /* red accent for required marker */
+    font-weight: 700;
+    margin-left: 4px;
   }
 
   /* spacing for the toggle button */
   .form--container > .btn { margin-bottom: 20px; }
+
+  /* spacing above primary submit */
+  .form > .btn { margin-top: 8px; }
 
 

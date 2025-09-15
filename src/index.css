@@ -57,6 +57,13 @@ body {
 
 .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(232, 143, 36, 0.35); }
 
+/* Disabled state */
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none; /* disables hover and clicks */
+}
+
 .card__actions { display: flex; gap: 12px; justify-content: center; margin-top: 10px; }
 
 /* Insert (toggle) button variant — zelené plné tlačítko */
