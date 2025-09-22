@@ -4,11 +4,11 @@ import { Link, useParams } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import data from "../data";
 import TagBadge from './TagBadge';
 import { TAGS, KEY_BY_ICON, TAG_BY_KEY } from '../tags';
 import CustomMapPin from './CustomMapPin';
 import formatCoordinate from '../utils/formatCoordinate';
+import { useCards } from '../context/CardsContext';
 
 const DEFAULT_CENTER = [49.7514919, 15.326442];
 
@@ -120,7 +120,7 @@ const validate = ({ title, lat, lng }) => {
   return errors;
 };
 
-const CardOpenContent = ({ card }) => {
+const CardOpenContent = ({ card, onSave }) => {
   const tagOptions = useMemo(() => TAGS, []);
   const [isEditing, setIsEditing] = useState(false);
   const [localTitle, setLocalTitle] = useState(card.title);
@@ -151,6 +151,21 @@ const CardOpenContent = ({ card }) => {
       setIsGalleryOpen(false);
     }
   }, [isEditing]);
+
+  useEffect(() => {
+    if (isEditing) return;
+    setLocalTitle(card.title);
+    setLocalDescription(normaliseText(card.description));
+    setLocalNotes(normaliseText(card.notes));
+    setSelectedTags(
+      (card.tags || [])
+        .map((icon) => KEY_BY_ICON[icon])
+        .filter(Boolean)
+    );
+    setLocalLat(card.lat !== undefined && card.lat !== null ? String(card.lat) : '');
+    setLocalLng(card.lng !== undefined && card.lng !== null ? String(card.lng) : '');
+    setLocalPhotos(normalisePhotos(card.photos));
+  }, [card, isEditing]);
 
   useEffect(() => {
     if (!isGalleryOpen) return;
@@ -212,15 +227,18 @@ const CardOpenContent = ({ card }) => {
       return;
     }
 
-    card.title = localTitle;
-    card.description = toArray(localDescription);
-    card.notes = toArray(localNotes);
-    card.tags = selectedTags
-      .map((key) => (TAG_BY_KEY[key] ? TAG_BY_KEY[key].icon : undefined))
-      .filter(Boolean);
-    card.lat = parseFloat(localLat);
-    card.lng = parseFloat(localLng);
-    card.photos = normalisePhotos(localPhotos);
+    onSave(card.id, (previous) => ({
+      ...previous,
+      title: localTitle,
+      description: toArray(localDescription),
+      notes: toArray(localNotes),
+      tags: selectedTags
+        .map((key) => (TAG_BY_KEY[key] ? TAG_BY_KEY[key].icon : undefined))
+        .filter(Boolean),
+      lat: localLat,
+      lng: localLng,
+      photos: normalisePhotos(localPhotos),
+    }));
     setIsEditing(false);
   };
 
@@ -573,17 +591,20 @@ CardOpenContent.propTypes = {
       })
     ),
   }).isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 const CardOpen = () => {
   const { tripId } = useParams();
-  const card = data.find((oneCard) => oneCard.id === parseInt(tripId, 10));
+  const { cards, updateCard } = useCards();
+  const cardId = Number.parseInt(tripId, 10);
+  const card = useMemo(() => cards.find((oneCard) => oneCard.id === cardId), [cards, cardId]);
 
   if (!card) {
     return <div>Sorry, the requested card was not found.</div>;
   }
 
-  return <CardOpenContent card={card} />;
+  return <CardOpenContent card={card} onSave={updateCard} />;
 };
 
 export default CardOpen;

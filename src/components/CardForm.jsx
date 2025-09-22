@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PropTypes from 'prop-types';
 import "./CardForm.scss";
 import TagBadge from './TagBadge';
@@ -70,10 +70,13 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
 
   const isValid = Object.keys(errors).length === 0 && !isUploading;
 
+  const lastPickedCoordsRef = useRef(null);
+
   const resetForm = () => {
     setFormData(initialFormData);
     setErrors(validate(initialFormData));
     setIsUploading(false);
+    lastPickedCoordsRef.current = null;
   };
 
   const toggleVisibility = () => {
@@ -146,15 +149,23 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
   };
 
   useEffect(() => {
-    if (!pickedCoords || !isVisible) return;
+    if (!pickedCoords) return;
     const latStr = String(pickedCoords.lat);
     const lngStr = String(pickedCoords.lng);
-    const needsUpdate = formData.lat !== latStr || formData.lng !== lngStr;
-    if (needsUpdate) {
-      applyNextState((prev) => ({ ...prev, lat: latStr, lng: lngStr }));
+    const lastCoords = lastPickedCoordsRef.current;
+    const hasChanged = !lastCoords || lastCoords.lat !== latStr || lastCoords.lng !== lngStr;
+    if (!hasChanged) return;
+
+    lastPickedCoordsRef.current = { lat: latStr, lng: lngStr };
+
+    if (!isVisible) {
+      setIsVisible(true);
+      setBtnText('zpět');
     }
+
+    applyNextState((prev) => ({ ...prev, lat: latStr, lng: lngStr }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pickedCoords, isVisible]);
+  }, [pickedCoords]);
 
   const handleSubmit = (event) => {
     event.preventDefault();

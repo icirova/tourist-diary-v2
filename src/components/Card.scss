@@ -66,3 +66,31 @@
    
    
    
+
+.card__location {
+  font-size: 13px;
+  color: #2d5960;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.card__coord {
+  font-weight: 600;
+  color: #033035;
+}
+
+.card__photo-strip {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.card__photo-thumb {
+  width: 54px;
+  height: 54px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}

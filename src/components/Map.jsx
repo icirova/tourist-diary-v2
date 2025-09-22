@@ -32,15 +32,20 @@ const Map= ({locations, onPickCoords}) => {
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <MapClick />
         
-        {locations.map((location) => (
-          <Marker key={location.id} position={[location.lat, location.lng]} icon={CustomMapPin}>
-            <Popup className="popup">
-              <strong>{location.title}</strong>
-              <p>{location.description}</p>
-              <Link to={`/detail/${location.id}`} className="btn btn--primary btn--small btn__popup">Detail</Link>
-            </Popup>
-          </Marker>
-        ))}
+        {locations.map((location) => {
+          const firstParagraph = Array.isArray(location.description)
+            ? location.description[0]
+            : location.description;
+          return (
+            <Marker key={location.id} position={[location.lat, location.lng]} icon={CustomMapPin}>
+              <Popup className="popup">
+                <strong>{location.title}</strong>
+                {firstParagraph && <p>{firstParagraph}</p>}
+                <Link to={`/detail/${location.id}`} className="btn btn--primary btn--small btn__popup">Detail</Link>
+              </Popup>
+            </Marker>
+          );
+        })}
       </MapContainer>
     </div>
   );

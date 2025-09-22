@@ -1,5 +1,5 @@
 const formatCoordinate = (value, options = {}) => {
-  const { fallback = '—', digits = 3 } = options;
+  const { fallback = '-', digits = 3 } = options;
   if (value === undefined || value === null || value === '') {
     return fallback;
   }
