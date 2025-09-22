@@ -13,6 +13,7 @@ import cafe from "/icons/cafe.svg";
 import family from "/icons/family.svg";
 import stroller from "/icons/stroller.svg";
 import tent from "/icons/tent.svg";
+import glutenfree from "/icons/gluten-free.svg";
 
 
 const Home = () => {
@@ -24,6 +25,7 @@ const Home = () => {
     family,
     stroller,
     tent,
+    glutenfree,
   };
 
   const [cardsData, setCardsData] = useState(data);
@@ -31,38 +33,51 @@ const Home = () => {
   const [pickedCoords, setPickedCoords] = useState(null);
 
   const addCard = (newCard) => {
-    const currentIds = cardsData.map((c) => c.id);
-    const nextId = currentIds.length ? Math.max(...currentIds) + 1 : 1;
+    setCardsData((prevCards) => {
+      const currentIds = prevCards.map((c) => c.id);
+      const nextId = currentIds.length ? Math.max(...currentIds) + 1 : 1;
 
-    const mappedTags = (newCard.tags || [])
-      .map((name) => tagIconMap[name])
-      .filter(Boolean);
+      const mappedTags = (newCard.tags || [])
+        .map((name) => tagIconMap[name])
+        .filter(Boolean);
 
-    const normalizedDescription = Array.isArray(newCard.description)
-      ? newCard.description
-      : newCard.description
-      ? [newCard.description]
-      : [];
-    const normalizedNotes = Array.isArray(newCard.notes)
-      ? newCard.notes
-      : newCard.notes
-      ? [newCard.notes]
-      : [];
+      const normalizedDescription = Array.isArray(newCard.description)
+        ? newCard.description
+        : newCard.description
+        ? [newCard.description]
+        : [];
+      const normalizedNotes = Array.isArray(newCard.notes)
+        ? newCard.notes
+        : newCard.notes
+        ? [newCard.notes]
+        : [];
+      const normalizedPhotos = Array.isArray(newCard.photos)
+        ? newCard.photos
+            .filter((photo) => photo && photo.src)
+            .map((photo) => ({
+              id:
+                photo.id || `photo-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+              src: photo.src,
+              caption: photo.caption || '',
+              name: photo.name || '',
+            }))
+        : [];
 
-    const created = {
-      id: nextId,
-      title: newCard.title,
-      lat: parseFloat(newCard.lat),
-      lng: parseFloat(newCard.lng),
-      tags: mappedTags,
-      description: normalizedDescription,
-      notes: normalizedNotes,
-    };
+      const created = {
+        id: nextId,
+        title: newCard.title,
+        lat: parseFloat(newCard.lat),
+        lng: parseFloat(newCard.lng),
+        tags: mappedTags,
+        description: normalizedDescription,
+        notes: normalizedNotes,
+        photos: normalizedPhotos,
+      };
 
-    setCardsData([created, ...cardsData]);
-    setLocations([created, ...locations]);
+      setLocations((prevLocations) => [created, ...prevLocations]);
+      return [created, ...prevCards];
+    });
   };
-
   return <div className="container">
 
       {/* mapa s piny */}

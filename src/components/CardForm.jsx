@@ -15,7 +15,30 @@ const initialFormData = {
   tags: [],
   description: "",
   notes: "",
+  photos: [],
 };
+
+const generateId = () => {
+  if (typeof window !== 'undefined' && window.crypto?.randomUUID) {
+    return window.crypto.randomUUID();
+  }
+  return `photo-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+};
+
+const fileToDataUrl = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      resolve({
+        id: generateId(),
+        src: reader.result,
+        name: file.name,
+        caption: '',
+      });
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 
 function validate(data) {
   const nextErrors = {};
@@ -42,18 +65,32 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
   const [btnText, setBtnText] = useState('+ vložit kartu');
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState(() => validate(initialFormData));
+  const [isUploading, setIsUploading] = useState(false);
 
-  const isValid = Object.keys(errors).length === 0;
+  const isValid = Object.keys(errors).length === 0 && !isUploading;
+
+  const resetForm = () => {
+    setFormData(initialFormData);
+    setErrors(validate(initialFormData));
+    setIsUploading(false);
+  };
 
   const toggleVisibility = () => {
     setIsVisible((prev) => {
       const next = !prev;
       setBtnText(next ? 'zpět' : '+ vložit kartu');
       if (!next) {
-        setFormData(initialFormData);
-        setErrors(validate(initialFormData));
+        resetForm();
       }
       return next;
+    });
+  };
+
+  const applyNextState = (updater) => {
+    setFormData((prev) => {
+      const nextFormData = typeof updater === 'function' ? updater(prev) : updater;
+      setErrors(validate(nextFormData));
+      return nextFormData;
     });
   };
 
@@ -61,23 +98,50 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
     const { name, value, checked, type } = event.target;
 
     if (type === 'checkbox') {
-      let nextTags = formData.tags;
-      if (checked) {
-        if (!nextTags.includes(name)) {
-          nextTags = [...nextTags, name];
+      applyNextState((prev) => {
+        let nextTags = prev.tags;
+        if (checked) {
+          if (!nextTags.includes(name)) {
+            nextTags = [...nextTags, name];
+          }
+        } else {
+          nextTags = nextTags.filter((tag) => tag !== name);
         }
-      } else {
-        nextTags = nextTags.filter((tag) => tag !== name);
-      }
-      const nextFormData = { ...formData, tags: nextTags };
-      setFormData(nextFormData);
-      setErrors(validate(nextFormData));
+        return { ...prev, tags: nextTags };
+      });
       return;
     }
 
-    const nextFormData = { ...formData, [name]: value };
-    setFormData(nextFormData);
-    setErrors(validate(nextFormData));
+    applyNextState((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handlePhotoUpload = async (event) => {
+    const { files } = event.target;
+    if (!files || files.length === 0) return;
+    setIsUploading(true);
+    try {
+      const uploads = await Promise.all(Array.from(files).map((file) => fileToDataUrl(file)));
+      applyNextState((prev) => ({ ...prev, photos: [...prev.photos, ...uploads] }));
+    } catch (error) {
+      console.error('Nepodařilo se načíst soubor:', error);
+    } finally {
+      event.target.value = '';
+      setIsUploading(false);
+    }
+  };
+
+  const handlePhotoCaptionChange = (id, caption) => {
+    applyNextState((prev) => ({
+      ...prev,
+      photos: prev.photos.map((photo) => (photo.id === id ? { ...photo, caption } : photo)),
+    }));
+  };
+
+  const handlePhotoRemove = (id) => {
+    applyNextState((prev) => ({
+      ...prev,
+      photos: prev.photos.filter((photo) => photo.id !== id),
+    }));
   };
 
   useEffect(() => {
@@ -86,14 +150,12 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
     const lngStr = String(pickedCoords.lng);
     const needsUpdate = formData.lat !== latStr || formData.lng !== lngStr;
     if (needsUpdate) {
-      const nextFormData = { ...formData, lat: latStr, lng: lngStr };
-      setFormData(nextFormData);
-      setErrors(validate(nextFormData));
+      applyNextState((prev) => ({ ...prev, lat: latStr, lng: lngStr }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pickedCoords, isVisible]);
 
-  const handleClick = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     const submissionErrors = validate(formData);
@@ -103,8 +165,7 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
       if (typeof onAddCard === 'function') {
         onAddCard(formData);
       }
-      setFormData(initialFormData);
-      setErrors(validate(initialFormData));
+      resetForm();
       setIsVisible(false);
       setBtnText('+ vložit kartu');
     }
@@ -116,7 +177,7 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
         {btnText}
       </button>
       {isVisible && (
-        <form className="form">
+        <form className="form" onSubmit={handleSubmit}>
           <div className="form__section">
             <h3 className="form__section-title">Základní informace</h3>
             <p className="help-text">
@@ -248,10 +309,48 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
             <p className="help-text">Praktické tipy a zkušenosti (parkování, občerstvení, sezóna…).</p>
           </div>
 
+          <div className="form__section">
+            <h3 className="form__section-title">Fotogalerie</h3>
+            <p className="help-text">Nahrajte fotografie místa. Budou zobrazeny v detailu karty.</p>
+            <label htmlFor="photo-upload" className="field-label">Vybrat fotografie</label>
+            <input
+              id="photo-upload"
+              className="field-input"
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handlePhotoUpload}
+            />
+            {isUploading && <p className="help-text">Načítám náhledy...</p>}
+
+            {formData.photos.length > 0 && (
+              <div className="photo-list">
+                {formData.photos.map((photo) => (
+                  <div key={photo.id} className="photo-item">
+                    <img src={photo.src} alt={photo.name} className="photo-item__preview" />
+                    <input
+                      type="text"
+                      className="field-input"
+                      placeholder="Popisek fotografie"
+                      value={photo.caption}
+                      onChange={(e) => handlePhotoCaptionChange(photo.id, e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn--secondary btn--small"
+                      onClick={() => handlePhotoRemove(photo.id)}
+                    >
+                      Odebrat
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           <button
-            type="button"
+            type="submit"
             className="btn btn--primary btn--large"
-            onClick={handleClick}
             disabled={!isValid}
           >
             Přidat kartu
