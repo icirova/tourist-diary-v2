@@ -8,6 +8,7 @@ import data from "../data";
 import TagBadge from './TagBadge';
 import { TAGS, KEY_BY_ICON, TAG_BY_KEY } from '../tags';
 import CustomMapPin from './CustomMapPin';
+import formatCoordinate from '../utils/formatCoordinate';
 
 const DEFAULT_CENTER = [49.7514919, 15.326442];
 
@@ -281,6 +282,48 @@ const CardOpenContent = ({ card }) => {
         <>
           <h1 className="title ">{card.title}</h1>
 
+          {(card.lat !== undefined && card.lat !== null) || (card.lng !== undefined && card.lng !== null) ? (
+            <div className="location">
+              <p className="paragraph">
+                Souřadnice:
+                <span className="location__value" title={card.lat != null ? String(card.lat) : undefined}>
+                  {formatCoordinate(card.lat)}
+                </span>
+                ,
+                <span className="location__value" title={card.lng != null ? String(card.lng) : undefined}>
+                  {formatCoordinate(card.lng)}
+                </span>
+              </p>
+            </div>
+          ) : null}
+
+          <div className="tags">
+            {(card.tags || []).map((icon, index) => {
+              const keyName = KEY_BY_ICON[icon];
+              return <TagBadge key={`${keyName || icon}-${index}`} keyName={keyName || ''} />;
+            })}
+          </div>
+
+          <div className="perex">
+            {(Array.isArray(card.description) ? card.description : [card.description])
+              .filter(Boolean)
+              .map((oneParagraph, index) => (
+                <p key={index} className="paragraph">
+                  {oneParagraph}
+                </p>
+              ))}
+          </div>
+
+          <div className="notes">
+            {(Array.isArray(card.notes) ? card.notes : [card.notes])
+              .filter(Boolean)
+              .map((oneParagraph, index) => (
+                <p key={index} className="paragraph">
+                  {oneParagraph}
+                </p>
+              ))}
+          </div>
+
           {viewPhotos.length > 0 && (
             <div className="gallery">
               <div className="gallery__thumbnails">
@@ -357,37 +400,6 @@ const CardOpenContent = ({ card }) => {
             </div>
           )}
 
-          <div className="tags">
-            {(card.tags || []).map((icon, index) => {
-              const keyName = KEY_BY_ICON[icon];
-              return <TagBadge key={`${keyName || icon}-${index}`} keyName={keyName || ''} />;
-            })}
-          </div>
-
-          <div className="perex">
-            {(Array.isArray(card.description) ? card.description : [card.description])
-              .filter(Boolean)
-              .map((oneParagraph, index) => (
-                <p key={index} className="paragraph">
-                  {oneParagraph}
-                </p>
-              ))}
-          </div>
-
-          <div className="notes">
-            {(Array.isArray(card.notes) ? card.notes : [card.notes])
-              .filter(Boolean)
-              .map((oneParagraph, index) => (
-                <p key={index} className="paragraph">
-                  {oneParagraph}
-                </p>
-              ))}
-          </div>
-
-          <div className="location">
-            <p className="paragraph">Souřadnice: {card.lat}, {card.lng}</p>
-          </div>
-
           <div className="card__actions">
             <Link to="/" className="btn btn--primary btn--opened-card">Zpět</Link>
             <button className="btn btn--secondary" onClick={startEditing}>
@@ -409,6 +421,48 @@ const CardOpenContent = ({ card }) => {
             }}
           />
           {errors.title && <span className="error-message">{errors.title}</span>}
+
+          <div className="coords">
+            <label className="field-label" htmlFor="detail-lat">
+              Zeměpisná šířka <span className="required-star">*</span>
+              {errors.lat && <span className="error-message">{errors.lat}</span>}
+            </label>
+            <input
+              id="detail-lat"
+              className="field-input"
+              type="number"
+              step="any"
+              value={localLat}
+              onChange={(e) => {
+                const nextValue = e.target.value;
+                setLocalLat(nextValue);
+                applyValidation({ lat: nextValue });
+              }}
+            />
+
+            <label className="field-label" htmlFor="detail-lng">
+              Zeměpisná délka <span className="required-star">*</span>
+              {errors.lng && <span className="error-message">{errors.lng}</span>}
+            </label>
+            <input
+              id="detail-lng"
+              className="field-input"
+              type="number"
+              step="any"
+              value={localLng}
+              onChange={(e) => {
+                const nextValue = e.target.value;
+                setLocalLng(nextValue);
+                applyValidation({ lng: nextValue });
+              }}
+            />
+          </div>
+
+          <EditableLocationMap lat={localLat} lng={localLng} onPick={onPickCoords} />
+
+          <p className="help-text">
+            Náhled zobrazení: {formatCoordinate(localLat)} , {formatCoordinate(localLng)}
+          </p>
 
           <div className="tags">
             {tagOptions.map((tag) => (
@@ -449,44 +503,6 @@ const CardOpenContent = ({ card }) => {
             value={localNotes}
             onChange={(e) => setLocalNotes(e.target.value)}
           />
-
-          <div className="coords">
-            <label className="field-label" htmlFor="detail-lat">
-              Zeměpisná šířka <span className="required-star">*</span>
-              {errors.lat && <span className="error-message">{errors.lat}</span>}
-            </label>
-            <input
-              id="detail-lat"
-              className="field-input"
-              type="number"
-              step="any"
-              value={localLat}
-              onChange={(e) => {
-                const nextValue = e.target.value;
-                setLocalLat(nextValue);
-                applyValidation({ lat: nextValue });
-              }}
-            />
-
-            <label className="field-label" htmlFor="detail-lng">
-              Zeměpisná délka <span className="required-star">*</span>
-              {errors.lng && <span className="error-message">{errors.lng}</span>}
-            </label>
-            <input
-              id="detail-lng"
-              className="field-input"
-              type="number"
-              step="any"
-              value={localLng}
-              onChange={(e) => {
-                const nextValue = e.target.value;
-                setLocalLng(nextValue);
-                applyValidation({ lng: nextValue });
-              }}
-            />
-          </div>
-
-          <EditableLocationMap lat={localLat} lng={localLng} onPick={onPickCoords} />
 
           <div className="form__section">
             <h3 className="form__section-title">Fotogalerie</h3>

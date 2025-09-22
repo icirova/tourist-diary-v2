@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import "./CardForm.scss";
 import TagBadge from './TagBadge';
 import { TAGS } from '../tags';
+import formatCoordinate from '../utils/formatCoordinate';
 import pencilIcon from "/icons/pencil.svg";
 import notesIcon from "/icons/notes.svg";
 import descriptionIcon from "/icons/description.svg";
@@ -179,10 +180,7 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
       {isVisible && (
         <form className="form" onSubmit={handleSubmit}>
           <div className="form__section">
-            <h3 className="form__section-title">Základní informace</h3>
-            <p className="help-text">
-              Pole označená <span className="required-star">*</span> jsou povinná.
-            </p>
+            <h3 className="form__section-title">Název</h3>
             <label htmlFor="title" className="field-label">
               <img className="label-icon" src={pencilIcon} alt="pencil" />
               Název <span className="required-star">*</span>
@@ -200,7 +198,10 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
               onChange={handleChange}
             />
             <p className="help-text">Krátký, výstižný název místa (doporučeno 3–80 znaků).</p>
+          </div>
 
+          <div className="form__section">
+            <h3 className="form__section-title">Souřadnice</h3>
             <div className="field-label">
               <img className="label-icon" src={pinFormIcon} alt="pin" /> Pin na mapě
             </div>
@@ -249,6 +250,10 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
                 />
               </div>
             </div>
+
+            <p className="help-text">
+              Náhled zobrazení: {formatCoordinate(formData.lat)}, {formatCoordinate(formData.lng)}
+            </p>
           </div>
 
           <div className="form__section">
@@ -275,7 +280,7 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
           </div>
 
           <div className="form__section">
-            <h3 className="form__section-title">Popis a poznámky</h3>
+            <h3 className="form__section-title">Popis</h3>
             <label htmlFor="description" className="field-label">
               <img src={descriptionIcon} alt="description" className="label-icon" /> Popis
               {errors.description && <span className="error-message">{errors.description}</span>}
@@ -284,7 +289,6 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
               id="description"
               name="description"
               rows="10"
-              cols="50"
               className="notes"
               value={formData.description}
               onChange={handleChange}
@@ -293,6 +297,7 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
           </div>
 
           <div className="form__section">
+            <h3 className="form__section-title">Poznámky</h3>
             <label htmlFor="notes" className="field-label">
               <img src={notesIcon} alt="notes" className="label-icon" /> Poznámky
               {errors.notes && <span className="error-message">{errors.notes}</span>}
@@ -301,7 +306,6 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
               id="notes"
               name="notes"
               rows="10"
-              cols="50"
               className="notes"
               value={formData.notes}
               onChange={handleChange}

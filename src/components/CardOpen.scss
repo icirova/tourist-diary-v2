@@ -132,6 +132,13 @@
   border-color: #033035;
 }
 
+.location__value {
+  display: inline-block;
+  margin: 0 4px;
+  font-weight: 600;
+  color: #033035;
+}
+
 .coords {
   display: grid;
   gap: 12px;
