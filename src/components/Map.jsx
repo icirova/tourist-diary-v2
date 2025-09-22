@@ -1,4 +1,5 @@
 import "./Map.scss"
+import PropTypes from 'prop-types';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import CustomMapPin from "./CustomMapPin";
@@ -43,6 +44,20 @@ const Map= ({locations, onPickCoords}) => {
       </MapContainer>
     </div>
   );
+};
+
+
+Map.propTypes = {
+  locations: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+      title: PropTypes.string.isRequired,
+      lat: PropTypes.number.isRequired,
+      lng: PropTypes.number.isRequired,
+      description: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+    })
+  ).isRequired,
+  onPickCoords: PropTypes.func,
 };
 
 export default Map;
