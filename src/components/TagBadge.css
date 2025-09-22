@@ -1,0 +1,27 @@
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: rgba(3, 48, 53, 0.08);
+  color: #033035;
+  font-family: "Quicksand", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.tag-badge__icon {
+  width: 18px;
+  height: 18px;
+}
+
+.tag-badge.compact {
+  padding: 0;
+  background: transparent;
+}
+
+.tag-badge.compact .tag-badge__icon {
+  width: 24px;
+  height: 24px;
+}/*# sourceMappingURL=TagBadge.css.map */

@@ -1,0 +1,55 @@
+.card {
+  background-color: rgba(255, 255, 255, 0.75);
+  padding: 20px;
+  border-radius: 20px;
+  flex-basis: 300px;
+  flex-grow: 1;
+  justify-content: left;
+}
+.card__id {
+  text-align: center;
+  padding: 10px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: "Quicksand", sans-serif;
+  text-transform: uppercase;
+  color: #033035;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+}
+
+.card .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.tag {
+  width: 30px;
+  margin-bottom: 20px;
+}
+
+.perex {
+  font-family: "Quicksand", sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.55;
+  margin-bottom: 16px;
+}
+
+.description {
+  margin-bottom: 10px;
+}
+
+.paragraph {
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+}/*# sourceMappingURL=Card.css.map */

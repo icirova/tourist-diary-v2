@@ -1,0 +1,184 @@
+.form {
+  background-color: rgba(255, 255, 255, 0.75);
+  padding: 24px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+  .form {
+    padding: 28px 24px;
+  }
+}
+.field-input,
+.notes {
+  justify-self: left;
+  margin-bottom: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.field-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.label-icon {
+  width: 35px;
+}
+
+input[type=text],
+input[type=number],
+input[type=date],
+input[type=tel],
+select,
+textarea {
+  font-size: 1rem;
+  background-color: white;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  width: 100%;
+  outline: none;
+}
+
+input[type=text]:focus,
+input[type=number]:focus,
+input[type=date]:focus,
+input[type=tel]:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid gray;
+}
+
+input[type=checkbox] {
+  transform: scale(1.5);
+}
+
+.check-item {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: start;
+  gap: 1rem;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.8rem;
+  padding: 5px;
+}
+
+.tags {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.tag-img {
+  width: 30px;
+}
+
+.pins {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .pins {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.pin {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.pin-title {
+  display: none;
+}
+
+.check-item {
+  /* size by content so more items fit per row */
+  flex-basis: auto;
+  justify-content: flex-start;
+}
+
+.form__section {
+  margin: 20px 0 28px;
+}
+
+.form__section-title {
+  font-family: "Quicksand", sans-serif;
+  text-transform: uppercase;
+  color: #033035;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form__subsection-title {
+  font-family: "Quicksand", sans-serif;
+  text-transform: uppercase;
+  color: #033035;
+  font-weight: 700;
+  font-size: 14px;
+  margin: 12px 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form__subsection-title--normalcase {
+  text-transform: none;
+}
+
+.help-text {
+  font-size: 12px;
+  color: #2d5960;
+  margin-top: 6px;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.required-star {
+  color: #c62828; /* red accent for required marker */
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+/* spacing for the toggle button */
+.form--container > .btn {
+  margin-bottom: 20px;
+}
+
+/* spacing above primary submit */
+.form > .btn {
+  margin-top: 8px;
+}
+
+/* Mobile tweaks: larger tap targets for tag badges in the form only */
+@media (max-width: 600px) {
+  .form .tag-badge {
+    font-size: 13px;
+    padding: 4px 8px;
+    gap: 6px;
+  }
+  .form .tag-badge__icon {
+    width: 20px;
+    height: 20px;
+  }
+  .form .check-item .field-label {
+    padding: 6px 0; /* increase vertical tap area */
+  }
+}/*# sourceMappingURL=CardForm.css.map */

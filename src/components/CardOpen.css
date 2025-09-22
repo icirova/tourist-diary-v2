@@ -16,6 +16,10 @@
 /* removed top-right edit button styles */
 /* Spacing below tags block in detail */
 .opened-card .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
   margin-bottom: 20px;
 }
 

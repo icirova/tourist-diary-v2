@@ -1,0 +1,15 @@
+.leaflet-container {
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.leaflet-popup-content strong {
+  font-family: "Quicksand", sans-serif;
+  text-transform: uppercase;
+}
+
+/* Ensure popup button has white text (overrides Leaflet link styles) */
+.popup .btn,
+.popup .btn:visited {
+  color: #fff !important;
+}/*# sourceMappingURL=Map.css.map */
