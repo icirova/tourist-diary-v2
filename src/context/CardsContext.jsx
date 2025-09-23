@@ -2,11 +2,22 @@
 import PropTypes from 'prop-types';
 import { createContext, useContext, useMemo, useState } from 'react';
 import initialData from '../data';
-import { TAGS } from '../tags';
+import { KEY_BY_ICON, TAG_BY_KEY } from '../tags';
 
 const CardsContext = createContext(null);
 
-const TAG_BY_KEY = Object.fromEntries(TAGS.map((tag) => [tag.key, tag.icon]));
+const resolveTagKey = (value) => {
+  if (typeof value !== 'string') return null;
+  if (TAG_BY_KEY[value]) return value;
+  return KEY_BY_ICON[value] ?? null;
+};
+
+const normalizeTagList = (values = []) => {
+  const keys = values
+    .map(resolveTagKey)
+    .filter(Boolean);
+  return Array.from(new Set(keys));
+};
 
 const normalizeTextField = (value) => {
   if (Array.isArray(value)) return value.filter(Boolean);
@@ -31,24 +42,19 @@ const normalizePhotos = (photos) => {
     }));
 };
 
-const mapTagsToIcons = (keys = []) =>
-  keys
-    .map((key) => TAG_BY_KEY[key])
-    .filter(Boolean);
-
 const normalizeFormInput = (raw, fallbackId) => ({
   id: raw.id ?? fallbackId,
   title: raw.title,
   lat: raw.lat !== undefined && raw.lat !== null ? parseFloat(raw.lat) : undefined,
   lng: raw.lng !== undefined && raw.lng !== null ? parseFloat(raw.lng) : undefined,
-  tags: mapTagsToIcons(raw.tags || []),
+  tags: normalizeTagList(raw.tags || []),
   description: normalizeTextField(raw.description),
   notes: normalizeTextField(raw.notes),
   photos: normalizePhotos(raw.photos),
 });
 
 export const CardsProvider = ({ children }) => {
-  const [cards, setCards] = useState(initialData);
+  const [cards, setCards] = useState(() => initialData.map((card) => normalizeFormInput(card, card.id)));
 
   const addCard = (payload) => {
     setCards((prevCards) => {
@@ -67,7 +73,10 @@ export const CardsProvider = ({ children }) => {
         return {
           ...card,
           ...draft,
-          tags: draft.tags ?? card.tags,
+          tags:
+            draft.tags !== undefined
+              ? normalizeTagList(draft.tags)
+              : normalizeTagList(card.tags),
           lat:
             draft.lat !== undefined && draft.lat !== null
               ? parseFloat(draft.lat)

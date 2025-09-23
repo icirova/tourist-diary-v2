@@ -12,6 +12,11 @@ import { useCards } from '../context/CardsContext';
 
 const DEFAULT_CENTER = [49.7514919, 15.326442];
 
+const resolveTagKey = (value) => {
+  if (TAG_BY_KEY[value]) return value;
+  return KEY_BY_ICON[value] ?? null;
+};
+
 const generatePhotoId = () => {
   if (typeof window !== 'undefined' && window.crypto?.randomUUID) {
     return window.crypto.randomUUID();
@@ -128,7 +133,7 @@ const CardOpenContent = ({ card, onSave }) => {
   const [localNotes, setLocalNotes] = useState(normaliseText(card.notes));
   const [selectedTags, setSelectedTags] = useState(
     (card.tags || [])
-      .map((icon) => KEY_BY_ICON[icon])
+      .map((tag) => resolveTagKey(tag))
       .filter(Boolean)
   );
   const [localLat, setLocalLat] = useState(
@@ -159,7 +164,7 @@ const CardOpenContent = ({ card, onSave }) => {
     setLocalNotes(normaliseText(card.notes));
     setSelectedTags(
       (card.tags || [])
-        .map((icon) => KEY_BY_ICON[icon])
+        .map((tag) => resolveTagKey(tag))
         .filter(Boolean)
     );
     setLocalLat(card.lat !== undefined && card.lat !== null ? String(card.lat) : '');
@@ -232,9 +237,7 @@ const CardOpenContent = ({ card, onSave }) => {
       title: localTitle,
       description: toArray(localDescription),
       notes: toArray(localNotes),
-      tags: selectedTags
-        .map((key) => (TAG_BY_KEY[key] ? TAG_BY_KEY[key].icon : undefined))
-        .filter(Boolean),
+      tags: selectedTags,
       lat: localLat,
       lng: localLng,
       photos: normalisePhotos(localPhotos),
@@ -248,7 +251,7 @@ const CardOpenContent = ({ card, onSave }) => {
     setLocalNotes(normaliseText(card.notes));
     setSelectedTags(
       (card.tags || [])
-        .map((icon) => KEY_BY_ICON[icon])
+        .map((tag) => resolveTagKey(tag))
         .filter(Boolean)
     );
     setLocalLat(card.lat !== undefined && card.lat !== null ? String(card.lat) : '');
@@ -316,9 +319,27 @@ const CardOpenContent = ({ card, onSave }) => {
           ) : null}
 
           <div className="tags">
-            {(card.tags || []).map((icon, index) => {
-              const keyName = KEY_BY_ICON[icon];
-              return <TagBadge key={`${keyName || icon}-${index}`} keyName={keyName || ''} />;
+            {(card.tags || []).map((rawTag, index) => {
+              const keyName = resolveTagKey(rawTag);
+              if (keyName) {
+                return <TagBadge key={`${keyName}-${index}`} keyName={keyName} />;
+              }
+              if (typeof rawTag === 'string' && rawTag.endsWith('.svg')) {
+                return (
+                  <img
+                    className="tag"
+                    key={`${rawTag}-${index}`}
+                    src={rawTag}
+                    alt="tag"
+                    title="Tag"
+                  />
+                );
+              }
+              return (
+                <span className="tag" key={`${String(rawTag)}-${index}`} title={String(rawTag)}>
+                  {String(rawTag)}
+                </span>
+              );
             })}
           </div>
 
@@ -497,9 +518,13 @@ const CardOpenContent = ({ card, onSave }) => {
                   value={tag.key}
                   onChange={(e) => {
                     const { name, checked } = e.target;
-                    setSelectedTags((prev) =>
-                      checked ? [...prev, name] : prev.filter((t) => t !== name)
-                    );
+                    setSelectedTags((prev) => {
+                      if (checked) {
+                        const next = [...prev, name];
+                        return Array.from(new Set(next));
+                      }
+                      return prev.filter((t) => t !== name);
+                    });
                   }}
                 />
               </div>
@@ -597,8 +622,10 @@ CardOpenContent.propTypes = {
 const CardOpen = () => {
   const { tripId } = useParams();
   const { cards, updateCard } = useCards();
-  const cardId = Number.parseInt(tripId, 10);
-  const card = useMemo(() => cards.find((oneCard) => oneCard.id === cardId), [cards, cardId]);
+  const card = useMemo(
+    () => cards.find((oneCard) => String(oneCard.id) === tripId),
+    [cards, tripId],
+  );
 
   if (!card) {
     return <div>Sorry, the requested card was not found.</div>;

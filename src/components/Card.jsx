@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import "./Card.scss";
 import { Link } from "react-router-dom";
 import TagBadge from './TagBadge';
-import { KEY_BY_ICON } from '../tags';
+import { KEY_BY_ICON, TAG_BY_KEY } from '../tags';
 import formatCoordinate from '../utils/formatCoordinate';
 
 const toParagraphs = (input, limit) => {
@@ -21,6 +21,11 @@ const toParagraphs = (input, limit) => {
   return paragraphs;
 };
 
+const resolveTagKey = (value) => {
+  if (TAG_BY_KEY[value]) return value;
+  return KEY_BY_ICON[value] ?? null;
+};
+
 const Card = ({ id, title, tags = [], description, notes, lat, lng, photos = [] }) => {
   const descriptionParagraphs = toParagraphs(description, 2);
   const noteParagraphs = toParagraphs(notes, 2);
@@ -32,12 +37,27 @@ const Card = ({ id, title, tags = [], description, notes, lat, lng, photos = [] 
       <h1 className="title">{title}</h1>
 
       <div className="tags">
-        {tags.map((icon, index) => {
-          const keyName = KEY_BY_ICON[icon];
+        {tags.map((rawTag, index) => {
+          const keyName = resolveTagKey(rawTag);
           if (keyName) {
             return <TagBadge key={`${keyName}-${index}`} keyName={keyName} compact />;
           }
-          return <img className="tag" key={`${icon}-${index}`} src={icon} alt="tag" title="Tag"/>;
+          if (typeof rawTag === 'string' && rawTag.endsWith('.svg')) {
+            return (
+              <img
+                className="tag"
+                key={`${rawTag}-${index}`}
+                src={rawTag}
+                alt="tag"
+                title="Tag"
+              />
+            );
+          }
+          return (
+            <span className="tag" key={`${String(rawTag)}-${index}`} title={String(rawTag)}>
+              {String(rawTag)}
+            </span>
+          );
         })}
       </div>
 

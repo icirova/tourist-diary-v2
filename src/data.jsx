@@ -1,14 +1,3 @@
-import tent from "/icons/tent.svg";
-import bonfire from "/icons/bonfire.svg";
-import bag from "/icons/bag.svg";
-import bikini from "/icons/bikini.svg" ;
-import cafe from "/icons/cafe.svg";
-import family from "/icons/family.svg";
-import stroller from "/icons/stroller.svg";
-import glutenfree from "/icons/gluten-free.svg";
-// import photo1 from "/photos/photo.jpg" příprava na fotky
-
-
 const data = [
     {
         id: 1,
@@ -16,13 +5,12 @@ const data = [
         lat: 50.5581496,
         lng: 16.2145403,
         tags: [
-            family,
-            tent,
-            bonfire,
-            cafe,
-            bag,
-            bikini
-           
+            "family",
+            "tent",
+            "bonfire",
+            "cafe",
+            "bag",
+            "bikini"
         ],
         description: [
             "Vrcholová plošina stolové hory Ostaš je ohraničená pískovcovými skalními stěnami a věžemi vysokými až 40 metrů. ",
@@ -41,7 +29,8 @@ const data = [
         lat: 50.7819779,
         lng: 15.41894,
         tags: [
-            cafe,family,
+            "cafe",
+            "family",
         ],
         description: [
             " Muzeum skla je součástí sklárny v Harrachově. Obsahuje historicky a technologicky ucelenou sbírku historického skla z produkce harrachovské sklárny.",
@@ -57,7 +46,9 @@ const data = [
         lat: 50.7610850,
         lng: 15.0530346,
         tags: [
-            cafe, family, stroller
+            "cafe",
+            "family",
+            "stroller"
         ],
         description: [
             "iQLANDIA je vhodná pro děti od 8 let a všechny dospělé.",
@@ -77,7 +68,9 @@ const data = [
         lat: 50.4673551,
         lng: 15.2932227,
         tags: [
-            cafe, family, glutenfree,
+            "cafe",
+            "family",
+            "glutenfree",
         ],
         description: [
             "Prachovské skály tvoří pískovcové skalní město. Díky otevřeným náhorním plošinám je zde nespočet vyhlídek, z nichž budete mít celý Český ráj jako na dlani.",
@@ -94,7 +87,7 @@ const data = [
         title: "Teplické skály",
         lat: 50.5910880,
         lng: 16.1253494,
-        tags: [cafe, family, bonfire,],
+        tags: ["cafe", "family", "bonfire"],
         description: [
             "Teplické skalní město odděluje od toho Adršpašského 4 kilometry dlouhá Vlčí rokle.",
             "Teplické skály jsou rozsáhlejší částí Národní přírodní rezervace Adršpašsko-teplické skály.",
@@ -113,7 +106,7 @@ const data = [
         title: "Babiččino údolí",
         lat: 50.4264966,
         lng: 16.0458507,
-        tags: [cafe, family, bonfire,stroller],
+        tags: ["cafe", "family", "bonfire", "stroller"],
         description: [
             "Babiččino údolí je turisticky navštěvováno zejména kvůli spisovatelce Boženě Němcové, která zde zasadila děj díla Babička Ale díky značně členitému terénu, který vytváří prostor pro pestrost květeny i výskyt mnoha zajímavých i vzácných živočichů, je i cennou přírodní lokalitou.",
         ],
