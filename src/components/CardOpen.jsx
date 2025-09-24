@@ -5,17 +5,12 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import TagBadge from './TagBadge';
-import { TAGS, KEY_BY_ICON, TAG_BY_KEY } from '../tags';
+import { TAGS, resolveTagKey } from '../tags';
 import CustomMapPin from './CustomMapPin';
 import formatCoordinate from '../utils/formatCoordinate';
 import { useCards } from '../context/CardsContext';
 
 const DEFAULT_CENTER = [49.7514919, 15.326442];
-
-const resolveTagKey = (value) => {
-  if (TAG_BY_KEY[value]) return value;
-  return KEY_BY_ICON[value] ?? null;
-};
 
 const generatePhotoId = () => {
   if (typeof window !== 'undefined' && window.crypto?.randomUUID) {

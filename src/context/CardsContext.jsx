@@ -2,22 +2,9 @@
 import PropTypes from 'prop-types';
 import { createContext, useContext, useMemo, useState } from 'react';
 import initialData from '../data';
-import { KEY_BY_ICON, TAG_BY_KEY } from '../tags';
+import { normalizeTagList } from '../tags';
 
 const CardsContext = createContext(null);
-
-const resolveTagKey = (value) => {
-  if (typeof value !== 'string') return null;
-  if (TAG_BY_KEY[value]) return value;
-  return KEY_BY_ICON[value] ?? null;
-};
-
-const normalizeTagList = (values = []) => {
-  const keys = values
-    .map(resolveTagKey)
-    .filter(Boolean);
-  return Array.from(new Set(keys));
-};
 
 const normalizeTextField = (value) => {
   if (Array.isArray(value)) return value.filter(Boolean);

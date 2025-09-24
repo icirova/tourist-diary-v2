@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import "./Card.scss";
 import { Link } from "react-router-dom";
 import TagBadge from './TagBadge';
-import { KEY_BY_ICON, TAG_BY_KEY } from '../tags';
+import { resolveTagKey } from '../tags';
 import formatCoordinate from '../utils/formatCoordinate';
 
 const toParagraphs = (input, limit) => {
@@ -19,11 +19,6 @@ const toParagraphs = (input, limit) => {
     return paragraphs.slice(0, limit);
   }
   return paragraphs;
-};
-
-const resolveTagKey = (value) => {
-  if (TAG_BY_KEY[value]) return value;
-  return KEY_BY_ICON[value] ?? null;
 };
 
 const Card = ({ id, title, tags = [], description, notes, lat, lng, photos = [] }) => {

@@ -29,5 +29,18 @@ export const TAGS = [
   },
 ];
 
-export const TAG_BY_KEY = Object.fromEntries(TAGS.map(t => [t.key, t]));
-export const KEY_BY_ICON = Object.fromEntries(TAGS.map(t => [t.icon, t.key]));
+export const TAG_BY_KEY = Object.fromEntries(TAGS.map((tag) => [tag.key, tag]));
+export const KEY_BY_ICON = Object.fromEntries(TAGS.map((tag) => [tag.icon, tag.key]));
+
+export const resolveTagKey = (value) => {
+  if (typeof value !== 'string') return null;
+  if (TAG_BY_KEY[value]) return value;
+  return KEY_BY_ICON[value] ?? null;
+};
+
+export const normalizeTagList = (values = []) => {
+  const keys = values
+    .map((value) => resolveTagKey(value))
+    .filter(Boolean);
+  return Array.from(new Set(keys));
+};
