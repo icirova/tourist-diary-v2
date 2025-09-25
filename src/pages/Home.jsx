@@ -10,7 +10,7 @@ import { useAuth } from "../context/AuthContext";
 
 const Home = () => {
   const { cards, addCard, locations } = useCards();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading, hasError } = useAuth();
   const [pickedCoords, setPickedCoords] = useState(null);
 
   useEffect(() => {
@@ -34,7 +34,15 @@ const Home = () => {
         <CardForm onAddCard={addCard} pickedCoords={pickedCoords} />
       ) : (
         <p className="auth-hint">
-          Přihlaste se, abyste mohli přidávat vlastní zážitky.
+          {isLoading
+            ? 'Ověřujeme přihlášení...'
+            : 'Přihlaste se, abyste mohli přidávat vlastní zážitky.'}
+        </p>
+      )}
+
+      {hasError && (
+        <p className="auth-hint auth-hint--error">
+          Nepodařilo se propojit přihlášení. Zkuste to prosím znovu později.
         </p>
       )}
         

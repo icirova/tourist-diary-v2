@@ -93,8 +93,8 @@ EditableLocationMap.propTypes = {
 
 const CardOpenContent = ({ card, onSave }) => {
   const tagOptions = useMemo(() => TAGS, []);
-  const { isAuthenticated } = useAuth();
-  const canEdit = isAuthenticated;
+  const { isAuthenticated, isLoading } = useAuth();
+  const canEdit = isAuthenticated && !isLoading;
   const [isEditing, setIsEditing] = useState(false);
   const [localTitle, setLocalTitle] = useState(card.title);
   const [localDescription, setLocalDescription] = useState(paragraphsToMultiline(card.description));
@@ -420,7 +420,7 @@ const CardOpenContent = ({ card, onSave }) => {
               </button>
             )}
           </div>
-          {!canEdit && (
+          {!canEdit && !isLoading && (
             <p className="auth-hint">Přihlaste se, abyste mohli podrobnosti upravit.</p>
           )}
         </>
