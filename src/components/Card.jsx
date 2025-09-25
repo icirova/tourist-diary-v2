@@ -5,6 +5,7 @@ import TagBadge from './TagBadge';
 import { resolveTagKey } from '../tags';
 import formatCoordinate from '../utils/formatCoordinate';
 import { limitParagraphs } from '../utils/text';
+import { PhotoPropType, TagKeyPropType } from '../types/cardPropTypes';
 
 const Card = ({ id, title, tags = [], description, notes, lat, lng, photos = [] }) => {
   const descriptionParagraphs = limitParagraphs(description, 2);
@@ -92,25 +93,21 @@ const Card = ({ id, title, tags = [], description, notes, lat, lng, photos = [] 
 Card.propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   title: PropTypes.string.isRequired,
-  tags: PropTypes.arrayOf(PropTypes.string),
-  description: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.string), // pokud description je pole řetězců
-    PropTypes.string // pokud přijde jako obyčejný řetězec
-  ]),
-  notes: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.string),
-    PropTypes.string
-  ]),
-  lat: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  lng: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  photos: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      src: PropTypes.string,
-      caption: PropTypes.string,
-      name: PropTypes.string,
-    }),
-  ),
+  tags: PropTypes.arrayOf(TagKeyPropType),
+  description: PropTypes.arrayOf(PropTypes.string),
+  notes: PropTypes.arrayOf(PropTypes.string),
+  lat: PropTypes.number,
+  lng: PropTypes.number,
+  photos: PropTypes.arrayOf(PhotoPropType),
+};
+
+Card.defaultProps = {
+  tags: [],
+  description: [],
+  notes: [],
+  lat: undefined,
+  lng: undefined,
+  photos: [],
 };
 
 export default Card;

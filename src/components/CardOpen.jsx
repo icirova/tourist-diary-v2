@@ -11,6 +11,7 @@ import formatCoordinate from '../utils/formatCoordinate';
 import { useCards } from '../context/CardsContext';
 import { paragraphsToMultiline, toParagraphArray } from '../utils/text';
 import { hasNoErrors, validateCardBasics } from '../utils/validation';
+import { CardPropType } from '../types/cardPropTypes';
 
 const DEFAULT_CENTER = [49.7514919, 15.326442];
 
@@ -561,23 +562,7 @@ const CardOpenContent = ({ card, onSave }) => {
 };
 
 CardOpenContent.propTypes = {
-  card: PropTypes.shape({
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.string]),
-    notes: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.string]),
-    tags: PropTypes.arrayOf(PropTypes.string),
-    lat: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    lng: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    photos: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        src: PropTypes.string.isRequired,
-        caption: PropTypes.string,
-        name: PropTypes.string,
-      })
-    ),
-  }).isRequired,
+  card: CardPropType.isRequired,
   onSave: PropTypes.func.isRequired,
 };
 
