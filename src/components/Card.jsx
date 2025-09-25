@@ -4,26 +4,11 @@ import { Link } from "react-router-dom";
 import TagBadge from './TagBadge';
 import { resolveTagKey } from '../tags';
 import formatCoordinate from '../utils/formatCoordinate';
-
-const toParagraphs = (input, limit) => {
-  let paragraphs = [];
-  if (Array.isArray(input)) {
-    paragraphs = input;
-  } else if (typeof input === 'string') {
-    paragraphs = input
-      .split('\n')
-      .map((paragraph) => paragraph.trim())
-      .filter(Boolean);
-  }
-  if (typeof limit === 'number') {
-    return paragraphs.slice(0, limit);
-  }
-  return paragraphs;
-};
+import { limitParagraphs } from '../utils/text';
 
 const Card = ({ id, title, tags = [], description, notes, lat, lng, photos = [] }) => {
-  const descriptionParagraphs = toParagraphs(description, 2);
-  const noteParagraphs = toParagraphs(notes, 2);
+  const descriptionParagraphs = limitParagraphs(description, 2);
+  const noteParagraphs = limitParagraphs(notes, 2);
   const photoThumbnails = Array.isArray(photos) ? photos.slice(0, 3) : [];
 
   return (

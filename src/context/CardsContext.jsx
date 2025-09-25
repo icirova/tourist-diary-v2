@@ -3,19 +3,9 @@ import PropTypes from 'prop-types';
 import { createContext, useContext, useMemo, useState } from 'react';
 import initialData from '../data';
 import { normalizeTagList } from '../tags';
+import { toParagraphArray } from '../utils/text';
 
 const CardsContext = createContext(null);
-
-const normalizeTextField = (value) => {
-  if (Array.isArray(value)) return value.filter(Boolean);
-  if (typeof value === 'string') {
-    return value
-      .split('\n')
-      .map((paragraph) => paragraph.trim())
-      .filter(Boolean);
-  }
-  return [];
-};
 
 const normalizePhotos = (photos) => {
   if (!Array.isArray(photos)) return [];
@@ -35,8 +25,8 @@ const normalizeFormInput = (raw, fallbackId) => ({
   lat: raw.lat !== undefined && raw.lat !== null ? parseFloat(raw.lat) : undefined,
   lng: raw.lng !== undefined && raw.lng !== null ? parseFloat(raw.lng) : undefined,
   tags: normalizeTagList(raw.tags || []),
-  description: normalizeTextField(raw.description),
-  notes: normalizeTextField(raw.notes),
+  description: toParagraphArray(raw.description),
+  notes: toParagraphArray(raw.notes),
   photos: normalizePhotos(raw.photos),
 });
 
@@ -72,8 +62,8 @@ export const CardsProvider = ({ children }) => {
             draft.lng !== undefined && draft.lng !== null
               ? parseFloat(draft.lng)
               : card.lng,
-          description: normalizeTextField(draft.description ?? card.description),
-          notes: normalizeTextField(draft.notes ?? card.notes),
+          description: toParagraphArray(draft.description ?? card.description),
+          notes: toParagraphArray(draft.notes ?? card.notes),
           photos: normalizePhotos(draft.photos ?? card.photos),
         };
       }),

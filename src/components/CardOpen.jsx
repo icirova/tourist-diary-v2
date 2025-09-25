@@ -9,6 +9,7 @@ import { TAGS, resolveTagKey } from '../tags';
 import CustomMapPin from './CustomMapPin';
 import formatCoordinate from '../utils/formatCoordinate';
 import { useCards } from '../context/CardsContext';
+import { paragraphsToMultiline, toParagraphArray } from '../utils/text';
 
 const DEFAULT_CENTER = [49.7514919, 15.326442];
 
@@ -17,19 +18,6 @@ const generatePhotoId = () => {
     return window.crypto.randomUUID();
   }
   return `photo-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-};
-
-const normaliseText = (value) => (Array.isArray(value) ? value.join("\n") : value || '');
-
-const toArray = (val) => {
-  if (Array.isArray(val)) return val;
-  if (typeof val === 'string') {
-    return val
-      .split('\n')
-      .map((s) => s.trim())
-      .filter(Boolean);
-  }
-  return [];
 };
 
 const normalisePhotos = (photos) => {
@@ -124,8 +112,8 @@ const CardOpenContent = ({ card, onSave }) => {
   const tagOptions = useMemo(() => TAGS, []);
   const [isEditing, setIsEditing] = useState(false);
   const [localTitle, setLocalTitle] = useState(card.title);
-  const [localDescription, setLocalDescription] = useState(normaliseText(card.description));
-  const [localNotes, setLocalNotes] = useState(normaliseText(card.notes));
+  const [localDescription, setLocalDescription] = useState(paragraphsToMultiline(card.description));
+  const [localNotes, setLocalNotes] = useState(paragraphsToMultiline(card.notes));
   const [selectedTags, setSelectedTags] = useState(
     (card.tags || [])
       .map((tag) => resolveTagKey(tag))
@@ -144,6 +132,8 @@ const CardOpenContent = ({ card, onSave }) => {
   const [isUploading, setIsUploading] = useState(false);
 
   const viewPhotos = useMemo(() => normalisePhotos(card.photos), [card.photos]);
+  const viewDescription = useMemo(() => toParagraphArray(card.description), [card.description]);
+  const viewNotes = useMemo(() => toParagraphArray(card.notes), [card.notes]);
 
   useEffect(() => {
     if (!isEditing) {
@@ -155,8 +145,8 @@ const CardOpenContent = ({ card, onSave }) => {
   useEffect(() => {
     if (isEditing) return;
     setLocalTitle(card.title);
-    setLocalDescription(normaliseText(card.description));
-    setLocalNotes(normaliseText(card.notes));
+    setLocalDescription(paragraphsToMultiline(card.description));
+    setLocalNotes(paragraphsToMultiline(card.notes));
     setSelectedTags(
       (card.tags || [])
         .map((tag) => resolveTagKey(tag))
@@ -230,8 +220,8 @@ const CardOpenContent = ({ card, onSave }) => {
     onSave(card.id, (previous) => ({
       ...previous,
       title: localTitle,
-      description: toArray(localDescription),
-      notes: toArray(localNotes),
+      description: toParagraphArray(localDescription),
+      notes: toParagraphArray(localNotes),
       tags: selectedTags,
       lat: localLat,
       lng: localLng,
@@ -242,8 +232,8 @@ const CardOpenContent = ({ card, onSave }) => {
 
   const resetFromCard = () => {
     setLocalTitle(card.title);
-    setLocalDescription(normaliseText(card.description));
-    setLocalNotes(normaliseText(card.notes));
+    setLocalDescription(paragraphsToMultiline(card.description));
+    setLocalNotes(paragraphsToMultiline(card.notes));
     setSelectedTags(
       (card.tags || [])
         .map((tag) => resolveTagKey(tag))
@@ -339,23 +329,19 @@ const CardOpenContent = ({ card, onSave }) => {
           </div>
 
           <div className="perex">
-            {(Array.isArray(card.description) ? card.description : [card.description])
-              .filter(Boolean)
-              .map((oneParagraph, index) => (
-                <p key={index} className="paragraph">
-                  {oneParagraph}
-                </p>
-              ))}
+            {viewDescription.map((oneParagraph, index) => (
+              <p key={index} className="paragraph">
+                {oneParagraph}
+              </p>
+            ))}
           </div>
 
           <div className="notes">
-            {(Array.isArray(card.notes) ? card.notes : [card.notes])
-              .filter(Boolean)
-              .map((oneParagraph, index) => (
-                <p key={index} className="paragraph">
-                  {oneParagraph}
-                </p>
-              ))}
+            {viewNotes.map((oneParagraph, index) => (
+              <p key={index} className="paragraph">
+                {oneParagraph}
+              </p>
+            ))}
           </div>
 
           {viewPhotos.length > 0 && (
