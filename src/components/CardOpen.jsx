@@ -10,6 +10,7 @@ import CustomMapPin from './CustomMapPin';
 import formatCoordinate from '../utils/formatCoordinate';
 import { useCards } from '../context/CardsContext';
 import { paragraphsToMultiline, toParagraphArray } from '../utils/text';
+import { hasNoErrors, validateCardBasics } from '../utils/validation';
 
 const DEFAULT_CENTER = [49.7514919, 15.326442];
 
@@ -88,26 +89,6 @@ EditableLocationMap.propTypes = {
   onPick: PropTypes.func,
 };
 
-const validate = ({ title, lat, lng }) => {
-  const errors = {};
-  if (!title || title.trim() === '') {
-    errors.title = 'Povinné pole.';
-  }
-  const latFloat = parseFloat(lat);
-  if (lat === '' || Number.isNaN(latFloat)) {
-    errors.lat = 'Povinné pole.';
-  } else if (latFloat < -90 || latFloat > 90) {
-    errors.lat = 'Mimo rozsah (−90 až 90).';
-  }
-  const lngFloat = parseFloat(lng);
-  if (lng === '' || Number.isNaN(lngFloat)) {
-    errors.lng = 'Povinné pole.';
-  } else if (lngFloat < -180 || lngFloat > 180) {
-    errors.lng = 'Mimo rozsah (−180 až 180).';
-  }
-  return errors;
-};
-
 const CardOpenContent = ({ card, onSave }) => {
   const tagOptions = useMemo(() => TAGS, []);
   const [isEditing, setIsEditing] = useState(false);
@@ -176,7 +157,7 @@ const CardOpenContent = ({ card, onSave }) => {
   });
 
   const applyValidation = (overrides = {}) => {
-    setErrors(validate(currentValidationState(overrides)));
+    setErrors(validateCardBasics(currentValidationState(overrides)));
   };
 
   const onPickCoords = (lat, lng) => {
@@ -211,9 +192,9 @@ const CardOpenContent = ({ card, onSave }) => {
   };
 
   const save = () => {
-    const nextErrors = validate(currentValidationState());
+    const nextErrors = validateCardBasics(currentValidationState());
     setErrors(nextErrors);
-    if (Object.keys(nextErrors).length > 0) {
+    if (!hasNoErrors(nextErrors)) {
       return;
     }
 

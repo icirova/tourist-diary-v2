@@ -4,6 +4,7 @@ import "./CardForm.scss";
 import TagBadge from './TagBadge';
 import { TAGS } from '../tags';
 import formatCoordinate from '../utils/formatCoordinate';
+import { hasNoErrors, validateCardBasics } from '../utils/validation';
 import pencilIcon from "/icons/pencil.svg";
 import notesIcon from "/icons/notes.svg";
 import descriptionIcon from "/icons/description.svg";
@@ -41,40 +42,20 @@ const fileToDataUrl = (file) =>
     reader.readAsDataURL(file);
   });
 
-function validate(data) {
-  const nextErrors = {};
-  if (!data.title || data.title.trim() === '') {
-    nextErrors.title = 'Povinné pole.';
-  }
-  const lat = parseFloat(data.lat);
-  if (data.lat === '' || Number.isNaN(lat)) {
-    nextErrors.lat = 'Povinné pole.';
-  } else if (lat < -90 || lat > 90) {
-    nextErrors.lat = 'Mimo rozsah (−90 až 90).';
-  }
-  const lng = parseFloat(data.lng);
-  if (data.lng === '' || Number.isNaN(lng)) {
-    nextErrors.lng = 'Povinné pole.';
-  } else if (lng < -180 || lng > 180) {
-    nextErrors.lng = 'Mimo rozsah (−180 až 180).';
-  }
-  return nextErrors;
-}
-
 const CardForm = ({ onAddCard, pickedCoords }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [btnText, setBtnText] = useState('+ vložit kartu');
   const [formData, setFormData] = useState(initialFormData);
-  const [errors, setErrors] = useState(() => validate(initialFormData));
+  const [errors, setErrors] = useState(() => validateCardBasics(initialFormData));
   const [isUploading, setIsUploading] = useState(false);
 
-  const isValid = Object.keys(errors).length === 0 && !isUploading;
+  const isValid = hasNoErrors(errors) && !isUploading;
 
   const lastPickedCoordsRef = useRef(null);
 
   const resetForm = () => {
     setFormData(initialFormData);
-    setErrors(validate(initialFormData));
+    setErrors(validateCardBasics(initialFormData));
     setIsUploading(false);
     lastPickedCoordsRef.current = null;
   };
@@ -93,7 +74,7 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
   const applyNextState = (updater) => {
     setFormData((prev) => {
       const nextFormData = typeof updater === 'function' ? updater(prev) : updater;
-      setErrors(validate(nextFormData));
+      setErrors(validateCardBasics(nextFormData));
       return nextFormData;
     });
   };
@@ -170,10 +151,10 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const submissionErrors = validate(formData);
+    const submissionErrors = validateCardBasics(formData);
     setErrors(submissionErrors);
 
-    if (Object.keys(submissionErrors).length === 0) {
+    if (hasNoErrors(submissionErrors)) {
       if (typeof onAddCard === 'function') {
         onAddCard(formData);
       }
