@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import { CardsProvider } from './context/CardsContext.jsx'
+import { AuthProvider } from './context/AuthContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <CardsProvider>
-      <App />
-    </CardsProvider>
+    <AuthProvider>
+      <CardsProvider>
+        <App />
+      </CardsProvider>
+    </AuthProvider>
   </React.StrictMode>,
 )

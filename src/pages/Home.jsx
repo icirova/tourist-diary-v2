@@ -1,23 +1,42 @@
 import "./Home.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../components/Card";
 import CardForm from "../components/CardForm";
 import Map from "../components/Map";
 import Sidebar from "../components/Sidebar";
 import { useCards } from "../context/CardsContext";
+import { useAuth } from "../context/AuthContext";
 
 
 const Home = () => {
   const { cards, addCard, locations } = useCards();
+  const { isAuthenticated } = useAuth();
   const [pickedCoords, setPickedCoords] = useState(null);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setPickedCoords(null);
+    }
+  }, [isAuthenticated]);
 
   return <div className="container">
 
       {/* mapa s piny */}
-      <Map locations={locations} onPickCoords={(lat, lng) => setPickedCoords({ lat, lng })} />
+      <Map
+        locations={locations}
+        onPickCoords={
+          isAuthenticated ? (lat, lng) => setPickedCoords({ lat, lng }) : undefined
+        }
+      />
 
       {/* formulář pro zadávání nových karet */}
-      <CardForm onAddCard={addCard} pickedCoords={pickedCoords} />
+      {isAuthenticated ? (
+        <CardForm onAddCard={addCard} pickedCoords={pickedCoords} />
+      ) : (
+        <p className="auth-hint">
+          Přihlaste se, abyste mohli přidávat vlastní zážitky.
+        </p>
+      )}
         
       {/* Vypisování karet z dat z data.jsx */}
       <div className="cards">

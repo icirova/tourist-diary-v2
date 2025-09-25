@@ -12,6 +12,7 @@ import { useCards } from '../context/CardsContext';
 import { paragraphsToMultiline, toParagraphArray } from '../utils/text';
 import { hasNoErrors, validateCardBasics } from '../utils/validation';
 import { CardPropType } from '../types/cardPropTypes';
+import { useAuth } from '../context/AuthContext';
 
 const DEFAULT_CENTER = [49.7514919, 15.326442];
 
@@ -92,6 +93,8 @@ EditableLocationMap.propTypes = {
 
 const CardOpenContent = ({ card, onSave }) => {
   const tagOptions = useMemo(() => TAGS, []);
+  const { isAuthenticated } = useAuth();
+  const canEdit = isAuthenticated;
   const [isEditing, setIsEditing] = useState(false);
   const [localTitle, setLocalTitle] = useState(card.title);
   const [localDescription, setLocalDescription] = useState(paragraphsToMultiline(card.description));
@@ -123,6 +126,12 @@ const CardOpenContent = ({ card, onSave }) => {
       setIsGalleryOpen(false);
     }
   }, [isEditing]);
+
+  useEffect(() => {
+    if (!canEdit) {
+      setIsEditing(false);
+    }
+  }, [canEdit]);
 
   useEffect(() => {
     if (isEditing) return;
@@ -233,6 +242,7 @@ const CardOpenContent = ({ card, onSave }) => {
   };
 
   const startEditing = () => {
+    if (!canEdit) return;
     resetFromCard();
     setIsEditing(true);
   };
@@ -404,10 +414,15 @@ const CardOpenContent = ({ card, onSave }) => {
 
           <div className="card__actions">
             <Link to="/" className="btn btn--primary btn--opened-card">Zpět</Link>
-            <button className="btn btn--secondary" onClick={startEditing}>
-              Upravit
-            </button>
+            {canEdit && (
+              <button className="btn btn--secondary" onClick={startEditing}>
+                Upravit
+              </button>
+            )}
           </div>
+          {!canEdit && (
+            <p className="auth-hint">Přihlaste se, abyste mohli podrobnosti upravit.</p>
+          )}
         </>
       ) : (
         <>
