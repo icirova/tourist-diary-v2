@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'        # správná syntaxe cache
+
+      - name: Install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint    # pokud máš script "lint": "eslint ."
+
+      - name: Test (Vitest)
+        run: npm run test -- --run   # nebo: npx vitest run
+
+      - name: Coverage (artefakt)
+        if: always()
+        run: npm run test:cov || true
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage
