@@ -17,16 +17,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'        # správná syntaxe cache
+          cache: 'npm'        
 
       - name: Install
         run: npm ci
 
       - name: Lint
-        run: npm run lint    # pokud máš script "lint": "eslint ."
+        run: npm run lint   
 
       - name: Test (Vitest)
-        run: npm run test -- --run   # nebo: npx vitest run
+        run: npm run test -- --run   
 
       - name: Coverage (artefakt)
         if: always()
