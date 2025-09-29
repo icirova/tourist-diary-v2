@@ -22,11 +22,11 @@ const Map= ({locations, onPickCoords}) => {
 
 
   return (
-    <div>
-      <MapContainer 
-        center={[49.7514919, 15.3264420]} 
+    <section className="map">
+      <MapContainer
+        className="map__container"
+        center={[49.7514919, 15.3264420]}
         zoom={7}
-        style={{ height: '400px', width: '100%' }}
         scrollWheelZoom={false}
         >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
@@ -47,7 +47,7 @@ const Map= ({locations, onPickCoords}) => {
           );
         })}
       </MapContainer>
-    </div>
+    </section>
   );
 };
 

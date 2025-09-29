@@ -1,8 +1,12 @@
 
-.leaflet-container {
+.map {
+    margin: 0;
+}
+
+.map__container {
+    width: 100%;
     border-radius: 4px;
-    margin-bottom: 20px;
- 
+    min-height: 320px;
 }
 
 .leaflet-popup-content strong {
@@ -15,4 +19,17 @@
 .popup .btn,
 .popup .btn:visited {
     color: #fff !important;
+}
+
+@media (min-width: 768px) {
+    .map__container {
+        min-height: 360px;
+    }
+}
+
+@media (min-width: 992px) {
+    .map__container {
+        height: 100%;
+        min-height: 400px;
+    }
 }

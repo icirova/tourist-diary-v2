@@ -6,6 +6,7 @@ import Map from "../components/Map";
 import Sidebar from "../components/Sidebar";
 import { useCards } from "../context/CardsContext";
 import { useAuth } from "../context/AuthContext";
+import AiAssistant from "../components/AiAssistant";
 
 
 const Home = () => {
@@ -19,15 +20,20 @@ const Home = () => {
     }
   }, [isAuthenticated]);
 
-  return <div className="container">
+  return <div className="container home-page">
 
-      {/* mapa s piny */}
-      <Map
-        locations={locations}
-        onPickCoords={
-          isAuthenticated ? (lat, lng) => setPickedCoords({ lat, lng }) : undefined
-        }
-      />
+      <div className="home-page__intro">
+        {/* mapa s piny */}
+        <Map
+          locations={locations}
+          onPickCoords={
+            isAuthenticated ? (lat, lng) => setPickedCoords({ lat, lng }) : undefined
+          }
+        />
+
+        {/* AI průvodce */}
+        <AiAssistant />
+      </div>
 
       {/* formulář pro zadávání nových karet */}
       {isAuthenticated ? (
