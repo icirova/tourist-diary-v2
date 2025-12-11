@@ -24,13 +24,17 @@ const getDefaultAdapterUrl = () => {
 
 const keycloakAdapterUrl = keycloakConfig.adapterUrl || getDefaultAdapterUrl();
 
+const keycloakSilentCheckSsoRedirectUri =
+  keycloakConfig.silentCheckSsoRedirectUri ||
+  (typeof window !== 'undefined' ? `${window.location.origin}/keycloak-silent-check-sso.html` : undefined);
+
 const keycloakInitOptions = (() => {
   const options = {
     onLoad: 'check-sso',
     pkceMethod: 'S256',
   };
-  if (keycloakConfig.silentCheckSsoRedirectUri) {
-    options.silentCheckSsoRedirectUri = keycloakConfig.silentCheckSsoRedirectUri;
+  if (keycloakSilentCheckSsoRedirectUri) {
+    options.silentCheckSsoRedirectUri = keycloakSilentCheckSsoRedirectUri;
   }
   return options;
 })();
@@ -46,6 +50,7 @@ export {
   isKeycloakConfigured,
   keycloakAdapterUrl,
   keycloakInitOptions,
+  keycloakSilentCheckSsoRedirectUri,
   keycloakLoginRedirectUri,
   keycloakLogoutRedirectUri,
 };
