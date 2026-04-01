@@ -1,18 +1,32 @@
 import "./Home.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Card from "../components/Card";
 import CardForm from "../components/CardForm";
 import Map from "../components/Map";
-import Sidebar from "../components/Sidebar";
 import { useCards } from "../context/CardsContext";
 import { useAuth } from "../context/AuthContext";
 import AiAssistant from "../components/AiAssistant";
+import CardFilters from "../components/CardFilters";
 
 
 const Home = () => {
   const { cards, addCard, locations } = useCards();
   const { isAuthenticated, isLoading, hasError } = useAuth();
   const [pickedCoords, setPickedCoords] = useState(null);
+  const [activeTags, setActiveTags] = useState([]);
+
+  const filteredCards = useMemo(() => {
+    if (!activeTags.length) return cards;
+    return cards.filter((card) =>
+      activeTags.every((tag) => Array.isArray(card.tags) && card.tags.includes(tag))
+    );
+  }, [activeTags, cards]);
+
+  const filteredLocations = useMemo(() => {
+    if (!activeTags.length) return locations;
+    const visibleCardIds = new Set(filteredCards.map((card) => String(card.id)));
+    return locations.filter((location) => visibleCardIds.has(String(location.id)));
+  }, [activeTags, filteredCards, locations]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -25,7 +39,7 @@ const Home = () => {
       <div className="home-page__intro">
         {/* mapa s piny */}
         <Map
-          locations={locations}
+          locations={filteredLocations}
           onPickCoords={
             isAuthenticated ? (lat, lng) => setPickedCoords({ lat, lng }) : undefined
           }
@@ -51,10 +65,17 @@ const Home = () => {
           Nepodařilo se propojit přihlášení. Zkuste to prosím znovu později.
         </p>
       )}
+
+      <CardFilters
+        activeTags={activeTags}
+        onChange={setActiveTags}
+        resultCount={filteredCards.length}
+        totalCount={cards.length}
+      />
         
       {/* Vypisování karet z dat z data.jsx */}
       <div className="cards">
-        {cards.map((oneCard) => {
+        {filteredCards.map((oneCard) => {
           const { id, title, tags, description, notes, lat, lng, photos } = oneCard;
           return (
             <Card
@@ -70,11 +91,13 @@ const Home = () => {
             ></Card>
           );
         })}
-        </div>
+      </div>
 
-        {/* Vysvětlivky */}
-      <Sidebar />
-        
+      {filteredCards.length === 0 && (
+        <p className="cards-empty">
+          Zvoleným tagům teď neodpovídá žádný výlet. Zkuste některý filtr vypnout.
+        </p>
+      )}
     </div>
   };
 
