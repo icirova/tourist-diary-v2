@@ -11,17 +11,11 @@ import formatCoordinate from '../utils/formatCoordinate';
 import { useCards } from '../context/CardsContext';
 import { paragraphsToMultiline, toParagraphArray } from '../utils/text';
 import { hasNoErrors, validateCardBasics } from '../utils/validation';
+import { fileToDataUrl, generatePhotoId } from '../utils/photoUtils';
 import { CardPropType } from '../types/cardPropTypes';
 import { useAuth } from '../context/AuthContext';
 
 const DEFAULT_CENTER = [49.7514919, 15.326442];
-
-const generatePhotoId = () => {
-  if (typeof window !== 'undefined' && window.crypto?.randomUUID) {
-    return window.crypto.randomUUID();
-  }
-  return `photo-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-};
 
 const normalisePhotos = (photos) => {
   if (!Array.isArray(photos)) return [];
@@ -34,21 +28,6 @@ const normalisePhotos = (photos) => {
       name: photo.name || '',
     }));
 };
-
-const fileToDataUrl = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      resolve({
-        id: generatePhotoId(),
-        src: reader.result,
-        caption: '',
-        name: file.name,
-      });
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
 
 const EditableLocationMap = ({ lat, lng, onPick }) => {
   const numericLat = Number(lat);
@@ -590,7 +569,12 @@ const CardOpen = () => {
   );
 
   if (!card) {
-    return <div>Sorry, the requested card was not found.</div>;
+    return (
+      <div>
+        <p>Výlet nebyl nalezen.</p>
+        <Link to="/">Zpět na seznam výletů</Link>
+      </div>
+    );
   }
 
   return <CardOpenContent card={card} onSave={updateCard} />;

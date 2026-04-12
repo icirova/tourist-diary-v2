@@ -5,6 +5,7 @@ import TagBadge from './TagBadge';
 import { TAGS } from '../tags';
 import formatCoordinate from '../utils/formatCoordinate';
 import { hasNoErrors, validateCardBasics } from '../utils/validation';
+import { fileToDataUrl } from '../utils/photoUtils';
 import pencilIcon from "/icons/pencil.svg";
 import notesIcon from "/icons/notes.svg";
 import descriptionIcon from "/icons/description.svg";
@@ -19,28 +20,6 @@ const initialFormData = {
   notes: "",
   photos: [],
 };
-
-const generateId = () => {
-  if (typeof window !== 'undefined' && window.crypto?.randomUUID) {
-    return window.crypto.randomUUID();
-  }
-  return `photo-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-};
-
-const fileToDataUrl = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      resolve({
-        id: generateId(),
-        src: reader.result,
-        name: file.name,
-        caption: '',
-      });
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
 
 const CardForm = ({ onAddCard, pickedCoords }) => {
   const [isVisible, setIsVisible] = useState(false);
