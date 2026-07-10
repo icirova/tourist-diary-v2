@@ -12,12 +12,13 @@
 
 .logo {
   color: var(--color-text);
-  text-transform: uppercase;
-  font-size: clamp(1.45rem, 3vw, 2rem);
-  font-weight: 800;
+  font-family: var(--font-hand);
+  font-size: clamp(2rem, 5vw, 3.1rem);
+  font-weight: 700;
   text-align: center;
   margin: 0;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
+  transform: rotate(-1deg);
 }
 
 .header__actions {
