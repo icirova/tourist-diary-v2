@@ -81,4 +81,11 @@
   -o-object-fit: cover;
      object-fit: cover;
   border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.card > .btn {
+  display: flex;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 20px auto 0;
 }/*# sourceMappingURL=Card.css.map */
