@@ -3,24 +3,26 @@
   flex-direction: column;
   gap: 16px;
   align-items: center;
-  justify-content: center;
-  margin: 20px 0 30px;
+  justify-content: space-between;
+  width: min(1180px, calc(100% - (var(--space-page) * 2)));
+  margin: 0 auto;
+  padding: 22px 0 18px;
   text-align: center;
 }
 
 .logo {
-  color: #e88f24;
-  font-family: 'Quicksand', sans-serif;
+  color: var(--color-text);
   text-transform: uppercase;
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 700;
+  font-size: clamp(1.45rem, 3vw, 2rem);
+  font-weight: 800;
   text-align: center;
   margin: 0;
+  letter-spacing: 0.04em;
 }
 
 .header__actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   justify-content: center;
   flex-wrap: wrap;
 }
@@ -30,8 +32,14 @@
 }
 
 .header__user {
-  font-family: 'Quicksand', sans-serif;
   font-weight: 600;
-  color: #033035;
+  color: var(--color-text-muted);
   align-self: center;
+}
+
+@media (min-width: 720px) {
+  .header {
+    flex-direction: row;
+    text-align: left;
+  }
 }

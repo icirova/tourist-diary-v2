@@ -1,14 +1,14 @@
 .tag-badge {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 3px 6px;
-  border-radius: 999px;
-  background: rgba(3, 48, 53, 0.08);
-  color: #033035;
-  font-family: 'Quicksand', sans-serif;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  background: rgba(47, 111, 115, 0.1);
+  color: var(--color-accent);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 800;
+  line-height: 1.2;
 }
 
 .tag-badge__icon {
@@ -17,11 +17,11 @@
 }
 
 .tag-badge.compact {
-  padding: 0;
-  background: transparent;
+  padding: 5px;
+  background: var(--color-surface-muted);
 }
 
 .tag-badge.compact .tag-badge__icon {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
 }

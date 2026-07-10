@@ -44,6 +44,7 @@ const AiAssistant = () => {
   const { askAssistant, lastAnswer, status, error } = useAiAssistant();
   const { cards } = useCards();
   const [prompt, setPrompt] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
 
   const recommendations = useMemo(() => {
     if (!lastAnswer) return [];
@@ -53,6 +54,8 @@ const AiAssistant = () => {
   }, [lastAnswer, cards]);
 
   const isLoading = status === 'loading';
+  const hasOutput = Boolean(error || isLoading || lastAnswer);
+  const panelId = 'ai-assistant-panel';
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -63,51 +66,66 @@ const AiAssistant = () => {
   };
 
   return (
-    <section className="ai-assistant" aria-live="polite">
+    <section className={`ai-assistant ${isOpen || hasOutput ? 'ai-assistant--open' : ''}`} aria-live="polite">
       <div className="ai-assistant__header">
-        <h2 className="ai-assistant__title">AI průvodce výlety</h2>
-        <p className="ai-assistant__subtitle">
-          Popište, co chcete zažít, a průvodce navrhne výlety z vašeho deníku.
-        </p>
+        <div>
+          <h2 className="ai-assistant__title">AI průvodce výlety</h2>
+          <p className="ai-assistant__subtitle">
+            Doporučí výlety podle nálady, skupiny nebo praktických požadavků.
+          </p>
+        </div>
+        <button
+          type="button"
+          className="btn btn--secondary btn--small"
+          onClick={() => setIsOpen((prev) => !prev)}
+          aria-expanded={isOpen || hasOutput}
+          aria-controls={panelId}
+        >
+          {isOpen || hasOutput ? 'Skrýt' : 'Doporučit'}
+        </button>
       </div>
 
-      <form className="ai-assistant__form" onSubmit={handleSubmit}>
-        <label htmlFor="ai-query" className="ai-assistant__label">
-          Zadání
-        </label>
-        <textarea
-          id="ai-query"
-          className="ai-assistant__input"
-          rows="4"
-          placeholder="Například: procházka v přírodě s možností občerstvení a bezlepkové nabídky"
-          value={prompt}
-          onChange={(event) => setPrompt(event.target.value)}
-          disabled={isLoading}
-        />
-        <button type="submit" className="btn btn--primary" disabled={isLoading}>
-          {isLoading ? 'Hledám tipy...' : 'Najít výlety'}
-        </button>
-      </form>
+      {(isOpen || hasOutput) && (
+        <div id={panelId} className="ai-assistant__panel">
+          <form className="ai-assistant__form" onSubmit={handleSubmit}>
+            <label htmlFor="ai-query" className="ai-assistant__label">
+              Zadání
+            </label>
+            <textarea
+              id="ai-query"
+              className="ai-assistant__input"
+              rows="4"
+              placeholder="Například: procházka v přírodě s možností občerstvení a bezlepkové nabídky"
+              value={prompt}
+              onChange={(event) => setPrompt(event.target.value)}
+              disabled={isLoading}
+            />
+            <button type="submit" className="btn btn--primary" disabled={isLoading}>
+              {isLoading ? 'Hledám tipy...' : 'Najít výlety'}
+            </button>
+          </form>
 
-      {error && <p className="ai-assistant__error">{error}</p>}
+          {error && <p className="ai-assistant__error">{error}</p>}
 
-      {status === 'idle' && !lastAnswer && (
-        <p className="ai-assistant__hint">
-          Doporučení se zobrazí zde. Zkuste zmínit aktivitu, typ skupiny nebo praktické požadavky.
-        </p>
-      )}
+          {status === 'idle' && !lastAnswer && (
+            <p className="ai-assistant__hint">
+              Doporučení se zobrazí zde. Zkuste zmínit aktivitu, typ skupiny nebo praktické požadavky.
+            </p>
+          )}
 
-      {isLoading && (
-        <p className="ai-assistant__loading">Zpracovávám vaše zadání...</p>
-      )}
+          {isLoading && (
+            <p className="ai-assistant__loading">Zpracovávám vaše zadání...</p>
+          )}
 
-      {status === 'resolved' && lastAnswer && (
-        <div className="ai-assistant__results">
-          <p className="ai-assistant__reasoning">{lastAnswer.reasoning}</p>
-          {recommendations.length > 0 ? (
-            recommendations.map((card) => <ResultCard key={card.id} card={card} />)
-          ) : (
-            <p className="ai-assistant__empty">Zkuste zadat jiné klíčové slovo nebo lokalitu.</p>
+          {status === 'resolved' && lastAnswer && (
+            <div className="ai-assistant__results">
+              <p className="ai-assistant__reasoning">{lastAnswer.reasoning}</p>
+              {recommendations.length > 0 ? (
+                recommendations.map((card) => <ResultCard key={card.id} card={card} />)
+              ) : (
+                <p className="ai-assistant__empty">Zkuste zadat jiné klíčové slovo nebo lokalitu.</p>
+              )}
+            </div>
           )}
         </div>
       )}

@@ -98,6 +98,7 @@ const CardOpenContent = ({ card, onSave }) => {
   const viewPhotos = useMemo(() => normalisePhotos(card.photos), [card.photos]);
   const viewDescription = useMemo(() => toParagraphArray(card.description), [card.description]);
   const viewNotes = useMemo(() => toParagraphArray(card.notes), [card.notes]);
+  const hasCoords = (card.lat !== undefined && card.lat !== null) || (card.lng !== undefined && card.lng !== null);
 
   useEffect(() => {
     if (!isEditing) {
@@ -257,66 +258,148 @@ const CardOpenContent = ({ card, onSave }) => {
     <div className="opened-card">
       {!isEditing ? (
         <>
-          <h1 className="title ">{card.title}</h1>
-
-          {(card.lat !== undefined && card.lat !== null) || (card.lng !== undefined && card.lng !== null) ? (
-            <div className="location">
-              <p className="paragraph">
-                Souřadnice:
-                <span className="location__value" title={card.lat != null ? String(card.lat) : undefined}>
-                  {formatCoordinate(card.lat)}
-                </span>
-                ,
-                <span className="location__value" title={card.lng != null ? String(card.lng) : undefined}>
-                  {formatCoordinate(card.lng)}
-                </span>
-              </p>
+          <header className="opened-card__header">
+            <div className="opened-card__title-block">
+              <Link to="/" className="opened-card__back-link">Zpět na výlety</Link>
+              <h1 className="title">{card.title}</h1>
+              <div className="tags">
+                {(card.tags || []).map((rawTag, index) => {
+                  const keyName = resolveTagKey(rawTag);
+                  if (keyName) {
+                    return <TagBadge key={`${keyName}-${index}`} keyName={keyName} />;
+                  }
+                  if (typeof rawTag === 'string' && rawTag.endsWith('.svg')) {
+                    return (
+                      <img
+                        className="tag"
+                        key={`${rawTag}-${index}`}
+                        src={rawTag}
+                        alt="tag"
+                        title="Tag"
+                      />
+                    );
+                  }
+                  return (
+                    <span className="tag" key={`${String(rawTag)}-${index}`} title={String(rawTag)}>
+                      {String(rawTag)}
+                    </span>
+                  );
+                })}
+              </div>
             </div>
-          ) : null}
+            <div className="opened-card__actions">
+              {canEdit && (
+                <button className="btn btn--secondary" onClick={startEditing}>
+                  Upravit
+                </button>
+              )}
+            </div>
+          </header>
 
-          <div className="tags">
-            {(card.tags || []).map((rawTag, index) => {
-              const keyName = resolveTagKey(rawTag);
-              if (keyName) {
-                return <TagBadge key={`${keyName}-${index}`} keyName={keyName} />;
-              }
-              if (typeof rawTag === 'string' && rawTag.endsWith('.svg')) {
-                return (
-                  <img
-                    className="tag"
-                    key={`${rawTag}-${index}`}
-                    src={rawTag}
-                    alt="tag"
-                    title="Tag"
-                  />
-                );
-              }
-              return (
-                <span className="tag" key={`${String(rawTag)}-${index}`} title={String(rawTag)}>
-                  {String(rawTag)}
-                </span>
-              );
-            })}
-          </div>
+          <section className={`detail-hero ${viewPhotos.length ? '' : 'detail-hero--empty'}`} aria-label="Fotografie výletu">
+            {viewPhotos.length > 0 ? (
+              <>
+                <button
+                  type="button"
+                  className="detail-hero__main"
+                  onClick={() => {
+                    setActivePhotoIndex(0);
+                    setIsGalleryOpen(true);
+                  }}
+                >
+                  <img src={viewPhotos[0].src} alt={viewPhotos[0].caption || viewPhotos[0].name || card.title} />
+                </button>
+                {viewPhotos.length > 1 && (
+                  <div className="detail-hero__thumbs">
+                    {viewPhotos.slice(1, 5).map((photo, index) => (
+                      <button
+                        key={photo.id}
+                        type="button"
+                        className="detail-hero__thumb"
+                        onClick={() => {
+                          setActivePhotoIndex(index + 1);
+                          setIsGalleryOpen(true);
+                        }}
+                      >
+                        <img src={photo.src} alt={photo.caption || photo.name || card.title} />
+                        {index === 3 && viewPhotos.length > 5 && (
+                          <span className="detail-hero__more">+{viewPhotos.length - 5}</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="detail-hero__placeholder">
+                Fotografie zatím nejsou přidané.
+              </div>
+            )}
+          </section>
 
-          <div className="perex">
-            {viewDescription.map((oneParagraph, index) => (
-              <p key={index} className="paragraph">
-                {oneParagraph}
-              </p>
-            ))}
-          </div>
+          <div className="opened-card__layout">
+            <article className="opened-card__content">
+              <section className="detail-section">
+                <h2>Popis</h2>
+                <div className="perex">
+                  {viewDescription.length > 0 ? (
+                    viewDescription.map((oneParagraph, index) => (
+                      <p key={index} className="paragraph">
+                        {oneParagraph}
+                      </p>
+                    ))
+                  ) : (
+                    <p className="paragraph">Popis zatím není vyplněný.</p>
+                  )}
+                </div>
+              </section>
 
-          <div className="notes">
-            {viewNotes.map((oneParagraph, index) => (
-              <p key={index} className="paragraph">
-                {oneParagraph}
-              </p>
-            ))}
+              <section className="detail-section">
+                <h2>Poznámky</h2>
+                <div className="notes">
+                  {viewNotes.length > 0 ? (
+                    viewNotes.map((oneParagraph, index) => (
+                      <p key={index} className="paragraph">
+                        {oneParagraph}
+                      </p>
+                    ))
+                  ) : (
+                    <p className="paragraph">Poznámky zatím nejsou vyplněné.</p>
+                  )}
+                </div>
+              </section>
+            </article>
+
+            <aside className="opened-card__sidebar" aria-label="Praktické informace">
+              <section className="detail-panel">
+                <h2>Poloha</h2>
+                {hasCoords ? (
+                  <>
+                    <div className="location">
+                      <span>
+                        <strong>Šířka</strong>
+                        <span title={card.lat != null ? String(card.lat) : undefined}>{formatCoordinate(card.lat)}</span>
+                      </span>
+                      <span>
+                        <strong>Délka</strong>
+                        <span title={card.lng != null ? String(card.lng) : undefined}>{formatCoordinate(card.lng)}</span>
+                      </span>
+                    </div>
+                    <EditableLocationMap lat={card.lat} lng={card.lng} />
+                  </>
+                ) : (
+                  <p className="paragraph">Souřadnice zatím nejsou vyplněné.</p>
+                )}
+              </section>
+
+              {!canEdit && !isLoading && (
+                <p className="auth-hint">Přihlaste se, abyste mohli podrobnosti upravit.</p>
+              )}
+            </aside>
           </div>
 
           {viewPhotos.length > 0 && (
-            <div className="gallery">
+            <div className="gallery gallery--hidden">
               <div className="gallery__thumbnails">
                 {viewPhotos.map((photo, index) => (
                   <button
@@ -391,17 +474,6 @@ const CardOpenContent = ({ card, onSave }) => {
             </div>
           )}
 
-          <div className="card__actions">
-            <Link to="/" className="btn btn--primary btn--opened-card">Zpět</Link>
-            {canEdit && (
-              <button className="btn btn--secondary" onClick={startEditing}>
-                Upravit
-              </button>
-            )}
-          </div>
-          {!canEdit && !isLoading && (
-            <p className="auth-hint">Přihlaste se, abyste mohli podrobnosti upravit.</p>
-          )}
         </>
       ) : (
         <>

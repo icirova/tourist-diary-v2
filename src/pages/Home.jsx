@@ -34,71 +34,86 @@ const Home = () => {
     }
   }, [isAuthenticated]);
 
-  return <div className="container home-page">
+  return <main className="home-page">
+      <section className="home-page__overview" aria-label="Přehled výletů">
+        <div className="home-page__map-panel">
+          <div className="home-page__section-heading">
+            <div>
+              <p className="home-page__eyebrow">Mapa výletů</p>
+              <h2>Objevujte uložená místa</h2>
+            </div>
+            <div className="home-page__map-actions">
+              <div className="home-page__stats" aria-label="Souhrn deníku">
+                <span>{cards.length} výletů</span>
+                <span>{locations.length} míst na mapě</span>
+              </div>
+              {isAuthenticated ? (
+                <CardForm onAddCard={addCard} pickedCoords={pickedCoords} />
+              ) : (
+                <p className="auth-hint auth-hint--subtle">
+                  {isLoading
+                    ? 'Ověřujeme přihlášení...'
+                    : 'Přihlášení odemkne přidávání výletů.'}
+                </p>
+              )}
+              {hasError && (
+                <p className="auth-hint auth-hint--subtle auth-hint--error">
+                  Přihlášení se nepodařilo propojit.
+                </p>
+              )}
+            </div>
+          </div>
+          <Map
+            locations={filteredLocations}
+            onPickCoords={
+              isAuthenticated ? (lat, lng) => setPickedCoords({ lat, lng }) : undefined
+            }
+          />
+        </div>
+      </section>
 
-      <div className="home-page__intro">
-        {/* mapa s piny */}
-        <Map
-          locations={filteredLocations}
-          onPickCoords={
-            isAuthenticated ? (lat, lng) => setPickedCoords({ lat, lng }) : undefined
-          }
-        />
+      <section className="home-page__library" aria-label="Seznam výletů">
+        <div className="home-page__section-heading home-page__section-heading--library">
+          <div>
+            <p className="home-page__eyebrow">Deník</p>
+            <h2>Uložené výlety</h2>
+          </div>
+          <span className="home-page__count">{filteredCards.length} zobrazeno</span>
+        </div>
 
-        {/* AI průvodce */}
-        <AiAssistant />
-      </div>
+        <div className="home-page__tools" aria-label="Nástroje deníku">
+          <CardFilters
+            activeTags={activeTags}
+            onChange={setActiveTags}
+            resultCount={filteredCards.length}
+            totalCount={cards.length}
+          />
+          <AiAssistant />
+        </div>
 
-      {/* formulář pro zadávání nových karet */}
-      {isAuthenticated ? (
-        <CardForm onAddCard={addCard} pickedCoords={pickedCoords} />
-      ) : (
-        <p className="auth-hint">
-          {isLoading
-            ? 'Ověřujeme přihlášení...'
-            : 'Přihlaste se, abyste mohli přidávat vlastní zážitky.'}
-        </p>
-      )}
+        <div className="cards">
+          {filteredCards.map((oneCard) => {
+            const { id, title, tags, description, photos } = oneCard;
+            return (
+              <Card
+                key={id}
+                id={id}
+                title={title}
+                tags={tags}
+                description={description}
+                photos={photos}
+              ></Card>
+            );
+          })}
+        </div>
 
-      {hasError && (
-        <p className="auth-hint auth-hint--error">
-          Nepodařilo se propojit přihlášení. Zkuste to prosím znovu později.
-        </p>
-      )}
-
-      <CardFilters
-        activeTags={activeTags}
-        onChange={setActiveTags}
-        resultCount={filteredCards.length}
-        totalCount={cards.length}
-      />
-        
-      {/* Vypisování karet z dat z data.jsx */}
-      <div className="cards">
-        {filteredCards.map((oneCard) => {
-          const { id, title, tags, description, notes, lat, lng, photos } = oneCard;
-          return (
-            <Card
-              key={id}
-              id={id}
-              title={title}
-              tags={tags}
-              description={description}
-              notes={notes}
-              lat={lat}
-              lng={lng}
-              photos={photos}
-            ></Card>
-          );
-        })}
-      </div>
-
-      {filteredCards.length === 0 && (
-        <p className="cards-empty">
-          Zvoleným tagům teď neodpovídá žádný výlet. Zkuste některý filtr vypnout.
-        </p>
-      )}
-    </div>
+        {filteredCards.length === 0 && (
+          <p className="cards-empty">
+            Zvoleným tagům teď neodpovídá žádný výlet. Zkuste některý filtr vypnout.
+          </p>
+        )}
+      </section>
+    </main>
   };
 
   export default Home

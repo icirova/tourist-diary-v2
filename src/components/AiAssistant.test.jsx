@@ -20,6 +20,8 @@ describe('AiAssistant component', () => {
   it('shows hint and then displays recommendations after submitting a query', async () => {
     renderAssistant();
 
+    fireEvent.click(screen.getByRole('button', { name: /doporučit/i }));
+
     expect(
       screen.getByText(/doporučení se zobrazí zde/i),
     ).toBeInTheDocument();

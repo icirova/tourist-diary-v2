@@ -26,7 +26,7 @@ describe('Card', () => {
     );
   });
 
-  it('zobrazí souřadnice, když jsou dostupné', () => {
+  it('nezobrazuje sekundární souřadnice v seznamu karet', () => {
     render(
       <MemoryRouter>
         <Card
@@ -42,8 +42,8 @@ describe('Card', () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText(/souřadnice:/i)).toBeInTheDocument();
-    expect(screen.getByText('50.123')).toBeInTheDocument();
-    expect(screen.getByText('14.568')).toBeInTheDocument();
+    expect(screen.queryByText(/souřadnice:/i)).not.toBeInTheDocument();
+    expect(screen.queryByText('50.123')).not.toBeInTheDocument();
+    expect(screen.queryByText('14.568')).not.toBeInTheDocument();
   });
 });

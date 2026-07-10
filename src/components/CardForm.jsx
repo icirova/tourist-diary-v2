@@ -23,7 +23,7 @@ const initialFormData = {
 
 const CardForm = ({ onAddCard, pickedCoords }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [btnText, setBtnText] = useState('+ vložit kartu');
+  const [btnText, setBtnText] = useState('Přidat výlet');
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState(() => validateCardBasics(initialFormData));
   const [isUploading, setIsUploading] = useState(false);
@@ -39,10 +39,16 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
     lastPickedCoordsRef.current = null;
   };
 
+  const closeForm = () => {
+    resetForm();
+    setIsVisible(false);
+    setBtnText('Přidat výlet');
+  };
+
   const toggleVisibility = () => {
     setIsVisible((prev) => {
       const next = !prev;
-      setBtnText(next ? 'zpět' : '+ vložit kartu');
+      setBtnText(next ? 'Zavřít' : 'Přidat výlet');
       if (!next) {
         resetForm();
       }
@@ -120,12 +126,31 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
 
     if (!isVisible) {
       setIsVisible(true);
-      setBtnText('zpět');
+      setBtnText('Zavřít');
     }
 
     applyNextState((prev) => ({ ...prev, lat: latStr, lng: lngStr }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pickedCoords]);
+
+  useEffect(() => {
+    if (!isVisible) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        closeForm();
+      }
+    };
+
+    document.body.classList.add('has-modal-open');
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.classList.remove('has-modal-open');
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isVisible]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -139,7 +164,7 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
       }
       resetForm();
       setIsVisible(false);
-      setBtnText('+ vložit kartu');
+      setBtnText('Přidat výlet');
     }
   };
 
@@ -149,188 +174,216 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
         {btnText}
       </button>
       {isVisible && (
-        <form className="form" onSubmit={handleSubmit}>
-          <div className="form__section">
-            <h3 className="form__section-title">Název</h3>
-            <label htmlFor="title" className="field-label">
-              <img className="label-icon" src={pencilIcon} alt="pencil" />
-              Název <span className="required-star">*</span>
-              {errors.title && <span className="error-message">{errors.title}</span>}
-            </label>
-            <input
-              id="title"
-              className="field-input"
-              type="text"
-              name="title"
-              placeholder="Např. Prachovské skály"
-              required
-              aria-required="true"
-              value={formData.title}
-              onChange={handleChange}
-            />
-            <p className="help-text">Krátký, výstižný název místa (doporučeno 3–80 znaků).</p>
-          </div>
-
-          <div className="form__section">
-            <h3 className="form__section-title">Souřadnice</h3>
-            <div className="field-label">
-              <img className="label-icon" src={pinFormIcon} alt="pin" /> Pin na mapě
-            </div>
-            <p className="help-text">
-              Kliknutím do mapy vyberete souřadnice. Případně zadejte ručně (rozsah: šířka −90 až 90,
-              délka −180 až 180).
-            </p>
-            <div className="pins">
-              <div className="pin">
-                <label htmlFor="lat" className="field-label">
-                  Zeměpisná šířka <span className="required-star">*</span>
-                  {errors.lat && <span className="error-message">{errors.lat}</span>}
-                </label>
-                <input
-                  id="lat"
-                  className="field-input"
-                  type="number"
-                  name="lat"
-                  step="any"
-                  placeholder="50.4673551"
-                  required
-                  aria-required="true"
-                  aria-invalid={Boolean(errors.lat)}
-                  value={formData.lat}
-                  onChange={handleChange}
-                />
+        <div className="form-modal" role="dialog" aria-modal="true" aria-labelledby="trip-form-title">
+          <button
+            type="button"
+            className="form-modal__backdrop"
+            aria-label="Zavřít formulář"
+            onClick={closeForm}
+          />
+          <form className="form" onSubmit={handleSubmit}>
+            <div className="form__header">
+              <div>
+                <p className="form__eyebrow">Nový záznam</p>
+                <h2 id="trip-form-title" className="form__title">Přidat výlet</h2>
               </div>
-
-              <div className="pin">
-                <label htmlFor="lng" className="field-label">
-                  Zeměpisná délka <span className="required-star">*</span>
-                  {errors.lng && <span className="error-message">{errors.lng}</span>}
-                </label>
-                <input
-                  id="lng"
-                  className="field-input"
-                  type="number"
-                  name="lng"
-                  step="any"
-                  placeholder="15.2932227"
-                  required
-                  aria-required="true"
-                  aria-invalid={Boolean(errors.lng)}
-                  value={formData.lng}
-                  onChange={handleChange}
-                />
-              </div>
+              <button
+                type="button"
+                className="form__close"
+                aria-label="Zavřít formulář"
+                onClick={closeForm}
+              >
+                ×
+              </button>
             </div>
 
-            <p className="help-text">
-              Náhled zobrazení: {formatCoordinate(formData.lat)}, {formatCoordinate(formData.lng)}
-            </p>
-          </div>
+            <div className="form__section">
+              <h3 className="form__section-title">Název</h3>
+              <label htmlFor="title" className="field-label">
+                <img className="label-icon" src={pencilIcon} alt="" />
+                Název <span className="required-star">*</span>
+                {errors.title && <span className="error-message">{errors.title}</span>}
+              </label>
+              <input
+                id="title"
+                className="field-input"
+                type="text"
+                name="title"
+                placeholder="Např. Prachovské skály"
+                required
+                aria-required="true"
+                value={formData.title}
+                onChange={handleChange}
+              />
+              <p className="help-text">Krátký, výstižný název místa (doporučeno 3–80 znaků).</p>
+            </div>
 
-          <div className="form__section">
-            <h3 className="form__section-title">Tagy</h3>
-            <p className="help-text">Vyberte vše, co sedí. Ikona i text jsou informativní.</p>
-            <div className="tags">
-              {TAGS.map((tag) => (
-                <div key={tag.key} className="check-item">
-                  <label htmlFor={`tag-${tag.key}`} className="field-label">
-                    <TagBadge keyName={tag.key} />
+            <div className="form__section">
+              <h3 className="form__section-title">Souřadnice</h3>
+              <div className="field-label">
+                <img className="label-icon" src={pinFormIcon} alt="" /> Pin na mapě
+              </div>
+              <p className="help-text">
+                Kliknutím do mapy vyberete souřadnice. Případně zadejte ručně (rozsah: šířka −90 až 90,
+                délka −180 až 180).
+              </p>
+              <div className="pins">
+                <div className="pin">
+                  <label htmlFor="lat" className="field-label">
+                    Zeměpisná šířka <span className="required-star">*</span>
+                    {errors.lat && <span className="error-message">{errors.lat}</span>}
                   </label>
                   <input
-                    id={`tag-${tag.key}`}
+                    id="lat"
                     className="field-input"
-                    type="checkbox"
-                    name={tag.key}
-                    checked={formData.tags.includes(tag.key)}
-                    value={tag.key}
+                    type="number"
+                    name="lat"
+                    step="any"
+                    placeholder="50.4673551"
+                    required
+                    aria-required="true"
+                    aria-invalid={Boolean(errors.lat)}
+                    value={formData.lat}
                     onChange={handleChange}
                   />
                 </div>
-              ))}
+
+                <div className="pin">
+                  <label htmlFor="lng" className="field-label">
+                    Zeměpisná délka <span className="required-star">*</span>
+                    {errors.lng && <span className="error-message">{errors.lng}</span>}
+                  </label>
+                  <input
+                    id="lng"
+                    className="field-input"
+                    type="number"
+                    name="lng"
+                    step="any"
+                    placeholder="15.2932227"
+                    required
+                    aria-required="true"
+                    aria-invalid={Boolean(errors.lng)}
+                    value={formData.lng}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              <p className="help-text">
+                Náhled zobrazení: {formatCoordinate(formData.lat)}, {formatCoordinate(formData.lng)}
+              </p>
             </div>
-          </div>
 
-          <div className="form__section">
-            <h3 className="form__section-title">Popis</h3>
-            <label htmlFor="description" className="field-label">
-              <img src={descriptionIcon} alt="description" className="label-icon" /> Popis
-              {errors.description && <span className="error-message">{errors.description}</span>}
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              rows="10"
-              className="notes"
-              value={formData.description}
-              onChange={handleChange}
-            ></textarea>
-            <p className="help-text">Krátké představení místa. Odstavce oddělte Enterem.</p>
-          </div>
-
-          <div className="form__section">
-            <h3 className="form__section-title">Poznámky</h3>
-            <label htmlFor="notes" className="field-label">
-              <img src={notesIcon} alt="notes" className="label-icon" /> Poznámky
-              {errors.notes && <span className="error-message">{errors.notes}</span>}
-            </label>
-            <textarea
-              id="notes"
-              name="notes"
-              rows="10"
-              className="notes"
-              value={formData.notes}
-              onChange={handleChange}
-            ></textarea>
-            <p className="help-text">Praktické tipy a zkušenosti (parkování, občerstvení, sezóna…).</p>
-          </div>
-
-          <div className="form__section">
-            <h3 className="form__section-title">Fotogalerie</h3>
-            <p className="help-text">Nahrajte fotografie místa. Budou zobrazeny v detailu karty.</p>
-            <label htmlFor="photo-upload" className="field-label">Vybrat fotografie</label>
-            <input
-              id="photo-upload"
-              className="field-input"
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handlePhotoUpload}
-            />
-            {isUploading && <p className="help-text">Načítám náhledy...</p>}
-
-            {formData.photos.length > 0 && (
-              <div className="photo-list">
-                {formData.photos.map((photo) => (
-                  <div key={photo.id} className="photo-item">
-                    <img src={photo.src} alt={photo.name} className="photo-item__preview" />
+            <div className="form__section">
+              <h3 className="form__section-title">Tagy</h3>
+              <p className="help-text">Vyberte vše, co sedí. Ikona i text jsou informativní.</p>
+              <div className="tags">
+                {TAGS.map((tag) => (
+                  <div key={tag.key} className="check-item">
+                    <label htmlFor={`tag-${tag.key}`} className="field-label">
+                      <TagBadge keyName={tag.key} />
+                    </label>
                     <input
-                      type="text"
+                      id={`tag-${tag.key}`}
                       className="field-input"
-                      placeholder="Popisek fotografie"
-                      value={photo.caption}
-                      onChange={(e) => handlePhotoCaptionChange(photo.id, e.target.value)}
+                      type="checkbox"
+                      name={tag.key}
+                      checked={formData.tags.includes(tag.key)}
+                      value={tag.key}
+                      onChange={handleChange}
                     />
-                    <button
-                      type="button"
-                      className="btn btn--secondary btn--small"
-                      onClick={() => handlePhotoRemove(photo.id)}
-                    >
-                      Odebrat
-                    </button>
                   </div>
                 ))}
               </div>
-            )}
-          </div>
+            </div>
 
-          <button
-            type="submit"
-            className="btn btn--primary btn--large"
-            disabled={!isValid}
-          >
-            Přidat kartu
-          </button>
-        </form>
+            <div className="form__section">
+              <h3 className="form__section-title">Popis</h3>
+              <label htmlFor="description" className="field-label">
+                <img src={descriptionIcon} alt="" className="label-icon" /> Popis
+                {errors.description && <span className="error-message">{errors.description}</span>}
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                rows="10"
+                className="notes"
+                value={formData.description}
+                onChange={handleChange}
+              ></textarea>
+              <p className="help-text">Krátké představení místa. Odstavce oddělte Enterem.</p>
+            </div>
+
+            <div className="form__section">
+              <h3 className="form__section-title">Poznámky</h3>
+              <label htmlFor="notes" className="field-label">
+                <img src={notesIcon} alt="" className="label-icon" /> Poznámky
+                {errors.notes && <span className="error-message">{errors.notes}</span>}
+              </label>
+              <textarea
+                id="notes"
+                name="notes"
+                rows="10"
+                className="notes"
+                value={formData.notes}
+                onChange={handleChange}
+              ></textarea>
+              <p className="help-text">Praktické tipy a zkušenosti (parkování, občerstvení, sezóna…).</p>
+            </div>
+
+            <div className="form__section">
+              <h3 className="form__section-title">Fotogalerie</h3>
+              <p className="help-text">Nahrajte fotografie místa. Budou zobrazeny v detailu karty.</p>
+              <label htmlFor="photo-upload" className="field-label">Vybrat fotografie</label>
+              <input
+                id="photo-upload"
+                className="field-input"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handlePhotoUpload}
+              />
+              {isUploading && <p className="help-text">Načítám náhledy...</p>}
+
+              {formData.photos.length > 0 && (
+                <div className="photo-list">
+                  {formData.photos.map((photo) => (
+                    <div key={photo.id} className="photo-item">
+                      <img src={photo.src} alt={photo.name} className="photo-item__preview" />
+                      <input
+                        type="text"
+                        className="field-input"
+                        placeholder="Popisek fotografie"
+                        value={photo.caption}
+                        onChange={(e) => handlePhotoCaptionChange(photo.id, e.target.value)}
+                      />
+                      <button
+                        type="button"
+                        className="btn btn--secondary btn--small"
+                        onClick={() => handlePhotoRemove(photo.id)}
+                      >
+                        Odebrat
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="form__actions">
+              <button
+                type="submit"
+                className="btn btn--primary btn--large"
+                disabled={!isValid}
+              >
+                Přidat kartu
+              </button>
+              <button type="button" className="btn btn--secondary" onClick={closeForm}>
+                Zrušit
+              </button>
+            </div>
+          </form>
+        </div>
       )}
     </div>
   );

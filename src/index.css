@@ -1,74 +1,157 @@
+:root {
+  --color-page: #f5f1ea;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f1e8dc;
+  --color-surface-strong: #e2d2bf;
+  --color-text: #17212b;
+  --color-text-muted: #6b625a;
+  --color-border: #ded0c1;
+  --color-primary: #b85f32;
+  --color-primary-hover: #924622;
+  --color-secondary: #17323d;
+  --color-secondary-hover: #102630;
+  --color-accent: #2f6f73;
+  --color-danger: #b3261e;
+  --shadow-soft: 0 18px 45px rgba(55, 38, 28, 0.12);
+  --shadow-subtle: 0 8px 20px rgba(55, 38, 28, 0.09);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --space-page: clamp(16px, 3vw, 32px);
+  color-scheme: light;
+}
 
-html { box-sizing: border-box; }
-*, ::before, ::after { box-sizing: inherit; margin: 0; padding: 0; }
+html {
+  box-sizing: border-box;
+  background: var(--color-page);
+}
 
-
-
+*, ::before, ::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
 
 body {
-    background-image: url(/background-img-camp.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    min-height: 100vh; 
-    background-position: center;
-    font-family: 'Lora', serif;   
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, #fbfaf7 0%, var(--color-page) 46%, #eadfce 100%);
+  color: var(--color-text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+body.has-modal-open {
+  overflow: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
 }
 
 .wrapper {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Global button styles and variants */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-height: 42px;
+  min-width: 112px;
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
   color: #fff;
-  min-width: 120px;
-  padding: 10px 14px;
-  border-radius: 999px;
+  background: var(--color-primary);
   text-decoration: none;
   text-align: center;
   cursor: pointer;
-  font-family: 'Quicksand', sans-serif;
-  text-transform: uppercase;
-  margin: 0 auto;
-  border: none;
   font-weight: 700;
-  transition: background-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
-  font-size: 14px;
+  letter-spacing: 0;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
 }
 
-.btn--primary { background-color: #e88f24; }
-.btn--primary:hover { background-color: #be6f28; }
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-subtle);
+}
+
+.btn--primary {
+  background-color: var(--color-primary);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-primary-hover);
+}
 
 .btn--secondary {
-  background-color: #003d47; /* tmavá petrol modrozelená */
+  background-color: var(--color-secondary);
   color: #fff;
 }
-.btn--secondary:hover { background-color: #022f36; }
 
-.btn--small { min-width: auto; padding: 6px 10px; font-size: 12px; }
-.btn--large { min-width: 160px; padding: 12px 20px; font-size: 16px; }
+.btn--secondary:hover {
+  background-color: var(--color-secondary-hover);
+}
 
-.btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(232, 143, 36, 0.35); }
+.btn--small {
+  min-height: 34px;
+  min-width: auto;
+  padding: 7px 10px;
+  font-size: 13px;
+}
 
-/* Disabled state */
+.btn--large {
+  min-width: 160px;
+  min-height: 48px;
+  padding: 12px 20px;
+  font-size: 16px;
+}
+
+.btn:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 3px solid rgba(184, 95, 50, 0.32);
+  outline-offset: 3px;
+}
+
 .btn:disabled {
-  opacity: 0.5;
+  opacity: 0.55;
   cursor: not-allowed;
-  pointer-events: none; /* disables hover and clicks */
+  pointer-events: none;
+  transform: none;
+  box-shadow: none;
 }
 
-.card__actions { display: flex; gap: 12px; justify-content: center; margin-top: 10px; }
-
-/* Insert (toggle) button variant — zelené plné tlačítko */
 .btn--insert {
-  background-color: #003d46; /* zelená požadovaná */
+  background-color: var(--color-accent);
   color: #fff;
 }
-.btn--insert:hover { background-color: #002f3a; }
+
+.btn--insert:hover {
+  background-color: #255b5f;
+}
+
+.card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 18px;
+}

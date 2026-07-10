@@ -1,102 +1,100 @@
 .card {
-    background-color: rgba(255, 255, 255, 0.75);
-    padding: 20px;
-    border-radius: 4px;
-    flex-basis: 300px;
-    flex-grow: 1;
-    justify-content: left;
-
-    &__id{
-        text-align: center;
-        padding: 10px;
-    }
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100%;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow-subtle);
 }
 
+.card__media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background: var(--color-surface-muted);
+  text-decoration: none;
+}
+
+.card__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.card:hover .card__image {
+  transform: scale(1.025);
+}
+
+.card__photo-count {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  min-height: 28px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: rgba(23, 34, 31, 0.82);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 18px;
+}
 
 .title {
-    text-align: center;
-    margin-bottom: 20px;
-    font-family: 'Quicksand', sans-serif;
-    text-transform: uppercase;
-    color: #033035;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.25;
-    letter-spacing: 0.02em;
+  margin: 0 0 12px;
+  color: var(--color-text);
+  font-size: 1.12rem;
+  font-weight: 800;
+  line-height: 1.25;
 }
 
 .card .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  align-items: center;
+  margin-bottom: 16px;
 }
 
 .tag {
-    width: 30px;
-    margin-bottom: 20px;
-   
-
+  width: 30px;
 }
 
 .perex {
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 600;
-    font-size: 15px;
-    line-height: 1.55;
-    margin-bottom: 16px;
+  color: var(--color-text-muted);
 }
 
-.description {
-    margin-bottom: 10px;
+.perex {
+  margin-bottom: 16px;
+  font-weight: 650;
 }
 
 .paragraph {
-    margin-bottom: 10px;
-    font-size: 14px;
-    line-height: 1.6;
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 1.58;
 }
 
-
-
-
-
-   
-   
-   
-   
-
-.card__location {
-  font-size: 13px;
-  color: #2d5960;
+.card__footer {
   display: flex;
-  gap: 4px;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.card__coord {
-  font-weight: 600;
-  color: #033035;
-}
-
-.card__photo-strip {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 12px;
-}
-
-.card__photo-thumb {
-  width: 54px;
-  height: 54px;
-  border-radius: 10px;
-  object-fit: cover;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-.card > .btn {
-  display: flex;
-  width: fit-content;
-  margin: 20px auto 0;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: auto;
+  padding-top: 4px;
 }
