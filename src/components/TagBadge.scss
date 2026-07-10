@@ -3,8 +3,9 @@
   align-items: center;
   gap: 6px;
   padding: 5px 8px;
-  border-radius: var(--radius-sm);
-  background: rgba(47, 111, 115, 0.1);
+  border: 1px solid rgba(47, 111, 115, 0.18);
+  border-radius: 6px 8px 5px 9px;
+  background: rgba(47, 111, 115, 0.08);
   color: var(--color-accent);
   font-size: 12px;
   font-weight: 800;
@@ -18,7 +19,7 @@
 
 .tag-badge.compact {
   padding: 5px;
-  background: var(--color-surface-muted);
+  background: rgba(241, 232, 220, 0.82);
 }
 
 .tag-badge.compact .tag-badge__icon {

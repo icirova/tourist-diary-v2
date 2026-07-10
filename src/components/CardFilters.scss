@@ -1,23 +1,31 @@
 .card-filters {
+  position: relative;
   margin: 0;
-  padding: 14px 16px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.78);
-  box-shadow: none;
+  min-height: 132px;
+  padding: 16px;
+  border: 1px solid rgba(23, 33, 43, 0.16);
+  border-radius: 10px 12px 9px 11px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 252, 246, 0.82)),
+    var(--color-surface);
+  box-shadow: var(--shadow-paper);
 }
 
 .card-filters__header {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  justify-content: space-between;
+  min-height: 98px;
 }
 
 .card-filters__title {
   margin: 0;
   color: var(--color-text);
-  font-size: 1.1rem;
-  line-height: 1.25;
+  font-family: var(--font-hand);
+  font-size: 1.65rem;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 .card-filters__meta,
@@ -36,6 +44,10 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.card-filters__actions {
+  align-items: center;
 }
 
 .card-filters__active {
@@ -98,7 +110,7 @@
 @media (min-width: 720px) {
   .card-filters__header {
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
   }
 

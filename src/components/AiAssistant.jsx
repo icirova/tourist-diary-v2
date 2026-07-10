@@ -74,15 +74,17 @@ const AiAssistant = () => {
             Doporučí výlety podle nálady, skupiny nebo praktických požadavků.
           </p>
         </div>
-        <button
-          type="button"
-          className="btn btn--secondary btn--small"
-          onClick={() => setIsOpen((prev) => !prev)}
-          aria-expanded={isOpen || hasOutput}
-          aria-controls={panelId}
-        >
-          {isOpen || hasOutput ? 'Skrýt' : 'Doporučit'}
-        </button>
+        <div className="ai-assistant__actions">
+          <button
+            type="button"
+            className="btn btn--secondary btn--small"
+            onClick={() => setIsOpen((prev) => !prev)}
+            aria-expanded={isOpen || hasOutput}
+            aria-controls={panelId}
+          >
+            {isOpen || hasOutput ? 'Skrýt' : 'Doporučit'}
+          </button>
+        </div>
       </div>
 
       {(isOpen || hasOutput) && (

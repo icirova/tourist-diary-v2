@@ -17,11 +17,18 @@
 
 .opened-card__back-link {
   display: inline-flex;
-  margin-bottom: 12px;
+  width: fit-content;
+  margin: 0 0 18px;
+  padding: 6px 14px 7px;
+  border-radius: 4px 7px 5px 6px;
+  background: rgba(226, 210, 191, 0.74);
   color: var(--color-primary);
-  font-size: 14px;
-  font-weight: 800;
+  font-family: var(--font-hand);
+  font-size: clamp(1.25rem, 2.4vw, 1.65rem);
+  font-weight: 700;
+  line-height: 1;
   text-decoration: none;
+  transform: rotate(-2deg);
 }
 
 .opened-card__back-link:hover {
@@ -31,8 +38,11 @@
 .opened-card .title {
   margin: 0;
   color: var(--color-text);
-  font-size: clamp(2rem, 4vw, 3.3rem);
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: clamp(2.8rem, 6vw, 5rem);
   line-height: 1.05;
+  transform: rotate(-0.6deg);
 }
 
 .opened-card .tags {
@@ -60,9 +70,11 @@
 .detail-hero__thumb,
 .detail-hero__placeholder {
   overflow: hidden;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border: 8px solid #fff;
+  border-bottom-width: 16px;
+  border-radius: 6px;
   background: var(--color-surface-muted);
+  box-shadow: var(--shadow-paper);
 }
 
 .detail-hero__main,
@@ -73,8 +85,33 @@
   cursor: pointer;
 }
 
+.detail-hero__main::before,
+.detail-hero__thumb::before {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  z-index: 2;
+  width: 86px;
+  height: 20px;
+  border: 1px solid rgba(184, 95, 50, 0.12);
+  border-radius: 2px;
+  background:
+    repeating-linear-gradient(90deg, rgba(184, 95, 50, 0.12) 0 7px, transparent 7px 14px),
+    rgba(241, 232, 220, 0.82);
+  content: "";
+  transform: translateX(-50%) rotate(-1.4deg);
+  box-shadow: 0 2px 5px rgba(55, 38, 28, 0.08);
+}
+
+.detail-hero__thumb::before {
+  width: 58px;
+  height: 15px;
+  top: -9px;
+}
+
 .detail-hero__main {
   min-height: 320px;
+  transform: rotate(-0.35deg);
 }
 
 .detail-hero__main img,
@@ -93,6 +130,14 @@
 
 .detail-hero__thumb {
   min-height: 128px;
+}
+
+.detail-hero__thumb:nth-child(odd) {
+  transform: rotate(0.8deg);
+}
+
+.detail-hero__thumb:nth-child(even) {
+  transform: rotate(-0.7deg);
 }
 
 .detail-hero__more {
@@ -118,6 +163,16 @@
   text-align: center;
 }
 
+.detail-hero__placeholder::before {
+  display: block;
+  margin-right: 8px;
+  color: var(--color-primary);
+  content: "✎";
+  font-family: var(--font-hand);
+  font-size: 2rem;
+  line-height: 1;
+}
+
 .opened-card__layout {
   display: grid;
   gap: 24px;
@@ -137,23 +192,47 @@
 
 .detail-section,
 .detail-panel {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(23, 33, 43, 0.16);
+  border-radius: 10px 12px 9px 11px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 252, 246, 0.88)),
+    var(--color-surface);
+  box-shadow: var(--shadow-paper);
 }
 
 .detail-section {
   padding: clamp(18px, 3vw, 28px);
+  background:
+    repeating-linear-gradient(180deg, transparent 0 31px, rgba(23, 33, 43, 0.06) 31px 32px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 252, 246, 0.9)),
+    var(--color-surface);
 }
 
 .detail-section h2,
 .detail-panel h2 {
-  margin: 0 0 14px;
+  position: relative;
+  width: fit-content;
+  margin: 0 0 22px;
   color: var(--color-text);
-  font-size: 1rem;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-family: var(--font-hand);
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.detail-section h2::after,
+.detail-panel h2::after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8px;
+  z-index: -1;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(184, 95, 50, 0.22);
+  content: "";
+  transform: rotate(-1deg);
 }
 
 .opened-card .perex,

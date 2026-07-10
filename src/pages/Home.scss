@@ -5,8 +5,47 @@
 }
 
 .home-page__overview {
+  position: relative;
   display: grid;
   gap: 18px;
+}
+
+.home-page__overview::before {
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--color-page);
+  color: var(--color-primary);
+  content: "♥";
+  font-family: var(--font-hand);
+  font-size: 1.45rem;
+  line-height: 1;
+  transform: translateX(-50%) rotate(-6deg);
+}
+
+.home-page__overview::after {
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin: 38px auto 0;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(184, 95, 50, 0.2) 18%,
+    rgba(184, 95, 50, 0.24) 50%,
+    rgba(184, 95, 50, 0.2) 82%,
+    transparent 100%
+  );
+  content: "";
+  transform: rotate(-0.25deg);
 }
 
 .home-page__map-panel,
@@ -15,14 +54,11 @@
 }
 
 .home-page__map-panel {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 18px;
-  padding: clamp(16px, 2vw, 22px);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: var(--shadow-soft);
+  padding: 0;
 }
 
 .home-page__section-heading {
@@ -33,9 +69,13 @@
 }
 
 .home-page__section-heading h2 {
-  margin: 2px 0 0;
+  position: relative;
+  width: fit-content;
+  margin: 2px 0 8px;
   color: var(--color-text);
+  font-family: var(--font-display);
   font-size: clamp(1.35rem, 2vw, 1.75rem);
+  font-weight: 800;
   line-height: 1.2;
 }
 
@@ -44,11 +84,20 @@
 }
 
 .home-page__eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  margin: 0 0 12px;
+  padding: 6px 14px 7px;
+  border-radius: 4px 7px 5px 6px;
+  background: rgba(226, 210, 191, 0.74);
   color: var(--color-primary);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-family: var(--font-hand);
+  font-size: clamp(1.25rem, 2.4vw, 1.65rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-transform: none;
+  transform: rotate(-2deg);
 }
 
 .home-page__stats {
@@ -79,7 +128,8 @@
 }
 
 .home-page__library {
-  margin-top: 42px;
+  position: relative;
+  margin-top: 52px;
 }
 
 .home-page__tools {
@@ -124,6 +174,7 @@
 }
 
 .cards-empty {
+  position: relative;
   margin: 18px 0 0;
   padding: 18px;
   border: 1px dashed var(--color-border);
@@ -132,6 +183,16 @@
   color: var(--color-text-muted);
   text-align: center;
   font-weight: 700;
+}
+
+.cards-empty::before {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--color-primary);
+  content: "✈";
+  font-family: var(--font-hand);
+  font-size: 2rem;
+  line-height: 1;
 }
 
 @media (min-width: 780px) {
