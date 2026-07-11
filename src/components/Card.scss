@@ -36,28 +36,10 @@
   display: block;
   overflow: hidden;
   aspect-ratio: 16 / 10;
-  border: 7px solid #fff;
-  border-bottom-width: 12px;
-  border-radius: 5px;
+  border-radius: 6px;
   background: var(--color-surface-muted);
   text-decoration: none;
   box-shadow: 0 8px 18px rgba(55, 38, 28, 0.1);
-}
-
-.card__media::after {
-  position: absolute;
-  left: 50%;
-  top: -10px;
-  z-index: 2;
-  width: 68px;
-  height: 18px;
-  border: 1px solid rgba(184, 95, 50, 0.12);
-  border-radius: 2px;
-  background:
-    repeating-linear-gradient(90deg, rgba(47, 111, 115, 0.12) 0 6px, transparent 6px 12px),
-    rgba(241, 232, 220, 0.78);
-  content: "";
-  transform: translateX(-50%) rotate(1.2deg);
 }
 
 .card__image {
@@ -105,6 +87,30 @@
   line-height: 1.25;
 }
 
+.card .title {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 22px;
+}
+
+.card .title::after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -7px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(184, 95, 50, 0.32) 0%,
+    rgba(184, 95, 50, 0.32) 72%,
+    rgba(184, 95, 50, 0.18) 90%,
+    transparent 100%
+  );
+  content: "";
+}
+
 .card .tags {
   display: flex;
   flex-wrap: wrap;
@@ -123,12 +129,13 @@
 
 .perex {
   margin-bottom: 16px;
-  font-weight: 650;
+  font-weight: 400;
 }
 
 .paragraph {
   margin-bottom: 8px;
   font-size: 14px;
+  font-weight: 400;
   line-height: 1.58;
 }
 

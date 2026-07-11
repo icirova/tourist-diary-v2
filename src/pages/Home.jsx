@@ -44,7 +44,6 @@ const Home = () => {
             </div>
             <div className="home-page__map-actions">
               <div className="home-page__stats" aria-label="Souhrn deníku">
-                <span>{cards.length} výletů</span>
                 <span>{locations.length} míst na mapě</span>
               </div>
               {isAuthenticated ? (

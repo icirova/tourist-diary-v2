@@ -23,30 +23,32 @@ const Map= ({locations, onPickCoords}) => {
 
   return (
     <section className="map">
-      <MapContainer
-        className="map__container"
-        center={[49.7514919, 15.3264420]}
-        zoom={7}
-        scrollWheelZoom={false}
-        >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <MapClick />
-        
-        {locations.map((location) => {
-          const firstParagraph = Array.isArray(location.description)
-            ? location.description[0]
-            : location.description;
-          return (
-            <Marker key={location.id} position={[location.lat, location.lng]} icon={CustomMapPin}>
-              <Popup className="popup">
-                <strong>{location.title}</strong>
-                {firstParagraph && <p>{firstParagraph}</p>}
-                <Link to={`/detail/${location.id}`} className="btn btn--primary btn--small btn__popup">Detail</Link>
-              </Popup>
-            </Marker>
-          );
-        })}
-      </MapContainer>
+      <div className="map__frame">
+        <MapContainer
+          className="map__container"
+          center={[49.7514919, 15.3264420]}
+          zoom={7}
+          scrollWheelZoom={false}
+          >
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          <MapClick />
+
+          {locations.map((location) => {
+            const firstParagraph = Array.isArray(location.description)
+              ? location.description[0]
+              : location.description;
+            return (
+              <Marker key={location.id} position={[location.lat, location.lng]} icon={CustomMapPin}>
+                <Popup className="popup">
+                  <strong>{location.title}</strong>
+                  {firstParagraph && <p>{firstParagraph}</p>}
+                  <Link to={`/detail/${location.id}`} className="btn btn--primary btn--small btn__popup">Detail</Link>
+                </Popup>
+              </Marker>
+            );
+          })}
+        </MapContainer>
+      </div>
     </section>
   );
 };

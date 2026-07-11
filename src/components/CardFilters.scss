@@ -6,7 +6,7 @@
   border: 1px solid rgba(23, 33, 43, 0.16);
   border-radius: 10px 12px 9px 11px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 252, 246, 0.82)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 252, 246, 0.86)),
     var(--color-surface);
   box-shadow: var(--shadow-paper);
 }
@@ -22,9 +22,9 @@
 .card-filters__title {
   margin: 0;
   color: var(--color-text);
-  font-family: var(--font-hand);
-  font-size: 1.65rem;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 1.18rem;
+  font-weight: 800;
   line-height: 1.2;
 }
 
@@ -70,7 +70,7 @@
 .card-filters__panel {
   margin-top: 14px;
   padding-top: 14px;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px dashed rgba(23, 33, 43, 0.18);
 }
 
 .card-filters__list {

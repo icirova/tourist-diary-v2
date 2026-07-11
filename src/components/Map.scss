@@ -3,14 +3,21 @@
   min-width: 0;
 }
 
-.map__container {
+.map__frame {
+  position: relative;
   width: 100%;
   min-height: 360px;
-  overflow: hidden;
   border: 1px solid rgba(23, 33, 43, 0.22);
   border-radius: 12px 10px 14px 11px;
   background: var(--color-surface-muted);
   box-shadow: var(--shadow-paper);
+}
+
+.map__container {
+  width: 100%;
+  min-height: 360px;
+  overflow: hidden;
+  border-radius: inherit;
 }
 
 .leaflet-container {
@@ -37,6 +44,7 @@
 }
 
 @media (min-width: 768px) {
+  .map__frame,
   .map__container {
     min-height: 430px;
   }
@@ -44,6 +52,7 @@
 
 @media (min-width: 1040px) {
   .map,
+  .map__frame,
   .map__container {
     height: 100%;
   }
