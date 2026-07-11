@@ -17,7 +17,10 @@ const Header = () => {
 
   return (
     <header className="header">
-      <h1 className="logo">Turistický deník</h1>
+      <div className="header__brand">
+        <h1 className="logo">Cestovní deník</h1>
+        <p className="header__subtitle">Místa, poznámky a vzpomínky z cest.</p>
+      </div>
       <div className="header__actions">
         {!isAuthenticated ? (
           <>
