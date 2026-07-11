@@ -261,6 +261,7 @@ const CardOpenContent = ({ card, onSave }) => {
           <header className="opened-card__header">
             <div className="opened-card__title-block">
               <Link to="/" className="opened-card__back-link">Zpět na výlety</Link>
+              <p className="opened-card__eyebrow">Zápis z výletu</p>
               <h1 className="title">{card.title}</h1>
               <div className="tags">
                 {(card.tags || []).map((rawTag, index) => {
@@ -296,48 +297,56 @@ const CardOpenContent = ({ card, onSave }) => {
             </div>
           </header>
 
-          <section className={`detail-hero ${viewPhotos.length ? '' : 'detail-hero--empty'}`} aria-label="Fotografie výletu">
-            {viewPhotos.length > 0 ? (
-              <>
-                <button
-                  type="button"
-                  className="detail-hero__main"
-                  onClick={() => {
-                    setActivePhotoIndex(0);
-                    setIsGalleryOpen(true);
-                  }}
-                >
-                  <img src={viewPhotos[0].src} alt={viewPhotos[0].caption || viewPhotos[0].name || card.title} />
-                </button>
-                {viewPhotos.length > 1 && (
-                  <div className="detail-hero__thumbs">
-                    {viewPhotos.slice(1, 5).map((photo, index) => (
-                      <button
-                        key={photo.id}
-                        type="button"
-                        className="detail-hero__thumb"
-                        onClick={() => {
-                          setActivePhotoIndex(index + 1);
-                          setIsGalleryOpen(true);
-                        }}
-                      >
-                        <img src={photo.src} alt={photo.caption || photo.name || card.title} />
-                        {index === 3 && viewPhotos.length > 5 && (
-                          <span className="detail-hero__more">+{viewPhotos.length - 5}</span>
-                        )}
-                      </button>
-                    ))}
+          <div className="opened-card__layout">
+            <aside className="opened-card__sidebar" aria-label="Praktické informace">
+              <section className={`detail-hero ${viewPhotos.length ? '' : 'detail-hero--empty'}`} aria-label="Fotografie výletu">
+                {viewPhotos.length > 0 ? (
+                  <button
+                    type="button"
+                    className="detail-hero__main"
+                    onClick={() => {
+                      setActivePhotoIndex(0);
+                      setIsGalleryOpen(true);
+                    }}
+                  >
+                    <img src={viewPhotos[0].src} alt={viewPhotos[0].caption || viewPhotos[0].name || card.title} />
+                    {viewPhotos.length > 1 && (
+                      <span className="detail-hero__photo-count">+{viewPhotos.length - 1}</span>
+                    )}
+                  </button>
+                ) : (
+                  <div className="detail-hero__placeholder">
+                    Fotografie zatím nejsou přidané.
                   </div>
                 )}
-              </>
-            ) : (
-              <div className="detail-hero__placeholder">
-                Fotografie zatím nejsou přidané.
-              </div>
-            )}
-          </section>
+              </section>
 
-          <div className="opened-card__layout">
+              <section className="detail-panel">
+                <h2>Poloha</h2>
+                {hasCoords ? (
+                  <>
+                    <div className="location">
+                      <span>
+                        <strong>Šířka</strong>
+                        <span title={card.lat != null ? String(card.lat) : undefined}>{formatCoordinate(card.lat)}</span>
+                      </span>
+                      <span>
+                        <strong>Délka</strong>
+                        <span title={card.lng != null ? String(card.lng) : undefined}>{formatCoordinate(card.lng)}</span>
+                      </span>
+                    </div>
+                    <EditableLocationMap lat={card.lat} lng={card.lng} />
+                  </>
+                ) : (
+                  <p className="paragraph">Souřadnice zatím nejsou vyplněné.</p>
+                )}
+              </section>
+
+              {!canEdit && !isLoading && (
+                <p className="auth-hint">Přihlaste se, abyste mohli podrobnosti upravit.</p>
+              )}
+            </aside>
+
             <article className="opened-card__content">
               <section className="detail-section">
                 <h2>Popis</h2>
@@ -369,33 +378,6 @@ const CardOpenContent = ({ card, onSave }) => {
                 </div>
               </section>
             </article>
-
-            <aside className="opened-card__sidebar" aria-label="Praktické informace">
-              <section className="detail-panel">
-                <h2>Poloha</h2>
-                {hasCoords ? (
-                  <>
-                    <div className="location">
-                      <span>
-                        <strong>Šířka</strong>
-                        <span title={card.lat != null ? String(card.lat) : undefined}>{formatCoordinate(card.lat)}</span>
-                      </span>
-                      <span>
-                        <strong>Délka</strong>
-                        <span title={card.lng != null ? String(card.lng) : undefined}>{formatCoordinate(card.lng)}</span>
-                      </span>
-                    </div>
-                    <EditableLocationMap lat={card.lat} lng={card.lng} />
-                  </>
-                ) : (
-                  <p className="paragraph">Souřadnice zatím nejsou vyplněné.</p>
-                )}
-              </section>
-
-              {!canEdit && !isLoading && (
-                <p className="auth-hint">Přihlaste se, abyste mohli podrobnosti upravit.</p>
-              )}
-            </aside>
           </div>
 
           {viewPhotos.length > 0 && (
