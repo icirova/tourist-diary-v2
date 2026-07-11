@@ -13,7 +13,8 @@ const data = [
             "bikini"
         ],
         description: [
-            "Vrcholová plošina stolové hory Ostaš je ohraničená pískovcovými skalními stěnami a věžemi vysokými až 40 metrů. ",
+            "Chatová osada Ostaš leží pod stejnojmennou stolovou horou nedaleko Police nad Metují. Místo je dobrým výchozím bodem pro krátký výlet do pískovcového skalního města, kde se střídají úzké průchody, vyhlídky a bizarní skalní útvary.",
+            "Samotný Ostaš patří mezi výrazné dominanty Policka. Vrcholová plošina je chráněná jako přírodní rezervace a návštěvníky láká hlavně klidnější atmosférou než známější skalní města v okolí. Pro rodinný pobyt je příjemné, že příroda a turistické cíle začínají prakticky hned za osadou.",
         ],
 
         notes: [
@@ -21,7 +22,14 @@ const data = [
             "V kiosku lze zapůjčit sportovní náčiní (míče, petanque, ...)",
             "Nemají nic bezlepkového.",
         ] ,
-        // photo: [photo1, photo2] příprava na fotky
+        photos: [
+            {
+                id: "ostas-1",
+                src: "/photos/Ostas-1.png",
+                caption: "Chatová osada Ostaš",
+                name: "Ostas-1.png",
+            },
+        ],
     },
     {
         id: 2,
