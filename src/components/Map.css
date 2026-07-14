@@ -1,32 +1,58 @@
 .map {
   margin: 0;
+  min-width: 0;
+}
+
+.map__frame {
+  position: relative;
+  width: 100%;
+  min-height: 360px;
+  border: 1px solid rgba(23, 33, 43, 0.22);
+  border-radius: 12px 10px 14px 11px;
+  background: var(--color-surface-muted);
+  box-shadow: var(--shadow-paper);
 }
 
 .map__container {
   width: 100%;
-  border-radius: 4px;
-  min-height: 320px;
+  min-height: 360px;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.leaflet-container {
+  font-family: inherit;
 }
 
 .leaflet-popup-content strong {
-  font-family: "Quicksand", sans-serif;
-  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 800;
 }
 
-/* Ensure popup button has white text (overrides Leaflet link styles) */
+.leaflet-popup-content p {
+  margin: 0 0 10px;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}
+
 .popup .btn,
 .popup .btn:visited {
   color: #fff !important;
 }
 
 @media (min-width: 768px) {
+  .map__frame,
   .map__container {
-    min-height: 360px;
+    min-height: 430px;
   }
 }
-@media (min-width: 992px) {
+@media (min-width: 1040px) {
+  .map,
+  .map__frame,
   .map__container {
     height: 100%;
-    min-height: 400px;
   }
 }/*# sourceMappingURL=Map.css.map */

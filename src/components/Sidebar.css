@@ -23,5 +23,5 @@
 }
 .explanations__text {
   font-weight: 700;
-  font-family: "Quicksand", sans-serif;
+  font-family: var(--font-ui);
 }/*# sourceMappingURL=Sidebar.css.map */

@@ -1,26 +1,69 @@
+@charset "UTF-8";
 .header {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  align-items: center;
-  justify-content: center;
-  margin: 20px 0 30px;
-  text-align: center;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: min(1180px, 100% - var(--space-page) * 2);
+  margin: 0 auto;
+  padding: 34px 0 34px;
+  text-align: left;
+}
+
+.header::after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(184, 95, 50, 0.32) 0%, rgba(184, 95, 50, 0.32) 72%, rgba(184, 95, 50, 0.18) 90%, transparent 100%);
+  content: "";
+}
+
+.header__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
 }
 
 .logo {
-  color: #e88f24;
-  font-family: "Quicksand", sans-serif;
-  text-transform: uppercase;
-  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--color-text);
+  font-family: var(--font-hand);
+  font-size: clamp(3rem, 8vw, 5.2rem);
   font-weight: 700;
-  text-align: center;
   margin: 0;
+  letter-spacing: 0;
+  line-height: 0.95;
+  transform: rotate(-0.7deg);
+}
+
+.header__subtitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 440px;
+  margin: 16px 0 0 40px;
+  color: rgba(23, 33, 43, 0.72);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+.header__subtitle::before {
+  color: var(--color-primary);
+  content: "♥";
+  font-family: var(--font-hand);
+  font-size: 1.15rem;
+  line-height: 1;
+  transform: rotate(-6deg);
 }
 
 .header__actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   justify-content: center;
   flex-wrap: wrap;
 }
@@ -30,8 +73,18 @@
 }
 
 .header__user {
-  font-family: "Quicksand", sans-serif;
   font-weight: 600;
-  color: #033035;
+  color: var(--color-text-muted);
   align-self: center;
+}
+
+@media (min-width: 720px) {
+  .header {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  .header__actions {
+    justify-content: flex-end;
+    padding-top: 18px;
+  }
 }/*# sourceMappingURL=Header.css.map */
