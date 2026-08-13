@@ -66,7 +66,9 @@ export const registerTripRoutes = async (app) => {
     await Promise.all(removedPaths.map(safeUnlink));
     return getTrip(pool, request.params.id, request.identity.id);
   });
-  app.post('/api/trips/:id/photos', async (request, reply) => {
+  app.post('/api/trips/:id/photos', {
+    config: { rateLimit: { max: 10, timeWindow: '1 minute' } },
+  }, async (request, reply) => {
     if (!(await getTrip(pool, request.params.id, request.identity.id))) return reply.code(404).send({ message: 'Výlet nebyl nalezen.' });
     const current = await pool.query('select count(*)::int count, coalesce(sum(size_bytes),0)::bigint bytes from trip_photos where owner_id=$1', [request.identity.id]);
     const tripCount = await pool.query('select count(*)::int count from trip_photos where trip_id=$1', [request.params.id]);
