@@ -1,6 +1,7 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import multipart from '@fastify/multipart';
+import rateLimit from '@fastify/rate-limit';
 import { mkdir } from 'node:fs/promises';
 import { authenticate, requireActive, requireAdmin } from './auth.js';
 import { config } from './config.js';
@@ -12,6 +13,7 @@ const app = Fastify({ logger: true, bodyLimit: 3 * 1024 * 1024 });
 await mkdir(config.uploadsDir, { recursive: true });
 await app.register(cors, { origin: config.frontendOrigin });
 await app.register(multipart, { limits: { files: 3, fileSize: 768000, parts: 8 } });
+await app.register(rateLimit, { global: false });
 
 app.addHook('preHandler', async (request, reply) => {
   if (!request.url.startsWith('/api/') || request.url.startsWith('/api/photos/') || request.url === '/api/health') return;

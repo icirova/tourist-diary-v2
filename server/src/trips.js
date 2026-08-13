@@ -97,7 +97,10 @@ export const registerTripRoutes = async (app) => {
     });
     await Promise.all(removed.map((p)=>safeUnlink(p.storage_path))); return reply.code(204).send();
   });
-  app.get('/api/photos/:id', { preHandler: [] }, async (request, reply) => {
+  app.get('/api/photos/:id', {
+    preHandler: [],
+    config: { rateLimit: { max: 60, timeWindow: '1 minute' } },
+  }, async (request, reply) => {
     const { expires, signature } = request.query; const photo=(await pool.query('select * from trip_photos where id=$1',[request.params.id])).rows[0];
     if (!photo || Number(expires)<Date.now()/1000 || typeof signature!=='string') return reply.code(404).send();
     const expected=sign(`${photo.id}:${photo.owner_id}:${expires}`); const supplied=Buffer.from(signature); const valid=supplied.length===expected.length&&timingSafeEqual(supplied,Buffer.from(expected));
