@@ -1,7 +1,7 @@
 import { createHmac, randomUUID, timingSafeEqual } from 'node:crypto';
 import { Buffer } from 'node:buffer';
 import { createReadStream } from 'node:fs';
-import { mkdir, unlink, writeFile } from 'node:fs/promises';
+import { unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { config } from './config.js';
 import { pool, transaction } from './db.js';
@@ -80,11 +80,10 @@ export const registerTripRoutes = async (app) => {
     if (tripCount.rows[0].count + files.length > 3) return reply.code(409).send({ message: 'K výletu lze uložit nejvýše 3 fotografie.' });
     if (files.some((file) => !['image/jpeg','image/webp'].includes(file.mime) || file.buffer.length > 768000)) return reply.code(400).send({ message: 'Fotografie musí být JPEG/WebP a mít nejvýše 750 kB.' });
     if (Number(current.rows[0].bytes) + files.reduce((sum,f)=>sum+f.buffer.length,0) > 52428800) return reply.code(409).send({ message: 'Byl dosažen limit 50 MB fotografií.' });
-    const directory = path.join(config.uploadsDir, request.identity.id, request.params.id); await mkdir(directory, { recursive: true });
     const created = [];
     try {
       for (const [index,file] of files.entries()) {
-        const id=randomUUID(); const storagePath=path.join(directory,`${id}.${file.mime==='image/webp'?'webp':'jpg'}`); await writeFile(storagePath,file.buffer,{flag:'wx'});
+        const id=randomUUID(); const storagePath=path.join(config.uploadsDir,`${id}.${file.mime==='image/webp'?'webp':'jpg'}`); await writeFile(storagePath,file.buffer,{flag:'wx'});
         await pool.query('insert into trip_photos(id,trip_id,owner_id,storage_path,original_name,caption,position,size_bytes,mime_type) values($1,$2,$3,$4,$5,$6,$7,$8,$9)', [id,request.params.id,request.identity.id,storagePath,file.name,captions[index]||'',tripCount.rows[0].count+index,file.buffer.length,file.mime]);
         created.push(storagePath);
       }
