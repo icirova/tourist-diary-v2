@@ -10,7 +10,7 @@ import CardFilters from "../components/CardFilters";
 
 
 const Home = () => {
-  const { cards, addCard, locations } = useCards();
+  const { cards, addCard, locations, isLoading: areCardsLoading, error: cardsError } = useCards();
   const { isAuthenticated, isLoading, hasError } = useAuth();
   const [pickedCoords, setPickedCoords] = useState(null);
   const [activeTags, setActiveTags] = useState([]);
@@ -90,6 +90,11 @@ const Home = () => {
           <AiAssistant />
         </div>
 
+        {areCardsLoading && <p className="cards-empty">Načítám váš soukromý deník…</p>}
+        {cardsError && <p className="cards-empty" role="alert">{cardsError}</p>}
+        {isAuthenticated && !areCardsLoading && cards.length === 0 && !cardsError && (
+          <p className="cards-empty">Váš deník je zatím prázdný. Přidejte svůj první výlet pomocí mapy.</p>
+        )}
         <div className="cards">
           {filteredCards.map((oneCard) => {
             const { id, title, tags, description, photos } = oneCard;

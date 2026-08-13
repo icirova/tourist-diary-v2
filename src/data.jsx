@@ -29,6 +29,18 @@ const data = [
                 caption: "Chatová osada Ostaš",
                 name: "Ostas-1.png",
             },
+            {
+                id: "ostas-2",
+                src: "/photos/Ostas-2.png",
+                caption: "Chatová osada Ostaš",
+                name: "Ostas-2.png",
+            },
+            {
+                id: "ostas-3",
+                src: "/photos/Ostas-3.png",
+                caption: "Chatová osada Ostaš",
+                name: "Ostas-3.png",
+            },
         ],
     },
     {

@@ -5,7 +5,7 @@ import TagBadge from './TagBadge';
 import { TAGS } from '../tags';
 import formatCoordinate from '../utils/formatCoordinate';
 import { hasNoErrors, validateCardBasics } from '../utils/validation';
-import { fileToDataUrl } from '../utils/photoUtils';
+import { fileToDataUrl, MAX_PHOTOS_PER_TRIP } from '../utils/photoUtils';
 import pencilIcon from "/icons/pencil.svg";
 import notesIcon from "/icons/notes.svg";
 import descriptionIcon from "/icons/description.svg";
@@ -27,8 +27,10 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState(() => validateCardBasics(initialFormData));
   const [isUploading, setIsUploading] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const isValid = hasNoErrors(errors) && !isUploading;
+  const isValid = hasNoErrors(errors) && !isUploading && !isSubmitting;
 
   const lastPickedCoordsRef = useRef(null);
 
@@ -36,6 +38,8 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
     setFormData(initialFormData);
     setErrors(validateCardBasics(initialFormData));
     setIsUploading(false);
+    setSubmitError('');
+    setIsSubmitting(false);
     lastPickedCoordsRef.current = null;
   };
 
@@ -88,6 +92,11 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
   const handlePhotoUpload = async (event) => {
     const { files } = event.target;
     if (!files || files.length === 0) return;
+    if (formData.photos.length + files.length > MAX_PHOTOS_PER_TRIP) {
+      setSubmitError(`K jednomu výletu lze přidat nejvýše ${MAX_PHOTOS_PER_TRIP} fotografie.`);
+      event.target.value = '';
+      return;
+    }
     setIsUploading(true);
     try {
       const uploads = await Promise.all(Array.from(files).map((file) => fileToDataUrl(file)));
@@ -152,7 +161,7 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isVisible]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const submissionErrors = validateCardBasics(formData);
@@ -160,7 +169,15 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
 
     if (hasNoErrors(submissionErrors)) {
       if (typeof onAddCard === 'function') {
-        onAddCard(formData);
+        try {
+          setSubmitError('');
+          setIsSubmitting(true);
+          await onAddCard(formData);
+        } catch (error) {
+          setSubmitError(error.message || 'Výlet se nepodařilo uložit.');
+          setIsSubmitting(false);
+          return;
+        }
       }
       resetForm();
       setIsVisible(false);
@@ -333,7 +350,7 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
 
             <div className="form__section">
               <h3 className="form__section-title">Fotogalerie</h3>
-              <p className="help-text">Nahrajte fotografie místa. Budou zobrazeny v detailu karty.</p>
+              <p className="help-text">Nejvýše 3 fotografie. Před uložením se automaticky zmenší.</p>
               <label htmlFor="photo-upload" className="field-label">Vybrat fotografie</label>
               <input
                 id="photo-upload"
@@ -344,6 +361,7 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
                 onChange={handlePhotoUpload}
               />
               {isUploading && <p className="help-text">Načítám náhledy...</p>}
+              {submitError && <p className="error-message" role="alert">{submitError}</p>}
 
               {formData.photos.length > 0 && (
                 <div className="photo-list">
@@ -376,7 +394,7 @@ const CardForm = ({ onAddCard, pickedCoords }) => {
                 className="btn btn--primary btn--large"
                 disabled={!isValid}
               >
-                Přidat kartu
+                {isSubmitting ? 'Ukládám…' : 'Přidat kartu'}
               </button>
               <button type="button" className="btn btn--secondary" onClick={closeForm}>
                 Zrušit

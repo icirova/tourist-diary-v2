@@ -1,56 +1,20 @@
-const normalize = (value) => (typeof value === 'string' ? value.trim() : '');
+import Keycloak from 'keycloak-js';
 
-const keycloakConfig = {
-  url: normalize(import.meta.env.VITE_KEYCLOAK_URL),
-  realm: normalize(import.meta.env.VITE_KEYCLOAK_REALM),
-  clientId: normalize(import.meta.env.VITE_KEYCLOAK_CLIENT_ID),
-  adapterUrl: normalize(import.meta.env.VITE_KEYCLOAK_ADAPTER_URL),
-  silentCheckSsoRedirectUri: normalize(import.meta.env.VITE_KEYCLOAK_SILENT_CHECK_SSO),
-  loginRedirectUri: normalize(import.meta.env.VITE_KEYCLOAK_LOGIN_REDIRECT),
-  logoutRedirectUri: normalize(import.meta.env.VITE_KEYCLOAK_LOGOUT_REDIRECT),
+const config = {
+  url: import.meta.env.VITE_KEYCLOAK_URL?.trim(),
+  realm: import.meta.env.VITE_KEYCLOAK_REALM?.trim(),
+  clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID?.trim(),
 };
 
-const isKeycloakConfigured = Boolean(
-  keycloakConfig.url && keycloakConfig.realm && keycloakConfig.clientId,
-);
-
-const getDefaultAdapterUrl = () => {
-  if (!keycloakConfig.url) return '';
-  const base = keycloakConfig.url.endsWith('/')
-    ? keycloakConfig.url.slice(0, -1)
-    : keycloakConfig.url;
-  return `${base}/js/keycloak.js`;
+export const isKeycloakConfigured = Boolean(config.url && config.realm && config.clientId);
+export const keycloak = isKeycloakConfigured ? new Keycloak(config) : null;
+let initialization;
+export const initializeKeycloak = () => {
+  if (!keycloak) return Promise.resolve(false);
+  if (!initialization) initialization = keycloak.init({ onLoad: 'check-sso', pkceMethod: 'S256', checkLoginIframe: false });
+  return initialization;
 };
 
-const keycloakAdapterUrl = keycloakConfig.adapterUrl || getDefaultAdapterUrl();
-
-const keycloakSilentCheckSsoRedirectUri =
-  keycloakConfig.silentCheckSsoRedirectUri ||
-  (typeof window !== 'undefined' ? `${window.location.origin}/keycloak-silent-check-sso.html` : undefined);
-
-const keycloakInitOptions = (() => {
-  const options = {
-    onLoad: 'check-sso',
-    pkceMethod: 'S256',
-  };
-  if (keycloakSilentCheckSsoRedirectUri) {
-    options.silentCheckSsoRedirectUri = keycloakSilentCheckSsoRedirectUri;
-  }
-  return options;
-})();
-
-const keycloakLoginRedirectUri =
-  keycloakConfig.loginRedirectUri || (typeof window !== 'undefined' ? window.location.href : undefined);
-
-const keycloakLogoutRedirectUri =
-  keycloakConfig.logoutRedirectUri || (typeof window !== 'undefined' ? window.location.origin : undefined);
-
-export {
-  keycloakConfig,
-  isKeycloakConfigured,
-  keycloakAdapterUrl,
-  keycloakInitOptions,
-  keycloakSilentCheckSsoRedirectUri,
-  keycloakLoginRedirectUri,
-  keycloakLogoutRedirectUri,
-};
+export const keycloakAccountUrl = config.url && config.realm
+  ? `${config.url.replace(/\/$/, '')}/realms/${encodeURIComponent(config.realm)}/account/`
+  : null;

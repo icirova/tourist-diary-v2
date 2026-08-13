@@ -4,15 +4,18 @@ import { describe, expect, it } from 'vitest';
 import AiAssistant from './AiAssistant';
 import { CardsProvider } from '../context/CardsContext';
 import { AiAssistantProvider } from '../context/AiAssistantContext';
+import { AuthProvider } from '../context/AuthContext';
 
 const renderAssistant = () =>
   render(
     <MemoryRouter>
-      <CardsProvider>
-        <AiAssistantProvider>
-          <AiAssistant />
-        </AiAssistantProvider>
-      </CardsProvider>
+      <AuthProvider>
+        <CardsProvider>
+          <AiAssistantProvider>
+            <AiAssistant />
+          </AiAssistantProvider>
+        </CardsProvider>
+      </AuthProvider>
     </MemoryRouter>,
   );
 

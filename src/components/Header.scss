@@ -11,6 +11,49 @@
   text-align: left;
 }
 
+.auth-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+}
+
+.auth-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(20, 28, 24, .62);
+}
+
+.auth-modal__panel {
+  position: relative;
+  z-index: 1;
+  width: min(420px, calc(100vw - 2rem));
+  display: grid;
+  gap: .85rem;
+  padding: 2rem;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .3);
+}
+
+.auth-modal__close {
+  position: absolute;
+  top: .5rem;
+  right: .75rem;
+  border: 0;
+  background: transparent;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.auth-modal__message { margin: 0; color: #8b2e25; }
+
+.admin-panel { max-height: min(760px, calc(100vh - 2rem)); overflow: auto; }
+.admin-panel form { display: grid; gap: .75rem; }
+.admin-panel__table { border-top: 1px solid #ddd; font-size: .9rem; }
+
 .header::after {
   position: absolute;
   left: 0;

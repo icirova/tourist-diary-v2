@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import "./CardOpen.scss";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -11,7 +11,7 @@ import formatCoordinate from '../utils/formatCoordinate';
 import { useCards } from '../context/CardsContext';
 import { paragraphsToMultiline, toParagraphArray } from '../utils/text';
 import { hasNoErrors, validateCardBasics } from '../utils/validation';
-import { fileToDataUrl, generatePhotoId } from '../utils/photoUtils';
+import { fileToDataUrl, generatePhotoId, MAX_PHOTOS_PER_TRIP } from '../utils/photoUtils';
 import { CardPropType } from '../types/cardPropTypes';
 import { useAuth } from '../context/AuthContext';
 
@@ -22,6 +22,7 @@ const normalisePhotos = (photos) => {
   return photos
     .filter((photo) => photo && photo.src)
     .map((photo) => ({
+      ...photo,
       id: photo.id || generatePhotoId(),
       src: photo.src,
       caption: photo.caption || '',
@@ -70,7 +71,7 @@ EditableLocationMap.propTypes = {
   onPick: PropTypes.func,
 };
 
-const CardOpenContent = ({ card, onSave }) => {
+const CardOpenContent = ({ card, onSave, onDelete }) => {
   const tagOptions = useMemo(() => TAGS, []);
   const { isAuthenticated, isLoading } = useAuth();
   const canEdit = isAuthenticated && !isLoading;
@@ -94,6 +95,9 @@ const CardOpenContent = ({ card, onSave }) => {
   const [activePhotoIndex, setActivePhotoIndex] = useState(null);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [saveError, setSaveError] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
+  const navigate = useNavigate();
 
   const viewPhotos = useMemo(() => normalisePhotos(card.photos), [card.photos]);
   const viewDescription = useMemo(() => toParagraphArray(card.description), [card.description]);
@@ -161,6 +165,11 @@ const CardOpenContent = ({ card, onSave }) => {
   const handlePhotoUpload = async (event) => {
     const { files } = event.target;
     if (!files || files.length === 0) return;
+    if (localPhotos.length + files.length > MAX_PHOTOS_PER_TRIP) {
+      setSaveError(`K jednomu výletu lze přidat nejvýše ${MAX_PHOTOS_PER_TRIP} fotografie.`);
+      event.target.value = '';
+      return;
+    }
     setIsUploading(true);
     try {
       const uploads = await Promise.all(Array.from(files).map((file) => fileToDataUrl(file)));
@@ -181,24 +190,32 @@ const CardOpenContent = ({ card, onSave }) => {
     setLocalPhotos((prev) => prev.filter((photo) => photo.id !== id));
   };
 
-  const save = () => {
+  const save = async () => {
     const nextErrors = validateCardBasics(currentValidationState());
     setErrors(nextErrors);
     if (!hasNoErrors(nextErrors)) {
       return;
     }
 
-    onSave(card.id, (previous) => ({
-      ...previous,
-      title: localTitle,
-      description: toParagraphArray(localDescription),
-      notes: toParagraphArray(localNotes),
-      tags: selectedTags,
-      lat: localLat,
-      lng: localLng,
-      photos: normalisePhotos(localPhotos),
-    }));
-    setIsEditing(false);
+    try {
+      setSaveError('');
+      setIsSaving(true);
+      await onSave(card.id, (previous) => ({
+        ...previous,
+        title: localTitle,
+        description: toParagraphArray(localDescription),
+        notes: toParagraphArray(localNotes),
+        tags: selectedTags,
+        lat: localLat,
+        lng: localLng,
+        photos: normalisePhotos(localPhotos),
+      }));
+      setIsEditing(false);
+    } catch (error) {
+      setSaveError(error.message || 'Změny se nepodařilo uložit.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const resetFromCard = () => {
@@ -225,6 +242,13 @@ const CardOpenContent = ({ card, onSave }) => {
     if (!canEdit) return;
     resetFromCard();
     setIsEditing(true);
+  };
+
+  const remove = async () => {
+    if (!window.confirm('Opravdu chcete tento výlet včetně fotografií odstranit?')) return;
+    setIsSaving(true); setSaveError('');
+    try { await onDelete(card.id); navigate('/'); }
+    catch (error) { setSaveError(error.message || 'Výlet se nepodařilo odstranit.'); setIsSaving(false); }
   };
 
   const showPrevPhoto = useCallback(() => {
@@ -290,9 +314,10 @@ const CardOpenContent = ({ card, onSave }) => {
             </div>
             <div className="opened-card__actions">
               {canEdit && (
-                <button className="btn btn--secondary" onClick={startEditing}>
-                  Upravit
-                </button>
+                <>
+                  <button className="btn btn--secondary" onClick={startEditing}>Upravit</button>
+                  <button className="btn btn--secondary" onClick={remove} disabled={isSaving}>Odstranit</button>
+                </>
               )}
             </div>
           </header>
@@ -560,7 +585,7 @@ const CardOpenContent = ({ card, onSave }) => {
 
           <div className="form__section">
             <h3 className="form__section-title">Fotogalerie</h3>
-            <p className="help-text">Nahrajte nové fotografie nebo upravte popisky.</p>
+            <p className="help-text">Nejvýše 3 optimalizované fotografie. Můžete také upravit popisky.</p>
             <input
               id="detail-photo-upload"
               className="field-input"
@@ -570,6 +595,7 @@ const CardOpenContent = ({ card, onSave }) => {
               onChange={handlePhotoUpload}
             />
             {isUploading && <p className="help-text">Načítám náhledy...</p>}
+            {saveError && <p className="error-message" role="alert">{saveError}</p>}
             {localPhotos.length > 0 && (
               <div className="photo-list">
                 {localPhotos.map((photo) => (
@@ -596,8 +622,8 @@ const CardOpenContent = ({ card, onSave }) => {
           </div>
 
           <div className="card__actions">
-            <button className="btn btn--primary btn--large" onClick={save}>
-              Uložit změny
+            <button className="btn btn--primary btn--large" onClick={save} disabled={isSaving}>
+              {isSaving ? 'Ukládám…' : 'Uložit změny'}
             </button>
             <button className="btn btn--secondary" onClick={cancel}>
               Zrušit
@@ -612,11 +638,12 @@ const CardOpenContent = ({ card, onSave }) => {
 CardOpenContent.propTypes = {
   card: CardPropType.isRequired,
   onSave: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 const CardOpen = () => {
   const { tripId } = useParams();
-  const { cards, updateCard } = useCards();
+  const { cards, updateCard, deleteCard } = useCards();
   const card = useMemo(
     () => cards.find((oneCard) => String(oneCard.id) === tripId),
     [cards, tripId],
@@ -631,7 +658,7 @@ const CardOpen = () => {
     );
   }
 
-  return <CardOpenContent card={card} onSave={updateCard} />;
+  return <CardOpenContent card={card} onSave={updateCard} onDelete={deleteCard} />;
 };
 
 export default CardOpen;
