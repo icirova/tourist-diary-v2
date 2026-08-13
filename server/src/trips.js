@@ -7,6 +7,13 @@ import { config } from './config.js';
 import { pool, transaction } from './db.js';
 
 const allowedTags = new Set(['bag','bikini','bonfire','cafe','family','stroller','tent','glutenfree']);
+const storageRoot = path.resolve(config.uploadsDir);
+const resolveStoredPath = (file) => {
+  const candidate = path.resolve(String(file));
+  const relative = path.relative(storageRoot, candidate);
+  if (!relative || relative.startsWith('..') || path.isAbsolute(relative)) throw new Error('Neplatná cesta fotografie.');
+  return candidate;
+};
 const sign = (value) => createHmac('sha256', config.photoSecret).update(value).digest('hex');
 const photoUrl = (id, ownerId) => {
   const expires = Math.floor(Date.now() / 1000) + 3600;
@@ -29,7 +36,9 @@ const getTrip = async (db, id, ownerId) => {
   trip.photos = trip.photos.map((photo) => ({ ...photo, src: photoUrl(photo.id, ownerId) }));
   return trip;
 };
-const safeUnlink = (file) => unlink(file).catch(() => {});
+const safeUnlink = (file) => {
+  try { return unlink(resolveStoredPath(file)).catch(() => {}); } catch { return Promise.resolve(); }
+};
 
 export const registerTripRoutes = async (app) => {
   app.get('/api/trips', async (request) => {
@@ -83,7 +92,7 @@ export const registerTripRoutes = async (app) => {
     const created = [];
     try {
       for (const [index,file] of files.entries()) {
-        const id=randomUUID(); const storagePath=path.join(config.uploadsDir,`${id}.${file.mime==='image/webp'?'webp':'jpg'}`); await writeFile(storagePath,file.buffer,{flag:'wx'});
+        const id=randomUUID(); const storagePath=path.join(storageRoot,id); await writeFile(storagePath,file.buffer,{flag:'wx'});
         await pool.query('insert into trip_photos(id,trip_id,owner_id,storage_path,original_name,caption,position,size_bytes,mime_type) values($1,$2,$3,$4,$5,$6,$7,$8,$9)', [id,request.params.id,request.identity.id,storagePath,file.name,captions[index]||'',tripCount.rows[0].count+index,file.buffer.length,file.mime]);
         created.push(storagePath);
       }
@@ -105,6 +114,6 @@ export const registerTripRoutes = async (app) => {
     const { expires, signature } = request.query; const photo=(await pool.query('select * from trip_photos where id=$1',[request.params.id])).rows[0];
     if (!photo || Number(expires)<Date.now()/1000 || typeof signature!=='string') return reply.code(404).send();
     const expected=sign(`${photo.id}:${photo.owner_id}:${expires}`); const supplied=Buffer.from(signature); const valid=supplied.length===expected.length&&timingSafeEqual(supplied,Buffer.from(expected));
-    if(!valid) return reply.code(403).send(); reply.type(photo.mime_type); return reply.send(createReadStream(photo.storage_path));
+    if(!valid) return reply.code(403).send(); reply.type(photo.mime_type); return reply.send(createReadStream(resolveStoredPath(photo.storage_path)));
   });
 };
